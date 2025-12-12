@@ -10,7 +10,7 @@ namespace FurnitureStore
     {
         public static string ConnectionString { get; } = @"host=localhost;
                                                            uid=root;
-                                                           pwd=root;
+                                                           pwd=;
                                                            database=furniture_store;";
     }
 }

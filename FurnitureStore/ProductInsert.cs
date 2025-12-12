@@ -62,6 +62,8 @@ namespace FurnitureStore
             this.mode = mode;
             LoadComboBoxes();
 
+            AutoLockManager.StartMonitoring();
+
             if (mode == "add")
             {
                 LoadDefaultImage();
@@ -448,10 +450,13 @@ namespace FurnitureStore
 
         private void buttonImage_Click(object sender, EventArgs e)
         {
+            AutoLockManager.SuspendMonitoring();
+
             using (OpenFileDialog ofd = new OpenFileDialog())
             {
                 ofd.Filter = "Изображения (*.jpg;*.jpeg;*.png)|*.jpg;*.jpeg;*.png";
                 ofd.Title = "Выберите фото для товара";
+
 
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
@@ -461,6 +466,8 @@ namespace FurnitureStore
                             "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
+
+                    AutoLockManager.ResumeMonitoring();
 
                     try
                     {
