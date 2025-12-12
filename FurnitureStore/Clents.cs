@@ -297,41 +297,155 @@ namespace FurnitureStore
             string columnName = dataGridView1.Columns[e.ColumnIndex].HeaderText;
             string text = e.Value.ToString();
 
-            if (columnName == "Телефон")
+            if (columnName == "ФИО клиента")
             {
-                string phone = new string(text.Where(char.IsDigit).ToArray());
-
-                if (phone.Length >= 10)
-                {
-                    string visiblePart1 = phone.Length >= 4 ? phone.Substring(0, 4) : phone;
-                    string hiddenPart = new string('*', 5);
-                    string visiblePart2 = phone.Length >= 6 ? phone.Substring(phone.Length - 2, 2) : "";
-
-                    if (phone.Length == 11 && phone.StartsWith("7"))
-                    {
-                        e.Value = $"+{visiblePart1[0]}({visiblePart1.Substring(1, 3)}){hiddenPart}-{visiblePart2}";
-                    }
-                    else
-                    {
-                        e.Value = $"{visiblePart1}{hiddenPart}{visiblePart2}";
-                    }
-                }
+                e.Value = FormatClientName(text);
+            }
+            else if (columnName == "Телефон")
+            {
+                e.Value = FormatClientPhone(text);
+            }
+            else if (columnName == "Почта")
+            {
+                e.Value = FormatClientEmail(text);
             }
             else if (columnName == "День рождения")
             {
                 if (DateTime.TryParse(text, out DateTime date))
                 {
-                    e.Value = date.ToString("dd.MM.****");
+                    e.Value = FormatClientBirthday(date);
                 }
             }
-            else if (columnName == "ФИО клиента" || columnName == "Почта" || columnName == "Адрес")
+            else if (columnName == "Адрес")
             {
-                if (text.Length > 4)
-                {   
-                    string visiblePart = text.Substring(0, 4);
-                    string hiddenPart = new string('*', 80);
-                    e.Value = visiblePart + hiddenPart;
+                e.Value = FormatClientAddress(text);
+            }
+        }
+
+        private string FormatClientName(string fullName)
+        {
+            if (string.IsNullOrEmpty(fullName))
+                return string.Empty;
+
+            string[] nameParts = fullName.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (nameParts.Length >= 3)
+            {
+                return $"{nameParts[0]} {nameParts[1][0]}.{nameParts[2][0]}.";
+            }
+            else if (nameParts.Length == 2)
+            {
+                return $"{nameParts[0]} {nameParts[1][0]}.";
+            }
+            else
+            {
+                return fullName;
+            }
+        }
+
+        private string FormatClientPhone(string phone)
+        {
+            if (string.IsNullOrEmpty(phone))
+                return string.Empty;
+
+            string digitsOnly = new string(phone.Where(char.IsDigit).ToArray());
+
+            if (digitsOnly.Length == 11 && digitsOnly.StartsWith("7"))
+            {
+                string prefix = "+7";
+                string hiddenCode = "***";
+                string hiddenNumber = "***";
+                string lastFourDigits = digitsOnly.Substring(digitsOnly.Length - 4);
+                string formattedLast = $"{lastFourDigits.Substring(0, 2)}-{lastFourDigits.Substring(2)}";
+
+                return $"{prefix}({hiddenCode}) {hiddenNumber}-{formattedLast}";
+            }
+            else if (digitsOnly.Length == 11 && digitsOnly.StartsWith("8"))
+            {
+                string prefix = "8";
+                string hiddenCode = "***";
+                string hiddenNumber = "***";
+                string lastFourDigits = digitsOnly.Substring(digitsOnly.Length - 4);
+                string formattedLast = $"{lastFourDigits.Substring(0, 2)}-{lastFourDigits.Substring(2)}";
+
+                return $"{prefix}({hiddenCode}) {hiddenNumber}-{formattedLast}";
+            }
+            else if (digitsOnly.Length >= 6)
+            {
+                int visibleStartCount = Math.Min(2, digitsOnly.Length - 4);
+                string visibleStart = digitsOnly.Substring(0, visibleStartCount);
+                string lastFourDigits = digitsOnly.Length >= 4
+                    ? digitsOnly.Substring(digitsOnly.Length - 4)
+                    : digitsOnly;
+
+                string formattedLast = lastFourDigits.Length == 4
+                    ? $"{lastFourDigits.Substring(0, 2)}-{lastFourDigits.Substring(2)}"
+                    : lastFourDigits;
+
+                int hiddenCount = digitsOnly.Length - visibleStartCount - 4;
+                if (hiddenCount > 0)
+                {
+                    string hiddenPart = new string('*', hiddenCount);
+                    return $"{visibleStart}{hiddenPart}-{formattedLast}";
                 }
+                else
+                {
+                    return $"{visibleStart}-{formattedLast}";
+                }
+            }
+            else
+            {
+                return phone;
+            }
+        }
+
+        private string FormatClientEmail(string email)
+        {
+            if (string.IsNullOrEmpty(email))
+                return string.Empty;
+
+            int atIndex = email.IndexOf('@');
+            if (atIndex > 0)
+            {
+                string hiddenLocal = new string('*', 5);
+
+                string hiddenDomain = new string('*', 5);
+
+                return $"{hiddenLocal}@{hiddenDomain}";
+            }
+            else
+            {
+                return new string('*', 5);
+            }
+        }
+
+        private string FormatClientBirthday(DateTime date)
+        {
+            string day = date.Day.ToString("00");
+            string month = date.Month.ToString("00");
+
+            return $"{day}.{month}.****";
+        }
+
+        private string FormatClientAddress(string address)
+        {
+            if (string.IsNullOrEmpty(address))
+                return string.Empty;
+
+            int commaIndex = address.IndexOf(',');
+            if (commaIndex > 0)
+            {
+                string city = address.Substring(0, commaIndex).Trim();
+                string hiddenPart = new string('*', 10);
+                return $"{city}{hiddenPart}";
+            }
+            else
+            {
+                string visiblePart = address.Length > 5
+                    ? address.Substring(0, 5)
+                    : address;
+                string hiddenPart = new string('*', 10);
+                return $"{visiblePart}{hiddenPart}";
             }
         }
 
