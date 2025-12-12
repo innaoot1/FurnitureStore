@@ -44,6 +44,7 @@ namespace FurnitureStore
             this.currentWorkerId = currentWorkerId;
             selectedProducts = new DataTable();
             InitializeSelectedProductsTable();
+            AutoLockManager.StartMonitoring();
 
             LoadComboBoxData();
 

@@ -25,7 +25,7 @@ namespace FurnitureStore
             roleId = role;
             ConfigureButtons();
             LoadPlugImage();
-
+            AutoLockManager.StartMonitoring();
         }
 
         private void LoadPlugImage()

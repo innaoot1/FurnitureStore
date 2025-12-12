@@ -15,6 +15,7 @@ namespace FurnitureStore
         public DesktopAdministrator()
         {
             InitializeComponent();
+            AutoLockManager.StartMonitoring();
         }
 
         private void button6_Click(object sender, EventArgs e)

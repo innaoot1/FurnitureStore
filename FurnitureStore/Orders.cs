@@ -22,6 +22,7 @@ namespace FurnitureStore
             InitializeComponent();
             roleId = role;
             ConfigureButtons();
+            AutoLockManager.StartMonitoring();
         }
 
         private void ConfigureButtons()

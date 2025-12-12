@@ -13,6 +13,7 @@ namespace FurnitureStore
         {
             InitializeComponent();
             LoadDateRangeFromDatabase();
+            AutoLockManager.StartMonitoring();
         }
 
         private void LoadDateRangeFromDatabase()

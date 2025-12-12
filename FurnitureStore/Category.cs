@@ -17,6 +17,7 @@ namespace FurnitureStore
         public Category()
         {
             InitializeComponent();
+            AutoLockManager.StartMonitoring();
         }
 
         private void Category_Load(object sender, EventArgs e)

@@ -22,6 +22,7 @@ namespace FurnitureStore
             this.tableName = tableName;
             this.mode = mode;
             this.recordId = recordId;
+            AutoLockManager.StartMonitoring();
 
             if (mode == "edit" && tableName == "Supplier")
             {

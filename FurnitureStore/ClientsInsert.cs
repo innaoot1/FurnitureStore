@@ -15,6 +15,7 @@ namespace FurnitureStore
             InitializeComponent();
             this.mode = mode;
             ApplyMode();
+            AutoLockManager.StartMonitoring();
 
             dateTimePickerBirthday.MaxDate = DateTime.Today.AddYears(-14);
             dateTimePickerBirthday.MinDate = DateTime.Today.AddYears(-90);

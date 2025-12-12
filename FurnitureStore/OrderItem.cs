@@ -20,6 +20,7 @@ namespace FurnitureStore
             InitializeComponent();
             this.orderId = orderId;
             LoadOrderItems();
+            AutoLockManager.StartMonitoring();
         }
 
         private void LoadOrderItems()

@@ -19,6 +19,7 @@ namespace FurnitureStore
         public Worker()
         {
             InitializeComponent();
+            AutoLockManager.StartMonitoring();
         }
 
         private void buttonBack_Click(object sender, EventArgs e)

@@ -17,6 +17,7 @@ namespace FurnitureStore
         public Clents()
         {
             InitializeComponent();
+            AutoLockManager.StartMonitoring();
         }
 
         private void Clents_Load(object sender, EventArgs e)

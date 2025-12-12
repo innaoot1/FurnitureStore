@@ -17,6 +17,7 @@ namespace FurnitureStore
         public Role()
         {
             InitializeComponent();
+            AutoLockManager.StartMonitoring();
         }
 
         private void Role_Load(object sender, EventArgs e)

@@ -17,6 +17,7 @@ namespace FurnitureStore
         public Supplier()
         {
             InitializeComponent();
+            AutoLockManager.StartMonitoring();
         }
 
         private void Supplier_Load(object sender, EventArgs e)
