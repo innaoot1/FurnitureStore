@@ -597,12 +597,31 @@ namespace FurnitureStore
 
             if (columnName == "Клиент" || columnName == "Сотрудник")
             {
-                if (text.Length > 4)
+                if (!string.IsNullOrEmpty(text))
                 {
-                    string visiblePart = text.Substring(0, 4);
-                    string hiddenPart = new string('*', 80);
-                    e.Value = visiblePart + hiddenPart;
+                    e.Value = FormatNameForDisplay(text);
                 }
+            }
+        }
+
+        private string FormatNameForDisplay(string fullName)
+        {
+            if (string.IsNullOrEmpty(fullName))
+                return string.Empty;
+
+            string[] nameParts = fullName.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (nameParts.Length >= 3)
+            {
+                return $"{nameParts[0]} {nameParts[1][0]}.{nameParts[2][0]}.";
+            }
+            else if (nameParts.Length == 2)
+            {
+                return $"{nameParts[0]} {nameParts[1][0]}.";
+            }
+            else
+            {
+                return fullName;
             }
         }
 
