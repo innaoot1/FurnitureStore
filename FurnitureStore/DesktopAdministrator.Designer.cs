@@ -32,7 +32,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.buttonExit = new System.Windows.Forms.Button();
-            this.buttonRole = new System.Windows.Forms.Button();
             this.buttonWorker = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -75,28 +74,13 @@
             this.buttonExit.UseVisualStyleBackColor = false;
             this.buttonExit.Click += new System.EventHandler(this.button6_Click);
             // 
-            // buttonRole
-            // 
-            this.buttonRole.BackColor = System.Drawing.Color.MistyRose;
-            this.buttonRole.FlatAppearance.BorderSize = 0;
-            this.buttonRole.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonRole.Font = new System.Drawing.Font("Verdana", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonRole.Location = new System.Drawing.Point(30, 147);
-            this.buttonRole.Margin = new System.Windows.Forms.Padding(4);
-            this.buttonRole.Name = "buttonRole";
-            this.buttonRole.Size = new System.Drawing.Size(205, 65);
-            this.buttonRole.TabIndex = 16;
-            this.buttonRole.Text = "Роли";
-            this.buttonRole.UseVisualStyleBackColor = false;
-            this.buttonRole.Click += new System.EventHandler(this.button3_Click);
-            // 
             // buttonWorker
             // 
             this.buttonWorker.BackColor = System.Drawing.Color.MistyRose;
             this.buttonWorker.FlatAppearance.BorderSize = 0;
             this.buttonWorker.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonWorker.Font = new System.Drawing.Font("Verdana", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonWorker.Location = new System.Drawing.Point(257, 147);
+            this.buttonWorker.Location = new System.Drawing.Point(32, 108);
             this.buttonWorker.Margin = new System.Windows.Forms.Padding(4);
             this.buttonWorker.Name = "buttonWorker";
             this.buttonWorker.Size = new System.Drawing.Size(205, 65);
@@ -117,7 +101,6 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.buttonExit);
-            this.Controls.Add(this.buttonRole);
             this.Controls.Add(this.buttonWorker);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -135,7 +118,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button buttonExit;
-        private System.Windows.Forms.Button buttonRole;
         private System.Windows.Forms.Button buttonWorker;
     }
 }

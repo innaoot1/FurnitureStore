@@ -29,13 +29,5 @@ namespace FurnitureStore
             Worker.ShowDialog();
             this.Visible = true;
         }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            Role Role = new Role();
-            this.Visible = false;
-            Role.ShowDialog();
-            this.Visible = true;
-        }
     }
 }

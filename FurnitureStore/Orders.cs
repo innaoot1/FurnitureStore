@@ -633,6 +633,46 @@ namespace FurnitureStore
                 e.Handled = true;
             }
         }
+
+        private void dataGridView1_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            var row = dataGridView1.Rows[e.RowIndex];
+
+            if (row.Cells["Статус заказа"].Value == null)
+                return;
+
+            string status = row.Cells["Статус заказа"].Value.ToString();
+
+            switch (status)
+            {
+                case "Новый":
+                    row.DefaultCellStyle.BackColor = Color.LightGray;
+                    row.DefaultCellStyle.ForeColor = Color.Black;
+                    break;
+
+                case "В обработке":
+                    row.DefaultCellStyle.BackColor = Color.Khaki;
+                    row.DefaultCellStyle.ForeColor = Color.Black;
+                    break;
+
+                case "Выполнен":
+                    row.DefaultCellStyle.BackColor = Color.LightGreen;
+                    row.DefaultCellStyle.ForeColor = Color.Black;
+                    break;
+
+                case "Отменён":
+                    row.DefaultCellStyle.BackColor = Color.LightCoral;
+                    row.DefaultCellStyle.ForeColor = Color.Black;
+                    break;
+
+                default:
+                    row.DefaultCellStyle.BackColor = Color.White;
+                    row.DefaultCellStyle.ForeColor = Color.Black;
+                    break;
+            }
+        }
     }
 
     public class OrderData

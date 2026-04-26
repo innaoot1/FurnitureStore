@@ -148,12 +148,6 @@
     <Compile Include="Revenue.Designer.cs">
       <DependentUpon>Revenue.cs</DependentUpon>
     </Compile>
-    <Compile Include="Role.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Role.Designer.cs">
-      <DependentUpon>Role.cs</DependentUpon>
-    </Compile>
     <Compile Include="Supplier.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -218,9 +212,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Revenue.resx">
       <DependentUpon>Revenue.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Role.resx">
-      <DependentUpon>Role.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Supplier.resx">
       <DependentUpon>Supplier.cs</DependentUpon>
