@@ -80,7 +80,7 @@ namespace FurnitureStore
 
         private void buttonBack_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
 
         private void buttonGenerate_Click(object sender, EventArgs e)

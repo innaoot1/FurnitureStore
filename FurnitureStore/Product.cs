@@ -110,7 +110,6 @@ namespace FurnitureStore
                             p.ProductPrice AS 'Цена',
                             p.ProductManufacturer AS 'Производитель',
                             p.OriginalSupplierName AS 'Поставщик', 
-                            p.ProductQuantityInStock AS 'Количество',
                             p.ProductDescription AS 'Описание',
                             p.ProductPhoto
                         FROM Product p
@@ -299,7 +298,6 @@ namespace FurnitureStore
                 manufacturer: row.Cells["Производитель"].Value?.ToString() ?? "",
                 category: row.Cells["Категория"].Value?.ToString() ?? "",
                 supplier: row.Cells["Поставщик"].Value?.ToString() ?? "",
-                quantity: Convert.ToInt32(row.Cells["Количество"].Value),
                 photoHash: photoHash
             );
 
@@ -402,7 +400,7 @@ namespace FurnitureStore
 
         private void buttonBack_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
 
         private void textBoxSearch_KeyPress(object sender, KeyPressEventArgs e)

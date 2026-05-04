@@ -20,7 +20,7 @@ namespace FurnitureStore
 
         private void button6_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
         private void button8_Click(object sender, EventArgs e)
         {

@@ -39,8 +39,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.comboBoxSupplier = new System.Windows.Forms.ComboBox();
             this.comboBoxCategory = new System.Windows.Forms.ComboBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.textBoxQuantityInStock = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.textBoxDescription = new System.Windows.Forms.TextBox();
             this.buttonBack = new System.Windows.Forms.Button();
@@ -66,11 +64,12 @@
             this.textBoxPrice.Font = new System.Drawing.Font("Verdana", 15.75F);
             this.textBoxPrice.Location = new System.Drawing.Point(12, 207);
             this.textBoxPrice.Margin = new System.Windows.Forms.Padding(4);
-            this.textBoxPrice.MaxLength = 10;
+            this.textBoxPrice.MaxLength = 13;
             this.textBoxPrice.Name = "textBoxPrice";
             this.textBoxPrice.Size = new System.Drawing.Size(461, 39);
             this.textBoxPrice.TabIndex = 25;
             this.textBoxPrice.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxPrice_KeyPress);
+            this.textBoxPrice.Leave += new System.EventHandler(this.textBoxPrice_Leave);
             // 
             // textBoxName
             // 
@@ -183,32 +182,6 @@
             this.comboBoxCategory.TabIndex = 14;
             this.comboBoxCategory.SelectedIndexChanged += new System.EventHandler(this.comboBoxCategory_SelectedIndexChanged);
             // 
-            // label6
-            // 
-            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label6.AutoSize = true;
-            this.label6.BackColor = System.Drawing.Color.Transparent;
-            this.label6.Font = new System.Drawing.Font("Verdana", 15.75F);
-            this.label6.Location = new System.Drawing.Point(7, 409);
-            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(336, 32);
-            this.label6.TabIndex = 23;
-            this.label6.Text = "Количество на складе:";
-            // 
-            // textBoxQuantityInStock
-            // 
-            this.textBoxQuantityInStock.Font = new System.Drawing.Font("Verdana", 15.75F);
-            this.textBoxQuantityInStock.Location = new System.Drawing.Point(12, 439);
-            this.textBoxQuantityInStock.Margin = new System.Windows.Forms.Padding(4);
-            this.textBoxQuantityInStock.MaxLength = 4;
-            this.textBoxQuantityInStock.Name = "textBoxQuantityInStock";
-            this.textBoxQuantityInStock.Size = new System.Drawing.Size(461, 39);
-            this.textBoxQuantityInStock.TabIndex = 24;
-            this.textBoxQuantityInStock.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxQuantityInStock_KeyPress);
-            // 
             // label7
             // 
             this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -217,7 +190,7 @@
             this.label7.AutoSize = true;
             this.label7.BackColor = System.Drawing.Color.Transparent;
             this.label7.Font = new System.Drawing.Font("Verdana", 15.75F);
-            this.label7.Location = new System.Drawing.Point(537, 18);
+            this.label7.Location = new System.Drawing.Point(7, 420);
             this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(162, 32);
@@ -227,10 +200,10 @@
             // textBoxDescription
             // 
             this.textBoxDescription.Font = new System.Drawing.Font("Verdana", 15.75F);
-            this.textBoxDescription.Location = new System.Drawing.Point(543, 49);
+            this.textBoxDescription.Location = new System.Drawing.Point(13, 456);
             this.textBoxDescription.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxDescription.Name = "textBoxDescription";
-            this.textBoxDescription.Size = new System.Drawing.Size(461, 39);
+            this.textBoxDescription.Size = new System.Drawing.Size(459, 39);
             this.textBoxDescription.TabIndex = 24;
             this.textBoxDescription.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxDescription_KeyPress);
             // 
@@ -274,9 +247,9 @@
             // 
             this.pictureBoxImage.BackColor = System.Drawing.Color.Transparent;
             this.pictureBoxImage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureBoxImage.Location = new System.Drawing.Point(543, 112);
+            this.pictureBoxImage.Location = new System.Drawing.Point(533, 49);
             this.pictureBoxImage.Name = "pictureBoxImage";
-            this.pictureBoxImage.Size = new System.Drawing.Size(450, 350);
+            this.pictureBoxImage.Size = new System.Drawing.Size(460, 356);
             this.pictureBoxImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBoxImage.TabIndex = 29;
             this.pictureBoxImage.TabStop = false;
@@ -287,10 +260,10 @@
             this.buttonImage.FlatAppearance.BorderSize = 0;
             this.buttonImage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonImage.Font = new System.Drawing.Font("Verdana", 15.75F);
-            this.buttonImage.Location = new System.Drawing.Point(543, 469);
+            this.buttonImage.Location = new System.Drawing.Point(533, 448);
             this.buttonImage.Margin = new System.Windows.Forms.Padding(4);
             this.buttonImage.Name = "buttonImage";
-            this.buttonImage.Size = new System.Drawing.Size(450, 47);
+            this.buttonImage.Size = new System.Drawing.Size(460, 47);
             this.buttonImage.TabIndex = 28;
             this.buttonImage.Text = "Выбрать фото";
             this.buttonImage.UseVisualStyleBackColor = false;
@@ -309,12 +282,10 @@
             this.Controls.Add(this.buttonImage);
             this.Controls.Add(this.buttonWrite);
             this.Controls.Add(this.buttonBack);
-            this.Controls.Add(this.textBoxQuantityInStock);
             this.Controls.Add(this.textBoxDescription);
             this.Controls.Add(this.textBoxManufacturer);
             this.Controls.Add(this.textBoxPrice);
             this.Controls.Add(this.textBoxName);
-            this.Controls.Add(this.label6);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
@@ -348,8 +319,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox comboBoxSupplier;
         private System.Windows.Forms.ComboBox comboBoxCategory;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox textBoxQuantityInStock;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox textBoxDescription;
         private System.Windows.Forms.Button buttonBack;

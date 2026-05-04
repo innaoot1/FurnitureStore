@@ -32,13 +32,11 @@ namespace FurnitureStore
                         SELECT 
                             CustomersID AS 'ID',
                             CustomersFIO AS 'ФИО клиента',
-                            CustomersBirthday AS 'День рождения',
-                            CustomersEmail AS 'Почта',
                             CustomersPhone AS 'Телефон',
-                            CustomersAddress AS 'Адрес',
                             IsActive AS 'Активен'
                         FROM Customers
-                            WHERE IsActive = 1;", con);
+                        WHERE IsActive = 1
+                        ORDER BY CustomersFIO ASC;", con);
 
                     MySqlDataAdapter da = new MySqlDataAdapter(cmd);
                     clientTable = new DataTable();
@@ -155,22 +153,19 @@ namespace FurnitureStore
 
             int id = Convert.ToInt32(dataGridView1.CurrentRow.Cells["ID"].Value);
             string name = dataGridView1.CurrentRow.Cells["ФИО клиента"].Value.ToString();
-
-            var clientData = GetClientData(id);
+            string phone = dataGridView1.CurrentRow.Cells["Телефон"].Value.ToString();
 
             ClientsInsert form = new ClientsInsert("edit")
             {
                 ClientID = id,
-                ClientFIO = clientData.FIO,
-                ClientBirthday = clientData.Birthday,
-                ClientEmail = clientData.Email,
-                ClientPhone = clientData.Phone,
-                ClientAddress = clientData.Address
+                ClientFIO = name,
+                ClientPhone = phone
             };
 
             form.ShowDialog();
             Clents_Load(null, null);
         }
+
         private void buttonCreate_Click(object sender, EventArgs e)
         {
             ClientsInsert form = new ClientsInsert("add");
@@ -180,10 +175,10 @@ namespace FurnitureStore
 
         private void buttonBack_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
 
-        private (string FIO, DateTime Birthday, string Email, string Phone, string Address) GetClientData(int clientId)
+        private (string FIO, string Phone) GetClientData(int clientId)
         {
             try
             {
@@ -191,7 +186,7 @@ namespace FurnitureStore
                 {
                     con.Open();
                     MySqlCommand cmd = new MySqlCommand(
-                        "SELECT CustomersFIO, CustomersBirthday, CustomersEmail, CustomersPhone, CustomersAddress FROM Customers WHERE CustomersID = @id", con);
+                        "SELECT CustomersFIO, CustomersPhone FROM Customers WHERE CustomersID = @id", con);
                     cmd.Parameters.AddWithValue("@id", clientId);
 
                     using (MySqlDataReader reader = cmd.ExecuteReader())
@@ -200,10 +195,7 @@ namespace FurnitureStore
                         {
                             return (
                                 reader.GetString("CustomersFIO"),
-                                reader.GetDateTime("CustomersBirthday"),
-                                reader.GetString("CustomersEmail"),
-                                reader.GetString("CustomersPhone"),
-                                reader.GetString("CustomersAddress")
+                                reader.GetString("CustomersPhone")
                             );
                         }
                     }
@@ -214,7 +206,7 @@ namespace FurnitureStore
                 MessageBox.Show($"Ошибка при получении данных клиента: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            return ("", DateTime.Now, "", "", "");
+            return ("", "");
         }
 
         private void textBoxSearch_KeyPress(object sender, KeyPressEventArgs e)
@@ -234,10 +226,7 @@ namespace FurnitureStore
                 ClientsInsert form = new ClientsInsert("view")
                 {
                     ClientFIO = row.Cells["ФИО клиента"].Value.ToString(),
-                    ClientBirthday = Convert.ToDateTime(row.Cells["День рождения"].Value),
-                    ClientEmail = row.Cells["Почта"].Value.ToString(),
-                    ClientPhone = row.Cells["Телефон"].Value.ToString(),
-                    ClientAddress = row.Cells["Адрес"].Value.ToString()
+                    ClientPhone = row.Cells["Телефон"].Value.ToString()
                 };
 
                 form.ShowDialog();
@@ -304,21 +293,6 @@ namespace FurnitureStore
             else if (columnName == "Телефон")
             {
                 e.Value = FormatClientPhone(text);
-            }
-            else if (columnName == "Почта")
-            {
-                e.Value = FormatClientEmail(text);
-            }
-            else if (columnName == "День рождения")
-            {
-                if (DateTime.TryParse(text, out DateTime date))
-                {
-                    e.Value = FormatClientBirthday(date);
-                }
-            }
-            else if (columnName == "Адрес")
-            {
-                e.Value = FormatClientAddress(text);
             }
         }
 
@@ -396,56 +370,6 @@ namespace FurnitureStore
             else
             {
                 return phone;
-            }
-        }
-
-        private string FormatClientEmail(string email)
-        {
-            if (string.IsNullOrEmpty(email))
-                return string.Empty;
-
-            int atIndex = email.IndexOf('@');
-            if (atIndex > 0)
-            {
-                string hiddenLocal = new string('*', 5);
-
-                string hiddenDomain = new string('*', 5);
-
-                return $"{hiddenLocal}@{hiddenDomain}";
-            }
-            else
-            {
-                return new string('*', 5);
-            }
-        }
-
-        private string FormatClientBirthday(DateTime date)
-        {
-            string day = date.Day.ToString("00");
-            string month = date.Month.ToString("00");
-
-            return $"{day}.{month}.****";
-        }
-
-        private string FormatClientAddress(string address)
-        {
-            if (string.IsNullOrEmpty(address))
-                return string.Empty;
-
-            int commaIndex = address.IndexOf(',');
-            if (commaIndex > 0)
-            {
-                string city = address.Substring(0, commaIndex).Trim();
-                string hiddenPart = new string('*', 10);
-                return $"{city}{hiddenPart}";
-            }
-            else
-            {
-                string visiblePart = address.Length > 5
-                    ? address.Substring(0, 5)
-                    : address;
-                string hiddenPart = new string('*', 10);
-                return $"{visiblePart}{hiddenPart}";
             }
         }
 

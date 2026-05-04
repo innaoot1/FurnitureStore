@@ -35,19 +35,24 @@ namespace FurnitureStore
         }
         public decimal ProductPrice
         {
-            get => decimal.TryParse(textBoxPrice.Text, out decimal p) ? p : 0;
-            set => textBoxPrice.Text = value.ToString("0.##");
+            get
+            {
+                string text = textBoxPrice.Text.Trim();
+                if (string.IsNullOrEmpty(text)) return 0;
+                text = text.Replace('.', ',');
+                if (decimal.TryParse(text, out decimal result))
+                    return result;
+                return 0;
+            }
+            set
+            {
+                textBoxPrice.Text = value.ToString("F2").Replace('.', ',');
+            }
         }
         public string ProductManufacturer
         {
             get => textBoxManufacturer.Text.Trim();
             set => textBoxManufacturer.Text = value;
-        }
-
-        public int ProductQuantity
-        {
-            get => int.TryParse(textBoxQuantityInStock.Text, out int q) ? q : 0;
-            set => textBoxQuantityInStock.Text = value.ToString();
         }
 
         public string ProductPhotoHash
@@ -169,14 +174,13 @@ namespace FurnitureStore
         }
 
         public void SetEditData(int productId, string name, string description, decimal price,
-                      string manufacturer, string category, string supplier, int quantity, string photoHash)
+                      string manufacturer, string category, string supplier, string photoHash)
         {
             ProductID = productId;
             ProductName = name;
             ProductDescription = description;
             ProductPrice = price;
             ProductManufacturer = manufacturer;
-            ProductQuantity = quantity;
             selectedImageHash = photoHash;
             oldImageHash = photoHash;
 
@@ -240,7 +244,7 @@ namespace FurnitureStore
 
         private void buttonBack_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
 
         private void buttonWrite_Click(object sender, EventArgs e)
@@ -294,8 +298,8 @@ namespace FurnitureStore
                         cmd = new MySqlCommand(@"
                             INSERT INTO Product 
                             (ProductName, ProductDescription, ProductPrice, ProductManufacturer, 
-                             ProductCategory, ProductSupplier, OriginalSupplierName, ProductQuantityInStock, ProductPhoto)
-                            VALUES (@name, @desc, @price, @man, @category, @supplier, @originalSupplier, @qty, @photo)", con);
+                             ProductCategory, ProductSupplier, OriginalSupplierName, ProductPhoto)
+                            VALUES (@name, @desc, @price, @man, @category, @supplier, @originalSupplier, @photo)", con);
                     }
                     else
                     {
@@ -308,7 +312,6 @@ namespace FurnitureStore
                                 ProductManufacturer = @man,
                                 ProductCategory = @category,
                                 ProductSupplier = @supplier,
-                                ProductQuantityInStock = @qty,
                                 ProductPhoto = @photo
                             WHERE ProductID = @id", con);
                         cmd.Parameters.AddWithValue("@id", ProductID);
@@ -321,7 +324,6 @@ namespace FurnitureStore
                     cmd.Parameters.AddWithValue("@category", selectedCategoryId);
                     cmd.Parameters.AddWithValue("@supplier", selectedSupplierId);
                     cmd.Parameters.AddWithValue("@photo", selectedImageHash ?? "");
-                    cmd.Parameters.AddWithValue("@qty", ProductQuantity);
 
                     if (mode == "add")
                     {
@@ -334,7 +336,7 @@ namespace FurnitureStore
                     {
                         string message = mode == "add" ? "добавлен" : "обновлён";
                         MessageBox.Show($"Товар \"{ProductName}\" успешно {message}!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        this.DialogResult = DialogResult.OK;
+                        this.Close();
                     }
                     else
                     {
@@ -375,8 +377,10 @@ namespace FurnitureStore
 
             if (ProductPrice <= 0)
             {
-                MessageBox.Show("Введите корректную цену!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                textBoxPrice.Focus(); return false;
+                MessageBox.Show("Введите корректную цену (положительное число)!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                textBoxPrice.Focus();
+                textBoxPrice.SelectAll();
+                return false;
             }
 
             if (comboBoxCategory.SelectedItem == null)
@@ -395,12 +399,6 @@ namespace FurnitureStore
             {
                 MessageBox.Show("Введите производителя!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 textBoxManufacturer.Focus(); return false;
-            }
-
-            if (string.IsNullOrWhiteSpace(textBoxQuantityInStock.Text) || ProductQuantity < 0)
-            {
-                MessageBox.Show("Введите корректное количество на складе!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                textBoxQuantityInStock.Focus(); return false;
             }
 
             return true;
@@ -426,17 +424,38 @@ namespace FurnitureStore
 
         private void textBoxPrice_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!char.IsControl(e.KeyChar) &&
-                !System.Text.RegularExpressions.Regex.IsMatch(e.KeyChar.ToString(), @"^[0-9,]$"))
+            if (e.KeyChar == (char)Keys.Back)
             {
-                e.Handled = true;
+                return;
             }
+
+            if (char.IsDigit(e.KeyChar))
+            {
+                return;
+            }
+
+            if (e.KeyChar == ',' || e.KeyChar == '.')
+            {
+                if (textBoxPrice.Text.Contains(",") || textBoxPrice.Text.Contains("."))
+                {
+                    e.Handled = true;
+                }
+                return;
+            }
+
+            e.Handled = true;
         }
 
-        private void textBoxQuantityInStock_KeyPress(object sender, KeyPressEventArgs e)
+        private void textBoxPrice_Leave(object sender, EventArgs e)
         {
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
-                e.Handled = true;
+            if (!string.IsNullOrEmpty(textBoxPrice.Text))
+            {
+                string cleanText = textBoxPrice.Text.Replace('.', ',');
+                if (decimal.TryParse(cleanText, out decimal price))
+                {
+                    textBoxPrice.Text = price.ToString("F2").Replace('.', ',');
+                }
+            }
         }
 
         private void textBoxManufacturer_KeyPress(object sender, KeyPressEventArgs e)
@@ -456,7 +475,6 @@ namespace FurnitureStore
             {
                 ofd.Filter = "Изображения (*.jpg;*.jpeg;*.png)|*.jpg;*.jpeg;*.png";
                 ofd.Title = "Выберите фото для товара";
-
 
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {

@@ -47,8 +47,6 @@
             this.buttonClearFilters = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
             this.label7 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
             this.label8 = new System.Windows.Forms.Label();
@@ -300,7 +298,7 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.LightGray;
-            this.panel1.Location = new System.Drawing.Point(32, 400);
+            this.panel1.Location = new System.Drawing.Point(160, 395);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(20, 20);
             this.panel1.TabIndex = 44;
@@ -313,35 +311,12 @@
             this.label5.AutoSize = true;
             this.label5.BackColor = System.Drawing.Color.Transparent;
             this.label5.Font = new System.Drawing.Font("Verdana", 13.3F);
-            this.label5.Location = new System.Drawing.Point(52, 395);
+            this.label5.Location = new System.Drawing.Point(181, 390);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(180, 28);
             this.label5.TabIndex = 35;
             this.label5.Text = "- новый заказ";
-            // 
-            // label6
-            // 
-            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label6.AutoSize = true;
-            this.label6.BackColor = System.Drawing.Color.Transparent;
-            this.label6.Font = new System.Drawing.Font("Verdana", 13.3F);
-            this.label6.Location = new System.Drawing.Point(260, 395);
-            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(249, 28);
-            this.label6.TabIndex = 35;
-            this.label6.Text = "- заказ в обработке";
-            // 
-            // panel2
-            // 
-            this.panel2.BackColor = System.Drawing.Color.Khaki;
-            this.panel2.Location = new System.Drawing.Point(240, 400);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(20, 20);
-            this.panel2.TabIndex = 44;
             // 
             // label7
             // 
@@ -351,7 +326,7 @@
             this.label7.AutoSize = true;
             this.label7.BackColor = System.Drawing.Color.Transparent;
             this.label7.Font = new System.Drawing.Font("Verdana", 13.3F);
-            this.label7.Location = new System.Drawing.Point(540, 395);
+            this.label7.Location = new System.Drawing.Point(396, 390);
             this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(223, 28);
@@ -361,7 +336,7 @@
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.LightGreen;
-            this.panel3.Location = new System.Drawing.Point(520, 400);
+            this.panel3.Location = new System.Drawing.Point(376, 395);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(20, 20);
             this.panel3.TabIndex = 44;
@@ -374,7 +349,7 @@
             this.label8.AutoSize = true;
             this.label8.BackColor = System.Drawing.Color.Transparent;
             this.label8.Font = new System.Drawing.Font("Verdana", 13.3F);
-            this.label8.Location = new System.Drawing.Point(791, 395);
+            this.label8.Location = new System.Drawing.Point(647, 390);
             this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(203, 28);
@@ -384,7 +359,7 @@
             // panel4
             // 
             this.panel4.BackColor = System.Drawing.Color.LightCoral;
-            this.panel4.Location = new System.Drawing.Point(771, 400);
+            this.panel4.Location = new System.Drawing.Point(627, 395);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(20, 20);
             this.panel4.TabIndex = 44;
@@ -398,7 +373,6 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1024, 640);
             this.ControlBox = false;
-            this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel1);
@@ -409,7 +383,6 @@
             this.Controls.Add(this.comboBoxFilter);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.textBoxSearch);
-            this.Controls.Add(this.label6);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label5);
@@ -455,8 +428,6 @@
         private System.Windows.Forms.Button buttonClearFilters;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Label label8;

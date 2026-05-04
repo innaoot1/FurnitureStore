@@ -84,7 +84,6 @@ namespace FurnitureStore
                     comboBoxFilter.Items.Clear();
                     comboBoxFilter.Items.Add("");
                     comboBoxFilter.Items.Add("Новый");
-                    comboBoxFilter.Items.Add("В обработке");
                     comboBoxFilter.Items.Add("Выполнен");
                     comboBoxFilter.Items.Add("Отменён");
                     comboBoxFilter.SelectedIndex = 0;
@@ -203,7 +202,7 @@ namespace FurnitureStore
 
         private void buttonBack_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
 
         private void buttonRevenue_Click(object sender, EventArgs e)
@@ -245,7 +244,7 @@ namespace FurnitureStore
                 document = wordApp.Documents.Add();
 
                 document.PageSetup.Orientation = Word.WdOrientation.wdOrientPortrait;
-                document.PageSetup.PageWidth = wordApp.CentimetersToPoints(10f); 
+                document.PageSetup.PageWidth = wordApp.CentimetersToPoints(10f);
                 document.PageSetup.PageHeight = wordApp.CentimetersToPoints(29.7f);
                 document.PageSetup.TopMargin = wordApp.CentimetersToPoints(0.5f);
                 document.PageSetup.BottomMargin = wordApp.CentimetersToPoints(0.5f);
@@ -452,7 +451,7 @@ namespace FurnitureStore
                 }
                 catch (Exception)
                 {
-                    
+
                 }
             }
         }
@@ -527,7 +526,7 @@ namespace FurnitureStore
 
                     MySqlCommand cmdProducts = new MySqlCommand(@"
                 SELECT 
-                    p.ProductName,
+                    COALESCE(op.OriginalProductName, p.ProductName) as ProductName,
                     p.ProductPrice,
                     op.ProductCount,
                     (p.ProductPrice * op.ProductCount) as TotalPrice
@@ -543,7 +542,7 @@ namespace FurnitureStore
                     {
                         orderData.Products.Add(new ProductItem
                         {
-                            Name = readerProducts.GetString("ProductName"), 
+                            Name = readerProducts.GetString("ProductName"),
                             Price = readerProducts.GetDecimal("ProductPrice"),
                             Quantity = readerProducts.GetInt32("ProductCount"),
                             Total = readerProducts.GetDecimal("TotalPrice")
@@ -649,11 +648,6 @@ namespace FurnitureStore
             {
                 case "Новый":
                     row.DefaultCellStyle.BackColor = Color.LightGray;
-                    row.DefaultCellStyle.ForeColor = Color.Black;
-                    break;
-
-                case "В обработке":
-                    row.DefaultCellStyle.BackColor = Color.Khaki;
                     row.DefaultCellStyle.ForeColor = Color.Black;
                     break;
 

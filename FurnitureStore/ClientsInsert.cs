@@ -16,9 +16,6 @@ namespace FurnitureStore
             this.mode = mode;
             ApplyMode();
             AutoLockManager.StartMonitoring();
-
-            dateTimePickerBirthday.MaxDate = DateTime.Today.AddYears(-14);
-            dateTimePickerBirthday.MinDate = DateTime.Today.AddYears(-90);
         }
 
         private void ApplyMode()
@@ -27,14 +24,10 @@ namespace FurnitureStore
             {
                 case "view":
                     textBoxFIO.ReadOnly = true;
-                    dateTimePickerBirthday.Enabled = false;
-                    textBoxEmail.ReadOnly = true;
                     maskedTextBoxPhone.ReadOnly = true;
-                    textBoxAddress.ReadOnly = true;
                     buttonWrite.Visible = false;
                     break;
                 case "edit":
-                    dateTimePickerBirthday.Enabled = false;
                     break;
             }
         }
@@ -43,18 +36,6 @@ namespace FurnitureStore
         {
             get => textBoxFIO.Text.Trim();
             set => textBoxFIO.Text = value;
-        }
-
-        public DateTime ClientBirthday
-        {
-            get => dateTimePickerBirthday.Value;
-            set => dateTimePickerBirthday.Value = value;
-        }
-
-        public string ClientEmail
-        {
-            get => textBoxEmail.Text.Trim();
-            set => textBoxEmail.Text = value;
         }
 
         public string ClientPhone
@@ -79,15 +60,9 @@ namespace FurnitureStore
             }
         }
 
-        public string ClientAddress
-        {
-            get => textBoxAddress.Text.Trim();
-            set => textBoxAddress.Text = value;
-        }
-
         private void buttonBack_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
 
         private void buttonWrite_Click(object sender, EventArgs e)
@@ -132,9 +107,9 @@ namespace FurnitureStore
                     {
                         cmd = new MySqlCommand(@"
                     INSERT INTO Customers 
-                    (CustomersFIO, OriginalClientFIO, CustomersBirthday, CustomersEmail, CustomersPhone, CustomersAddress, IsActive)
-                    VALUES (@fio, @originalFio, @birthday, @email, @phone, @address, 1)", con);
-                        cmd.Parameters.AddWithValue("@originalFio", ClientFIO); 
+                    (CustomersFIO, OriginalClientFIO, CustomersPhone, IsActive)
+                    VALUES (@fio, @originalFio, @phone, 1)", con);
+                        cmd.Parameters.AddWithValue("@originalFio", ClientFIO);
                     }
                     else
                     {
@@ -147,33 +122,25 @@ namespace FurnitureStore
                     UPDATE Customers 
                     SET CustomersFIO = @fio,
                         OriginalClientFIO = @originalFio,
-                        CustomersBirthday = @birthday,
-                        CustomersEmail = @email,
-                        CustomersPhone = @phone,
-                        CustomersAddress = @address
+                        CustomersPhone = @phone
                     WHERE CustomersID = @id", con);
                         cmd.Parameters.AddWithValue("@id", ClientID);
-                        cmd.Parameters.AddWithValue("@originalFio", originalFIO);  
+                        cmd.Parameters.AddWithValue("@originalFio", originalFIO);
                     }
 
                     cmd.Parameters.AddWithValue("@fio", ClientFIO);
-                    cmd.Parameters.AddWithValue("@birthday", ClientBirthday);
-                    cmd.Parameters.AddWithValue("@email", ClientEmail);
                     cmd.Parameters.AddWithValue("@phone", ClientPhone);
-                    cmd.Parameters.AddWithValue("@address", ClientAddress);
 
                     cmd.ExecuteNonQuery();
 
                     string message = mode == "add" ? "добавлен" : "обновлён";
                     MessageBox.Show(
-                        $"Клиент \"{ClientFIO}\" успешно {message}!\n\n" +
-                        "Примечание: в существующих заказах останутся старые данные клиента, " +
-                        "в новых заказах будут использоваться новые данные.",
+                        $"Клиент \"{ClientFIO}\" успешно {message}!",
                         "Успех",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
 
-                    this.DialogResult = DialogResult.OK;
+                    this.Close();
                 }
             }
             catch (Exception ex)
@@ -191,25 +158,11 @@ namespace FurnitureStore
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(ClientEmail) || !ClientEmail.Contains("@"))
-            {
-                MessageBox.Show("Введите корректный адрес электронной почты!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                textBoxEmail.Focus();
-                return false;
-            }
-
             string phoneDigits = new string(maskedTextBoxPhone.Text.Where(char.IsDigit).ToArray());
             if (phoneDigits.Length < 11)
             {
                 MessageBox.Show("Введите корректный номер телефона!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 maskedTextBoxPhone.Focus();
-                return false;
-            }
-
-            if (string.IsNullOrWhiteSpace(ClientAddress))
-            {
-                MessageBox.Show("Введите адрес клиента!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                textBoxAddress.Focus();
                 return false;
             }
 
@@ -270,21 +223,27 @@ namespace FurnitureStore
             textBoxFIO.TextChanged += textBoxFIO_TextChanged;
         }
 
-        private void textBoxAddress_KeyPress(object sender, KeyPressEventArgs e)
+        private void maskedTextBoxPhone_Click(object sender, EventArgs e)
         {
-            if (!char.IsControl(e.KeyChar) &&
-                !System.Text.RegularExpressions.Regex.IsMatch(e.KeyChar.ToString(), @"^[а-яА-Я0-9-,.\s]$"))
-            {
-                e.Handled = true;
-            }
+            SetCursorToEnd(maskedTextBoxPhone);
         }
 
-        private void textBoxEmail_KeyPress(object sender, KeyPressEventArgs e)
+        private void maskedTextBoxPhone_Enter(object sender, EventArgs e)
         {
-            if (!char.IsControl(e.KeyChar) &&
-                !System.Text.RegularExpressions.Regex.IsMatch(e.KeyChar.ToString(), @"^[a-zA-Z0-9!@#$%^&*()\-_=+\[\]{}|;:,.<>?]$"))
+            SetCursorToEnd(maskedTextBoxPhone);
+        }
+
+        private void SetCursorToEnd(MaskedTextBox mtb)
+        {
+            mtb.SelectionStart = mtb.Text.Length;
+
+            for (int i = mtb.Text.Length - 1; i >= 0; i--)
             {
-                e.Handled = true;
+                if (char.IsDigit(mtb.Text[i]))
+                {
+                    mtb.SelectionStart = i + 1;
+                    break;
+                }
             }
         }
     }

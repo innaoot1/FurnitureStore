@@ -171,7 +171,6 @@ namespace FurnitureStore
 
                     comboBoxStatus.Items.Clear();
                     comboBoxStatus.Items.Add("Новый");
-                    comboBoxStatus.Items.Add("В обработке");
                     comboBoxStatus.Items.Add("Выполнен");
                     comboBoxStatus.Items.Add("Отменён");
 
@@ -332,7 +331,7 @@ namespace FurnitureStore
         }
         private void buttonBack_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
 
         private void buttonPlus_Click(object sender, EventArgs e)
@@ -546,7 +545,7 @@ namespace FurnitureStore
             }
 
             MessageBox.Show(successMessage, "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
 
         private void UpdateExistingOrder(MySqlConnection con)
@@ -640,7 +639,7 @@ namespace FurnitureStore
             }
 
             MessageBox.Show(successMessage, "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
 
         private void textBoxProductCount_KeyPress(object sender, KeyPressEventArgs e)

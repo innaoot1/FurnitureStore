@@ -24,7 +24,7 @@ namespace FurnitureStore
 
         private void buttonBack_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
 
         private void Worker_Load(object sender, EventArgs e)
@@ -45,14 +45,13 @@ namespace FurnitureStore
         w.WorkerID AS 'ID',
         w.WorkerFIO AS 'Сотрудник',
         w.WorkerLogin AS 'Логин',
-        w.WorkerBirthday AS 'Дата рождения',
-        w.WorkerEmployment AS 'Дата найма',
-        w.WorkerEmail AS 'Почта',
         w.WorkerPhone AS 'Телефон',
+        w.WorkerPassport AS 'Паспорт',
         r.RoleName AS 'Роль'
     FROM Worker w
     JOIN Role r ON w.WorkerRole = r.RoleID
-    WHERE w.IsActive = 1;", con);  
+    WHERE w.IsActive = 1
+    ORDER BY w.WorkerFIO ASC;", con);
 
                     MySqlDataAdapter da = new MySqlDataAdapter(cmd);
                     workerTable = new DataTable();
@@ -159,6 +158,7 @@ namespace FurnitureStore
                 return false;
             }
         }
+
         private void buttonUpdate_Click(object sender, EventArgs e)
         {
             if (dataGridView1.CurrentRow == null)
@@ -174,9 +174,7 @@ namespace FurnitureStore
                 WorkerFIO = row.Cells["Сотрудник"].Value.ToString(),
                 WorkerLogin = row.Cells["Логин"].Value.ToString(),
                 WorkerPhone = row.Cells["Телефон"].Value.ToString(),
-                WorkerEmail = row.Cells["Почта"].Value.ToString(),
-                WorkerBirthday = Convert.ToDateTime(row.Cells["Дата рождения"].Value),
-                WorkerDateEmployment = Convert.ToDateTime(row.Cells["Дата найма"].Value),
+                WorkerPassport = row.Cells["Паспорт"].Value?.ToString() ?? "",
                 WorkerRole = row.Cells["Роль"].Value.ToString(),
                 WorkerID = Convert.ToInt32(row.Cells["ID"].Value)
             };
@@ -252,9 +250,7 @@ namespace FurnitureStore
                     WorkerFIO = row.Cells["Сотрудник"].Value.ToString(),
                     WorkerLogin = row.Cells["Логин"].Value.ToString(),
                     WorkerPhone = row.Cells["Телефон"].Value.ToString(),
-                    WorkerEmail = row.Cells["Почта"].Value.ToString(),
-                    WorkerBirthday = Convert.ToDateTime(row.Cells["Дата рождения"].Value),
-                    WorkerDateEmployment = Convert.ToDateTime(row.Cells["Дата найма"].Value),
+                    WorkerPassport = row.Cells["Паспорт"].Value?.ToString() ?? "",
                     WorkerRole = row.Cells["Роль"].Value.ToString()
                 };
 
@@ -282,24 +278,13 @@ namespace FurnitureStore
                     e.Value = FormatPhoneNumber(text);
                 }
             }
-            else if (columnName == "Почта")
+            else if (columnName == "Паспорт")
             {
-                e.Value = FormatEmailAddress(text);
-            }
-            else if (columnName == "Дата рождения" || columnName == "Дата найма")
-            {
-                if (DateTime.TryParse(text, out DateTime date))
-                {
-                    e.Value = FormatDateDisplay(date);
-                }
+                e.Value = FormatPassport(text);
             }
             else if (columnName == "Логин")
             {
                 e.Value = FormatUserName(text);
-            }
-            else if (columnName == "Адрес")
-            {
-                e.Value = FormatAddressInfo(text);
             }
         }
 
@@ -344,29 +329,28 @@ namespace FurnitureStore
             }
         }
 
-        private string FormatEmailAddress(string email)
+        private string FormatPassport(string passport)
         {
-            if (string.IsNullOrEmpty(email))
+            if (string.IsNullOrEmpty(passport))
                 return string.Empty;
 
-            int atSymbolIndex = email.IndexOf('@');
-            if (atSymbolIndex > 0)
+            string digitsOnly = new string(passport.Where(char.IsDigit).ToArray());
+
+            if (digitsOnly.Length >= 10)
             {
-                string hiddenLocal = new string('*', 5);
-
-                string hiddenDomain = new string('*', 5);
-
-                return $"{hiddenLocal}@{hiddenDomain}";
+                string firstFour = digitsOnly.Substring(0, 4);
+                string lastSix = digitsOnly.Substring(digitsOnly.Length - 6);
+                return $"{firstFour} {lastSix.Substring(0, 3)}***";  
+            }
+            else if (digitsOnly.Length >= 6)
+            {
+                string firstFour = digitsOnly.Substring(0, Math.Min(4, digitsOnly.Length));
+                return $"{firstFour} ***";  
             }
             else
             {
-                return new string('*', 5);
+                return "*******";
             }
-        }
-
-        private string FormatDateDisplay(DateTime date)
-        {
-            return date.ToString("dd.MM.****");
         }
 
         private string FormatUserName(string login)
@@ -374,38 +358,14 @@ namespace FurnitureStore
             if (string.IsNullOrEmpty(login))
                 return string.Empty;
 
-            if (login.Length > 3)
+            if (login.Length >= 3)
             {
-                string visiblePart = login.Substring(0, Math.Min(3, login.Length));
-                string hiddenPart = new string('*', 10);
-                return $"{visiblePart}{hiddenPart}";
+                string visiblePart = login.Substring(0, 3);
+                return $"{visiblePart}***";
             }
             else
             {
-                string hiddenPart = new string('*', 10);
-                return $"{login}{hiddenPart}";
-            }
-        }
-
-        private string FormatAddressInfo(string address)
-        {
-            if (string.IsNullOrEmpty(address))
-                return string.Empty;
-
-            int commaPosition = address.IndexOf(',');
-            if (commaPosition > 0)
-            {
-                string cityPart = address.Substring(0, commaPosition).Trim();
-                string hiddenRest = new string('*', 10);
-                return $"{cityPart}{hiddenRest}";
-            }
-            else
-            {
-                string visiblePart = address.Length > 5
-                    ? address.Substring(0, 5)
-                    : address;
-                string hiddenPart = new string('*', 10);
-                return $"{visiblePart}{hiddenPart}";
+                return $"{login}***";
             }
         }
 
@@ -442,6 +402,11 @@ namespace FurnitureStore
 
                 buttonDelete.Enabled = (role != "Администратор");
             }
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

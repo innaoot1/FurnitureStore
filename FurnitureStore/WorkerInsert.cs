@@ -23,10 +23,6 @@ namespace FurnitureStore
             this.mode = mode;
             AutoLockManager.StartMonitoring();
 
-            dateTimePickerBirthday.MaxDate = DateTime.Today.AddYears(-16);
-            dateTimePickerBirthday.MinDate = DateTime.Today.AddYears(-70);
-            dateTimePickerEmployment.MaxDate = DateTime.Today;
-
             LoadRoles();
             ApplyMode();
         }
@@ -71,11 +67,9 @@ namespace FurnitureStore
                     textBoxPasswd.ReadOnly = true;
                     textBoxConfPasswd.ReadOnly = true;
                     maskedTextBoxPhone.ReadOnly = true;
-                    textBoxEmail.ReadOnly = true;
+                    textBoxPassport.ReadOnly = true;
 
                     comboBoxRole.Enabled = false;
-                    dateTimePickerBirthday.Enabled = false;
-                    dateTimePickerEmployment.Enabled = false;
 
                     break;
 
@@ -85,9 +79,8 @@ namespace FurnitureStore
                     textBoxPasswd.Text = "";
                     textBoxConfPasswd.Text = "";
                     maskedTextBoxPhone.Text = "";
-                    textBoxEmail.Text = "";
+                    textBoxPassport.Text = "";
                     comboBoxRole.SelectedIndex = 0;
-                    dateTimePickerEmployment.Value = DateTime.Today;
 
                     buttonWrite.Visible = true;
                     break;
@@ -96,10 +89,9 @@ namespace FurnitureStore
                     textBoxFIO.ReadOnly = false;
                     textBoxLogin.ReadOnly = false;
                     maskedTextBoxPhone.ReadOnly = false;
-                    textBoxEmail.ReadOnly = false;
+                    textBoxPassport.ReadOnly = false;
 
                     comboBoxRole.Enabled = true;
-                    dateTimePickerBirthday.Enabled = false;
 
                     buttonWrite.Visible = true;
                     break;
@@ -140,22 +132,21 @@ namespace FurnitureStore
             }
         }
 
-        public string WorkerEmail
+        public string WorkerPassport
         {
-            get => textBoxEmail.Text;
-            set => textBoxEmail.Text = value;
+            get => GetCleanPassport();
+            set => textBoxPassport.Text = value;
         }
 
-        public DateTime WorkerBirthday
+        private string GetCleanPassport()
         {
-            get => dateTimePickerBirthday.Value;
-            set => dateTimePickerBirthday.Value = value;
+            return textBoxPassport.Text.Replace(" ", "");
         }
 
-        public DateTime WorkerDateEmployment
+        private bool IsValidPassport()
         {
-            get => dateTimePickerEmployment.Value;
-            set => dateTimePickerEmployment.Value = value;
+            string cleanPassport = GetCleanPassport();
+            return cleanPassport.Length == 10 && cleanPassport.All(char.IsDigit);
         }
 
         public string WorkerRole
@@ -166,7 +157,40 @@ namespace FurnitureStore
 
         private void buttonBack_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.OK;
+            this.Close();
+        }
+
+        private bool IsPassportUnique(int? excludeWorkerId = null)
+        {
+            try
+            {
+                using (MySqlConnection con = new MySqlConnection(connStr.ConnectionString))
+                {
+                    con.Open();
+
+                    string cleanPassport = GetCleanPassport();
+                    string query = "SELECT COUNT(*) FROM Worker WHERE WorkerPassport = @passport AND IsActive = 1";
+
+                    if (excludeWorkerId.HasValue)
+                    {
+                        query += " AND WorkerID != @id";
+                    }
+
+                    MySqlCommand cmd = new MySqlCommand(query, con);
+                    cmd.Parameters.AddWithValue("@passport", cleanPassport);
+                    if (excludeWorkerId.HasValue)
+                    {
+                        cmd.Parameters.AddWithValue("@id", excludeWorkerId.Value);
+                    }
+
+                    int count = Convert.ToInt32(cmd.ExecuteScalar());
+                    return count == 0;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         private void buttonWrite_Click(object sender, EventArgs e)
@@ -206,18 +230,26 @@ namespace FurnitureStore
                 textBoxConfPasswd.Focus();
                 return;
             }
+
             string userDigits = new string(maskedTextBoxPhone.Text.Where(char.IsDigit).ToArray());
             if (string.IsNullOrWhiteSpace(maskedTextBoxPhone.Text) || userDigits.Length < 11)
             {
-                MessageBox.Show("Введите полный номер телефона!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Введите полный номер телефона (11 цифр)!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 maskedTextBoxPhone.Focus();
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(textBoxEmail.Text))
+            if (!IsValidPassport())
             {
-                MessageBox.Show("Введите почту!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                textBoxEmail.Focus();
+                MessageBox.Show("Введите корректные паспортные данные!\nФормат: XXXX XXXXXX (10 цифр)", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                textBoxPassport.Focus();
+                return;
+            }
+
+            if (!IsPassportUnique(mode == "edit" ? (int?)WorkerID : null))
+            {
+                MessageBox.Show("Сотрудник с таким паспортом уже существует!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                textBoxPassport.Focus();
                 return;
             }
 
@@ -276,7 +308,7 @@ namespace FurnitureStore
                     using (MySqlCommand checkCmd = new MySqlCommand(duplicateQuery, con))
                     {
                         checkCmd.Parameters.AddWithValue("@Login", textBoxLogin.Text);
-                        checkCmd.Parameters.AddWithValue("@Phone", userDigits); 
+                        checkCmd.Parameters.AddWithValue("@Phone", userDigits);
                         if (mode == "edit")
                             checkCmd.Parameters.AddWithValue("@Id", WorkerID);
 
@@ -288,13 +320,13 @@ namespace FurnitureStore
                         }
                     }
 
+                    string cleanPassport = GetCleanPassport();
+
                     if (mode == "add")
                     {
                         string query = @"INSERT INTO Worker 
-                    (WorkerFIO, OriginalWorkerFIO, WorkerLogin, WorkerPassword, WorkerPhone, WorkerEmail, 
-                     WorkerBirthday, WorkerEmployment, WorkerRole)
-                     VALUES (@FIO, @OriginalFIO, @Login, @Password, @Phone, @Email, 
-                             @Birthday, @Employment, 
+                    (WorkerFIO, OriginalWorkerFIO, WorkerLogin, WorkerPassword, WorkerPhone, WorkerPassport, WorkerRole)
+                     VALUES (@FIO, @OriginalFIO, @Login, @Password, @Phone, @Passport, 
                              (SELECT RoleID FROM Role WHERE RoleName = @Role))";
 
                         MySqlCommand cmd = new MySqlCommand(query, con);
@@ -302,10 +334,8 @@ namespace FurnitureStore
                         cmd.Parameters.AddWithValue("@OriginalFIO", textBoxFIO.Text);
                         cmd.Parameters.AddWithValue("@Login", textBoxLogin.Text);
                         cmd.Parameters.AddWithValue("@Password", hashedPassword);
-                        cmd.Parameters.AddWithValue("@Phone", userDigits); 
-                        cmd.Parameters.AddWithValue("@Email", textBoxEmail.Text);
-                        cmd.Parameters.AddWithValue("@Birthday", dateTimePickerBirthday.Value);
-                        cmd.Parameters.AddWithValue("@Employment", dateTimePickerEmployment.Value);
+                        cmd.Parameters.AddWithValue("@Phone", userDigits);
+                        cmd.Parameters.AddWithValue("@Passport", cleanPassport);
                         cmd.Parameters.AddWithValue("@Role", comboBoxRole.Text);
 
                         cmd.ExecuteNonQuery();
@@ -323,9 +353,7 @@ namespace FurnitureStore
                              OriginalWorkerFIO = @OriginalFIO,
                              WorkerLogin = @Login,
                              WorkerPhone = @Phone,
-                             WorkerEmail = @Email,
-                             WorkerBirthday = @Birthday,
-                             WorkerEmployment = @Employment,
+                             WorkerPassport = @Passport,
                              WorkerRole = (SELECT RoleID FROM Role WHERE RoleName = @Role)
                              {0}
                          WHERE WorkerID = @Id";
@@ -337,10 +365,8 @@ namespace FurnitureStore
                         cmd.Parameters.AddWithValue("@FIO", textBoxFIO.Text);
                         cmd.Parameters.AddWithValue("@OriginalFIO", originalFIO);
                         cmd.Parameters.AddWithValue("@Login", textBoxLogin.Text);
-                        cmd.Parameters.AddWithValue("@Phone", userDigits); 
-                        cmd.Parameters.AddWithValue("@Email", textBoxEmail.Text);
-                        cmd.Parameters.AddWithValue("@Birthday", dateTimePickerBirthday.Value);
-                        cmd.Parameters.AddWithValue("@Employment", dateTimePickerEmployment.Value);
+                        cmd.Parameters.AddWithValue("@Phone", userDigits);
+                        cmd.Parameters.AddWithValue("@Passport", cleanPassport);
                         cmd.Parameters.AddWithValue("@Role", comboBoxRole.Text);
                         cmd.Parameters.AddWithValue("@Id", WorkerID);
                         if (!string.IsNullOrEmpty(hashedPassword))
@@ -358,12 +384,50 @@ namespace FurnitureStore
                             MessageBoxIcon.Information);
                     }
 
-                    this.DialogResult = DialogResult.OK;
+                    this.Close();
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void textBoxPassport_TextChanged(object sender, EventArgs e)
+        {
+            string text = textBoxPassport.Text.Replace(" ", "");
+            if (text.Length > 10)
+            {
+                text = text.Substring(0, 10);
+            }
+
+            if (text.Length > 4)
+            {
+                string firstPart = text.Substring(0, 4);
+                string secondPart = text.Length > 4 ? text.Substring(4) : "";
+                if (secondPart.Length > 6)
+                {
+                    secondPart = secondPart.Substring(0, 6);
+                }
+                textBoxPassport.TextChanged -= textBoxPassport_TextChanged;
+                textBoxPassport.Text = firstPart + " " + secondPart;
+                textBoxPassport.SelectionStart = textBoxPassport.Text.Length;
+                textBoxPassport.TextChanged += textBoxPassport_TextChanged;
+            }
+            else
+            {
+                textBoxPassport.TextChanged -= textBoxPassport_TextChanged;
+                textBoxPassport.Text = text;
+                textBoxPassport.SelectionStart = textBoxPassport.Text.Length;
+                textBoxPassport.TextChanged += textBoxPassport_TextChanged;
+            }
+        }
+
+        private void textBoxPassport_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
             }
         }
 
@@ -403,12 +467,37 @@ namespace FurnitureStore
             }
         }
 
-        private void textBoxEmail_KeyPress(object sender, KeyPressEventArgs e)
+        private void maskedTextBoxPhone_Click(object sender, EventArgs e)
         {
-            if (!char.IsControl(e.KeyChar) &&
-                !System.Text.RegularExpressions.Regex.IsMatch(e.KeyChar.ToString(), @"^[a-zA-Z0-9@._-]$"))
+            SetCursorToEnd(maskedTextBoxPhone);
+        }
+
+        private void maskedTextBoxPhone_Enter(object sender, EventArgs e)
+        {
+            SetCursorToEnd(maskedTextBoxPhone);
+        }
+
+        private void textBoxPassport_Click(object sender, EventArgs e)
+        {
+            textBoxPassport.SelectionStart = textBoxPassport.Text.Length;
+        }
+
+        private void textBoxPassport_Enter(object sender, EventArgs e)
+        {
+            textBoxPassport.SelectionStart = textBoxPassport.Text.Length;
+        }
+
+        private void SetCursorToEnd(MaskedTextBox mtb)
+        {
+            mtb.SelectionStart = mtb.Text.Length;
+
+            for (int i = mtb.Text.Length - 1; i >= 0; i--)
             {
-                e.Handled = true;
+                if (char.IsDigit(mtb.Text[i]))
+                {
+                    mtb.SelectionStart = i + 1;
+                    break;
+                }
             }
         }
 
