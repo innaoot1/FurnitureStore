@@ -41,8 +41,6 @@
             this.maskedTextBoxPhone = new System.Windows.Forms.MaskedTextBox();
             this.textBoxLogin = new System.Windows.Forms.TextBox();
             this.textBoxPasswd = new System.Windows.Forms.TextBox();
-            this.textBoxConfPasswd = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.SuspendLayout();
@@ -53,7 +51,7 @@
             this.buttonBack.FlatAppearance.BorderSize = 0;
             this.buttonBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonBack.Font = new System.Drawing.Font("Verdana", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonBack.Location = new System.Drawing.Point(13, 374);
+            this.buttonBack.Location = new System.Drawing.Point(13, 319);
             this.buttonBack.Margin = new System.Windows.Forms.Padding(4);
             this.buttonBack.Name = "buttonBack";
             this.buttonBack.Size = new System.Drawing.Size(120, 65);
@@ -68,7 +66,7 @@
             this.buttonWrite.FlatAppearance.BorderSize = 0;
             this.buttonWrite.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonWrite.Font = new System.Drawing.Font("Verdana", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonWrite.Location = new System.Drawing.Point(584, 374);
+            this.buttonWrite.Location = new System.Drawing.Point(584, 319);
             this.buttonWrite.Margin = new System.Windows.Forms.Padding(4);
             this.buttonWrite.Name = "buttonWrite";
             this.buttonWrite.Size = new System.Drawing.Size(185, 65);
@@ -207,29 +205,6 @@
             this.textBoxPasswd.TabIndex = 58;
             this.textBoxPasswd.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxPasswd_KeyPress);
             // 
-            // textBoxConfPasswd
-            // 
-            this.textBoxConfPasswd.Font = new System.Drawing.Font("Verdana", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxConfPasswd.Location = new System.Drawing.Point(299, 309);
-            this.textBoxConfPasswd.Margin = new System.Windows.Forms.Padding(4);
-            this.textBoxConfPasswd.MaxLength = 70;
-            this.textBoxConfPasswd.Name = "textBoxConfPasswd";
-            this.textBoxConfPasswd.Size = new System.Drawing.Size(455, 39);
-            this.textBoxConfPasswd.TabIndex = 57;
-            this.textBoxConfPasswd.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxConfPasswd_KeyPress);
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.BackColor = System.Drawing.Color.Transparent;
-            this.label4.Font = new System.Drawing.Font("Verdana", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label4.Location = new System.Drawing.Point(44, 309);
-            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(247, 32);
-            this.label4.TabIndex = 56;
-            this.label4.Text = "Подтверждение:";
-            // 
             // label9
             // 
             this.label9.AutoSize = true;
@@ -258,15 +233,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
-            this.BackgroundImage = global::FurnitureStore.Properties.Resources.main;
+            this.BackColor = System.Drawing.Color.Thistle;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(782, 453);
+            this.ClientSize = new System.Drawing.Size(782, 396);
             this.ControlBox = false;
             this.Controls.Add(this.textBoxLogin);
             this.Controls.Add(this.textBoxPasswd);
-            this.Controls.Add(this.textBoxConfPasswd);
-            this.Controls.Add(this.label4);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.maskedTextBoxPhone);
@@ -303,8 +275,6 @@
         private System.Windows.Forms.MaskedTextBox maskedTextBoxPhone;
         private System.Windows.Forms.TextBox textBoxLogin;
         private System.Windows.Forms.TextBox textBoxPasswd;
-        private System.Windows.Forms.TextBox textBoxConfPasswd;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
     }

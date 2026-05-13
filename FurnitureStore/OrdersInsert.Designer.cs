@@ -44,6 +44,10 @@
             this.comboBoxWorker = new System.Windows.Forms.ComboBox();
             this.comboBoxStatus = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // label4
@@ -127,10 +131,10 @@
             this.buttonPlus.FlatAppearance.BorderSize = 0;
             this.buttonPlus.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonPlus.Font = new System.Drawing.Font("Verdana", 15.75F);
-            this.buttonPlus.Location = new System.Drawing.Point(492, 207);
+            this.buttonPlus.Location = new System.Drawing.Point(507, 214);
             this.buttonPlus.Margin = new System.Windows.Forms.Padding(4);
             this.buttonPlus.Name = "buttonPlus";
-            this.buttonPlus.Size = new System.Drawing.Size(97, 48);
+            this.buttonPlus.Size = new System.Drawing.Size(45, 40);
             this.buttonPlus.TabIndex = 41;
             this.buttonPlus.Text = "+";
             this.buttonPlus.UseVisualStyleBackColor = false;
@@ -142,7 +146,7 @@
             this.buttonWrite.FlatAppearance.BorderSize = 0;
             this.buttonWrite.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonWrite.Font = new System.Drawing.Font("Verdana", 15.75F);
-            this.buttonWrite.Location = new System.Drawing.Point(427, 533);
+            this.buttonWrite.Location = new System.Drawing.Point(1210, 533);
             this.buttonWrite.Margin = new System.Windows.Forms.Padding(4);
             this.buttonWrite.Name = "buttonWrite";
             this.buttonWrite.Size = new System.Drawing.Size(185, 65);
@@ -173,7 +177,7 @@
             this.dateTimePicker1.Location = new System.Drawing.Point(23, 379);
             this.dateTimePicker1.Margin = new System.Windows.Forms.Padding(4);
             this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(460, 39);
+            this.dateTimePicker1.Size = new System.Drawing.Size(482, 39);
             this.dateTimePicker1.TabIndex = 46;
             // 
             // textBoxProductCount
@@ -183,30 +187,32 @@
             this.textBoxProductCount.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxProductCount.MaxLength = 3;
             this.textBoxProductCount.Name = "textBoxProductCount";
-            this.textBoxProductCount.Size = new System.Drawing.Size(461, 39);
+            this.textBoxProductCount.Size = new System.Drawing.Size(485, 39);
             this.textBoxProductCount.TabIndex = 45;
             this.textBoxProductCount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxProductCount_KeyPress);
             // 
             // comboBoxProduct
             // 
-            this.comboBoxProduct.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxProduct.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.comboBoxProduct.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.comboBoxProduct.Font = new System.Drawing.Font("Verdana", 15.75F);
             this.comboBoxProduct.FormattingEnabled = true;
             this.comboBoxProduct.Location = new System.Drawing.Point(23, 214);
             this.comboBoxProduct.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxProduct.Name = "comboBoxProduct";
-            this.comboBoxProduct.Size = new System.Drawing.Size(460, 40);
+            this.comboBoxProduct.Size = new System.Drawing.Size(482, 40);
             this.comboBoxProduct.TabIndex = 44;
             // 
             // comboBoxClient
             // 
-            this.comboBoxClient.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxClient.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.comboBoxClient.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.comboBoxClient.Font = new System.Drawing.Font("Verdana", 15.75F);
             this.comboBoxClient.FormattingEnabled = true;
             this.comboBoxClient.Location = new System.Drawing.Point(23, 127);
             this.comboBoxClient.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxClient.Name = "comboBoxClient";
-            this.comboBoxClient.Size = new System.Drawing.Size(460, 40);
+            this.comboBoxClient.Size = new System.Drawing.Size(482, 40);
             this.comboBoxClient.TabIndex = 44;
             // 
             // comboBoxWorker
@@ -218,7 +224,7 @@
             this.comboBoxWorker.Location = new System.Drawing.Point(23, 43);
             this.comboBoxWorker.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxWorker.Name = "comboBoxWorker";
-            this.comboBoxWorker.Size = new System.Drawing.Size(460, 40);
+            this.comboBoxWorker.Size = new System.Drawing.Size(482, 40);
             this.comboBoxWorker.TabIndex = 44;
             // 
             // comboBoxStatus
@@ -230,7 +236,7 @@
             this.comboBoxStatus.Location = new System.Drawing.Point(21, 466);
             this.comboBoxStatus.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxStatus.Name = "comboBoxStatus";
-            this.comboBoxStatus.Size = new System.Drawing.Size(460, 40);
+            this.comboBoxStatus.Size = new System.Drawing.Size(484, 40);
             this.comboBoxStatus.TabIndex = 44;
             // 
             // label6
@@ -248,15 +254,61 @@
             this.label6.TabIndex = 30;
             this.label6.Text = "Статус:";
             // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.dataGridView1.Location = new System.Drawing.Point(556, 95);
+            this.dataGridView1.MultiSelect = false;
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.RowHeadersWidth = 51;
+            this.dataGridView1.RowTemplate.Height = 24;
+            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridView1.Size = new System.Drawing.Size(839, 323);
+            this.dataGridView1.TabIndex = 47;
+            // 
+            // label7
+            // 
+            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label7.BackColor = System.Drawing.Color.Transparent;
+            this.label7.Font = new System.Drawing.Font("Verdana", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label7.Location = new System.Drawing.Point(551, 21);
+            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(414, 62);
+            this.label7.TabIndex = 32;
+            this.label7.Text = "Скидка: 10% (от 10000 р.) Скидка: 15% ( от 20000 р.)";
+            // 
+            // label8
+            // 
+            this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label8.BackColor = System.Drawing.Color.Transparent;
+            this.label8.Font = new System.Drawing.Font("Verdana", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label8.Location = new System.Drawing.Point(925, 430);
+            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(470, 62);
+            this.label8.TabIndex = 32;
+            this.label8.Text = "Сумма";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
             // OrdersInsert
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
-            this.BackgroundImage = global::FurnitureStore.Properties.Resources.mainAutorization;
+            this.BackColor = System.Drawing.Color.Thistle;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(625, 611);
+            this.ClientSize = new System.Drawing.Size(1408, 611);
             this.ControlBox = false;
+            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.dateTimePicker1);
             this.Controls.Add(this.textBoxProductCount);
             this.Controls.Add(this.comboBoxWorker);
@@ -266,6 +318,8 @@
             this.Controls.Add(this.buttonWrite);
             this.Controls.Add(this.buttonBack);
             this.Controls.Add(this.buttonPlus);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label6);
@@ -278,6 +332,7 @@
             this.Name = "OrdersInsert";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Заказ";
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -299,5 +354,8 @@
         private System.Windows.Forms.ComboBox comboBoxWorker;
         private System.Windows.Forms.ComboBox comboBoxStatus;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
     }
 }

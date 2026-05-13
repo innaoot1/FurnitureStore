@@ -33,6 +33,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.buttonExit = new System.Windows.Forms.Button();
             this.buttonWorker = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label2
@@ -83,11 +84,26 @@
             this.buttonWorker.Location = new System.Drawing.Point(32, 108);
             this.buttonWorker.Margin = new System.Windows.Forms.Padding(4);
             this.buttonWorker.Name = "buttonWorker";
-            this.buttonWorker.Size = new System.Drawing.Size(205, 65);
+            this.buttonWorker.Size = new System.Drawing.Size(205, 73);
             this.buttonWorker.TabIndex = 18;
             this.buttonWorker.Text = "Сотрудники";
             this.buttonWorker.UseVisualStyleBackColor = false;
             this.buttonWorker.Click += new System.EventHandler(this.button8_Click);
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.MistyRose;
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Verdana", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button1.Location = new System.Drawing.Point(245, 108);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(205, 73);
+            this.button1.TabIndex = 18;
+            this.button1.Text = "Управление БД";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // DesktopAdministrator
             // 
@@ -101,6 +117,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.buttonExit);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.buttonWorker);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -119,5 +136,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button buttonExit;
         private System.Windows.Forms.Button buttonWorker;
+        private System.Windows.Forms.Button button1;
     }
 }

@@ -29,28 +29,13 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Category));
-            this.textBoxSearch = new System.Windows.Forms.TextBox();
             this.buttonCreate = new System.Windows.Forms.Button();
             this.buttonBack = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.buttonClearFilters = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
-            // 
-            // textBoxSearch
-            // 
-            this.textBoxSearch.Font = new System.Drawing.Font("Verdana", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxSearch.Location = new System.Drawing.Point(9, 466);
-            this.textBoxSearch.Margin = new System.Windows.Forms.Padding(4);
-            this.textBoxSearch.MaxLength = 20;
-            this.textBoxSearch.Name = "textBoxSearch";
-            this.textBoxSearch.Size = new System.Drawing.Size(445, 39);
-            this.textBoxSearch.TabIndex = 0;
-            this.textBoxSearch.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
-            this.textBoxSearch.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxSearch_KeyPress);
             // 
             // buttonCreate
             // 
@@ -109,18 +94,6 @@
             this.label1.Size = new System.Drawing.Size(0, 17);
             this.label1.TabIndex = 4;
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.Font = new System.Drawing.Font("Verdana", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label2.Location = new System.Drawing.Point(3, 430);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(370, 32);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "Найти по наименованию:";
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -133,21 +106,6 @@
             this.label3.TabIndex = 5;
             this.label3.Text = "Всего:";
             // 
-            // buttonClearFilters
-            // 
-            this.buttonClearFilters.BackColor = System.Drawing.Color.Transparent;
-            this.buttonClearFilters.FlatAppearance.BorderSize = 0;
-            this.buttonClearFilters.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonClearFilters.Font = new System.Drawing.Font("Verdana", 15.75F);
-            this.buttonClearFilters.Location = new System.Drawing.Point(462, 465);
-            this.buttonClearFilters.Margin = new System.Windows.Forms.Padding(4);
-            this.buttonClearFilters.Name = "buttonClearFilters";
-            this.buttonClearFilters.Size = new System.Drawing.Size(46, 38);
-            this.buttonClearFilters.TabIndex = 26;
-            this.buttonClearFilters.Text = "Х";
-            this.buttonClearFilters.UseVisualStyleBackColor = false;
-            this.buttonClearFilters.Click += new System.EventHandler(this.buttonClearFilters_Click);
-            // 
             // Category
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -157,14 +115,11 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1024, 640);
             this.ControlBox = false;
-            this.Controls.Add(this.buttonClearFilters);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.buttonBack);
             this.Controls.Add(this.buttonCreate);
-            this.Controls.Add(this.textBoxSearch);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
@@ -179,14 +134,10 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.TextBox textBoxSearch;
         private System.Windows.Forms.Button buttonCreate;
         private System.Windows.Forms.Button buttonBack;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button buttonClearFilters;
     }
 }

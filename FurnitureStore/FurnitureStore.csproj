@@ -72,6 +72,12 @@
     <Compile Include="Clents.Designer.cs">
       <DependentUpon>Clents.cs</DependentUpon>
     </Compile>
+    <Compile Include="ManagementDB.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ManagementDB.Designer.cs">
+      <DependentUpon>ManagementDB.cs</DependentUpon>
+    </Compile>
     <Compile Include="SupplierInsert.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -180,6 +186,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Clents.resx">
       <DependentUpon>Clents.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ManagementDB.resx">
+      <DependentUpon>ManagementDB.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SupplierInsert.resx">
       <DependentUpon>SupplierInsert.cs</DependentUpon>

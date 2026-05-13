@@ -29,5 +29,13 @@ namespace FurnitureStore
             Worker.ShowDialog();
             this.Visible = true;
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            ManagementDB ManagementDB = new ManagementDB();
+            this.Visible = false;
+            ManagementDB.ShowDialog();
+            this.Visible = true;
+        }
     }
 }

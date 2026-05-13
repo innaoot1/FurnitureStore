@@ -1,12 +1,8 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace FurnitureStore
@@ -14,8 +10,8 @@ namespace FurnitureStore
     public partial class OrdersInsert : Form
     {
         private string mode;
-        private DataTable selectedProducts;
         private int currentWorkerId;
+        private DataTable orderItemsTable;
 
         public int OrderID { get; set; }
         public DateTime OrderDate
@@ -42,8 +38,7 @@ namespace FurnitureStore
             this.mode = mode;
             this.OrderID = orderId;
             this.currentWorkerId = currentWorkerId;
-            selectedProducts = new DataTable();
-            InitializeSelectedProductsTable();
+            InitializeOrderItemsTable();
             AutoLockManager.StartMonitoring();
 
             LoadComboBoxData();
@@ -53,13 +48,54 @@ namespace FurnitureStore
             ApplyMode();
         }
 
-        private void InitializeSelectedProductsTable()
+        private void InitializeOrderItemsTable()
         {
-            selectedProducts.Columns.Add("ProductID", typeof(int));
-            selectedProducts.Columns.Add("ProductName", typeof(string));
-            selectedProducts.Columns.Add("Quantity", typeof(int));
-            selectedProducts.Columns.Add("Price", typeof(decimal));
-            selectedProducts.Columns.Add("Total", typeof(decimal));
+            orderItemsTable = new DataTable();
+            orderItemsTable.Columns.Add("ProductID", typeof(int));
+            orderItemsTable.Columns.Add("Товар", typeof(string));
+            orderItemsTable.Columns.Add("Количество", typeof(int));
+            orderItemsTable.Columns.Add("Цена за единицу", typeof(decimal));
+            orderItemsTable.Columns.Add("Общая стоимость", typeof(decimal));
+        }
+
+        private void HideProductIdColumn()
+        {
+            if (dataGridView1.Columns.Contains("ProductID"))
+            {
+                dataGridView1.Columns["ProductID"].Visible = false;
+            }
+        }
+
+        private void ConfigureDataGridViewColumns()
+        {
+            if (dataGridView1.Columns.Contains("Товар"))
+            {
+                dataGridView1.Columns["Товар"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                dataGridView1.Columns["Товар"].FillWeight = 43;
+            }
+
+            if (dataGridView1.Columns.Contains("Количество"))
+            {
+                dataGridView1.Columns["Количество"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                dataGridView1.Columns["Количество"].FillWeight = 19;
+                dataGridView1.Columns["Количество"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            }
+
+            if (dataGridView1.Columns.Contains("Цена за единицу"))
+            {
+                dataGridView1.Columns["Цена за единицу"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                dataGridView1.Columns["Цена за единицу"].FillWeight = 19;
+                dataGridView1.Columns["Цена за единицу"].DefaultCellStyle.Format = "C";
+                dataGridView1.Columns["Цена за единицу"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            }
+
+            if (dataGridView1.Columns.Contains("Общая стоимость"))
+            {
+                dataGridView1.Columns["Общая стоимость"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                dataGridView1.Columns["Общая стоимость"].FillWeight = 19;
+                dataGridView1.Columns["Общая стоимость"].DefaultCellStyle.Format = "C";
+                dataGridView1.Columns["Общая стоимость"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            }
         }
 
         private void ApplyMode()
@@ -76,7 +112,7 @@ namespace FurnitureStore
                     comboBoxStatus.Enabled = false;
                     textBoxProductCount.Enabled = false;
                     dateTimePicker1.Enabled = false;
-
+                    dataGridView1.ReadOnly = true;
                     break;
 
                 case "add":
@@ -97,6 +133,7 @@ namespace FurnitureStore
                     break;
             }
         }
+
         private void LoadComboBoxData()
         {
             try
@@ -158,7 +195,7 @@ namespace FurnitureStore
                     comboBoxClient.DataSource = clientsTable;
                     comboBoxClient.SelectedIndex = 0;
 
-                    MySqlCommand cmdProducts = new MySqlCommand("SELECT ProductID, ProductName, ProductPrice FROM Product WHERE IsActive = 1", con);
+                    MySqlCommand cmdProducts = new MySqlCommand("SELECT ProductID, ProductName, ProductPrice FROM Product WHERE IsActive = 1 ORDER BY ProductName", con);
                     MySqlDataAdapter daProducts = new MySqlDataAdapter(cmdProducts);
                     DataTable productsTable = new DataTable();
                     daProducts.Fill(productsTable);
@@ -166,7 +203,6 @@ namespace FurnitureStore
                     comboBoxProduct.DisplayMember = "ProductName";
                     comboBoxProduct.ValueMember = "ProductID";
                     comboBoxProduct.DataSource = productsTable;
-
                     comboBoxProduct.SelectedIndex = -1;
 
                     comboBoxStatus.Items.Clear();
@@ -185,6 +221,7 @@ namespace FurnitureStore
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         private void LoadOrderDetails()
         {
             try
@@ -249,8 +286,6 @@ namespace FurnitureStore
                     }
                     reader.Close();
 
-                    selectedProducts.Clear();
-
                     MySqlCommand cmdProducts = new MySqlCommand(@"
                 SELECT 
                     p.ProductID, 
@@ -266,9 +301,10 @@ namespace FurnitureStore
                     DataTable orderProducts = new DataTable();
                     da.Fill(orderProducts);
 
+                    orderItemsTable.Rows.Clear();
                     foreach (DataRow row in orderProducts.Rows)
                     {
-                        selectedProducts.Rows.Add(
+                        orderItemsTable.Rows.Add(
                             row["ProductID"],
                             row["ProductName"],
                             row["ProductCount"],
@@ -276,6 +312,12 @@ namespace FurnitureStore
                             Convert.ToInt32(row["ProductCount"]) * Convert.ToDecimal(row["ProductPrice"])
                         );
                     }
+
+                    dataGridView1.DataSource = orderItemsTable;
+
+                    HideProductIdColumn();
+                    ConfigureDataGridViewColumns();
+                    UpdateTotalPrice();
                 }
             }
             catch (Exception ex)
@@ -329,6 +371,7 @@ namespace FurnitureStore
                 comboBox.Text = displayValue;
             }
         }
+
         private void buttonBack_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -351,21 +394,25 @@ namespace FurnitureStore
             int productId = Convert.ToInt32(comboBoxProduct.SelectedValue);
             string productName = comboBoxProduct.Text;
             decimal price = GetProductPrice(productId);
+            decimal total = price * quantity;
 
-            var existingRow = selectedProducts.AsEnumerable()
+            var existingRow = orderItemsTable.AsEnumerable()
                 .FirstOrDefault(row => Convert.ToInt32(row["ProductID"]) == productId);
 
             if (existingRow != null)
             {
-                existingRow["Quantity"] = Convert.ToInt32(existingRow["Quantity"]) + quantity;
-                existingRow["Total"] = Convert.ToInt32(existingRow["Quantity"]) * price;
+                int newQuantity = Convert.ToInt32(existingRow["Количество"]) + quantity;
+                existingRow["Количество"] = newQuantity;
+                existingRow["Общая стоимость"] = price * newQuantity;
             }
             else
             {
-                selectedProducts.Rows.Add(productId, productName, quantity, price, quantity * price);
+                orderItemsTable.Rows.Add(productId, productName, quantity, price, total);
             }
 
             UpdateTotalPrice();
+            HideProductIdColumn();
+            ConfigureDataGridViewColumns();
 
             textBoxProductCount.Text = "";
             comboBoxProduct.SelectedIndex = -1;
@@ -394,7 +441,7 @@ namespace FurnitureStore
             if (!ValidateInput())
                 return;
 
-            if (selectedProducts.Rows.Count == 0)
+            if (orderItemsTable.Rows.Count == 0)
             {
                 MessageBox.Show("Добавьте хотя бы один товар в заказ!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -436,7 +483,7 @@ namespace FurnitureStore
                 return false;
             }
 
-            if (selectedProducts.Rows.Count == 0)
+            if (orderItemsTable.Rows.Count == 0)
             {
                 MessageBox.Show("Добавьте хотя бы один товар в заказ!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
@@ -448,29 +495,35 @@ namespace FurnitureStore
         private void UpdateTotalPrice()
         {
             decimal total = 0;
-            foreach (DataRow row in selectedProducts.Rows)
+            foreach (DataRow row in orderItemsTable.Rows)
             {
-                total += Convert.ToDecimal(row["Total"]);
+                total += Convert.ToDecimal(row["Общая стоимость"]);
             }
 
             decimal discount = CalculateDiscount(total);
             decimal finalPrice = total - discount;
 
-            if (selectedProducts.Rows.Count > 0)
+            UpdateTotalPriceLabel();
+        }
+
+        private void UpdateTotalPriceLabel()
+        {
+            decimal total = 0;
+            foreach (DataRow row in orderItemsTable.Rows)
             {
-                string discountMessage = $"Общая сумма заказа: {total:C}\n";
+                total += Convert.ToDecimal(row["Общая стоимость"]);
+            }
 
-                if (discount > 0)
-                {
-                    discountMessage += $"Скидка: {GetDiscountPercentage(total):P0} ({discount:C})\n";
-                    discountMessage += $"Итоговая сумма: {finalPrice:C}";
-                }
-                else
-                {
-                    discountMessage += $"Итоговая сумма: {finalPrice:C}";
-                }
+            decimal discount = CalculateDiscount(total);
+            decimal finalPrice = total - discount;
 
-                MessageBox.Show(discountMessage, "Информация о заказе", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            if (discount > 0)
+            {
+                label8.Text = $"Сумма без скидки: {total:C}\nСумма со скидкой: {finalPrice:C}";
+            }
+            else
+            {
+                label8.Text = $"Сумма: {total:C}";
             }
         }
 
@@ -492,9 +545,9 @@ namespace FurnitureStore
         private void CreateNewOrder(MySqlConnection con)
         {
             decimal totalPrice = 0;
-            foreach (DataRow row in selectedProducts.Rows)
+            foreach (DataRow row in orderItemsTable.Rows)
             {
-                totalPrice += Convert.ToDecimal(row["Total"]);
+                totalPrice += Convert.ToDecimal(row["Общая стоимость"]);
             }
 
             decimal discount = CalculateDiscount(totalPrice);
@@ -514,12 +567,15 @@ namespace FurnitureStore
 
             int newOrderId = Convert.ToInt32(orderCmd.ExecuteScalar());
 
-            foreach (DataRow row in selectedProducts.Rows)
+            foreach (DataRow row in orderItemsTable.Rows)
             {
+                int productId = Convert.ToInt32(row["ProductID"]);
+                int quantity = Convert.ToInt32(row["Количество"]);
+
                 string getProductNameQuery = "SELECT ProductName FROM Product WHERE ProductID = @productId";
                 MySqlCommand getNameCmd = new MySqlCommand(getProductNameQuery, con);
-                getNameCmd.Parameters.AddWithValue("@productId", row["ProductID"]);
-                string currentProductName = getNameCmd.ExecuteScalar()?.ToString() ?? row["ProductName"].ToString();
+                getNameCmd.Parameters.AddWithValue("@productId", productId);
+                string currentProductName = getNameCmd.ExecuteScalar()?.ToString() ?? row["Товар"].ToString();
 
                 string productQuery = @"INSERT INTO OrderProduct 
             (OrderID, ProductID, ProductCount, OriginalProductName) 
@@ -527,13 +583,13 @@ namespace FurnitureStore
 
                 MySqlCommand productCmd = new MySqlCommand(productQuery, con);
                 productCmd.Parameters.AddWithValue("@OrderID", newOrderId);
-                productCmd.Parameters.AddWithValue("@ProductID", row["ProductID"]);
-                productCmd.Parameters.AddWithValue("@ProductCount", row["Quantity"]);
+                productCmd.Parameters.AddWithValue("@ProductID", productId);
+                productCmd.Parameters.AddWithValue("@ProductCount", quantity);
                 productCmd.Parameters.AddWithValue("@OriginalProductName", currentProductName);
                 productCmd.ExecuteNonQuery();
             }
 
-            string successMessage = $"Заказ №{newOrderId} успешно создан!\n";
+            string successMessage = $"Заказ №{newOrderId} успешно создан!\n\n";
             if (discount > 0)
             {
                 successMessage += $"Скидка: {GetDiscountPercentage(totalPrice):P0} ({discount:C})\n";
@@ -551,9 +607,9 @@ namespace FurnitureStore
         private void UpdateExistingOrder(MySqlConnection con)
         {
             decimal totalPrice = 0;
-            foreach (DataRow row in selectedProducts.Rows)
+            foreach (DataRow row in orderItemsTable.Rows)
             {
-                totalPrice += Convert.ToDecimal(row["Total"]);
+                totalPrice += Convert.ToDecimal(row["Общая стоимость"]);
             }
 
             decimal discount = CalculateDiscount(totalPrice);
@@ -598,9 +654,10 @@ namespace FurnitureStore
             deleteCmd.Parameters.AddWithValue("@OrderID", OrderID);
             deleteCmd.ExecuteNonQuery();
 
-            foreach (DataRow row in selectedProducts.Rows)
+            foreach (DataRow row in orderItemsTable.Rows)
             {
                 int productId = Convert.ToInt32(row["ProductID"]);
+                int quantity = Convert.ToInt32(row["Количество"]);
                 string originalProductName;
 
                 if (existingOriginalNames.ContainsKey(productId) && existingOriginalNames[productId] != null)
@@ -612,7 +669,7 @@ namespace FurnitureStore
                     string getProductNameQuery = "SELECT ProductName FROM Product WHERE ProductID = @productId";
                     MySqlCommand getNameCmd = new MySqlCommand(getProductNameQuery, con);
                     getNameCmd.Parameters.AddWithValue("@productId", productId);
-                    originalProductName = getNameCmd.ExecuteScalar()?.ToString() ?? row["ProductName"].ToString();
+                    originalProductName = getNameCmd.ExecuteScalar()?.ToString() ?? row["Товар"].ToString();
                 }
 
                 string productQuery = @"INSERT INTO OrderProduct 
@@ -622,12 +679,12 @@ namespace FurnitureStore
                 MySqlCommand productCmd = new MySqlCommand(productQuery, con);
                 productCmd.Parameters.AddWithValue("@OrderID", OrderID);
                 productCmd.Parameters.AddWithValue("@ProductID", productId);
-                productCmd.Parameters.AddWithValue("@ProductCount", row["Quantity"]);
+                productCmd.Parameters.AddWithValue("@ProductCount", quantity);
                 productCmd.Parameters.AddWithValue("@OriginalProductName", originalProductName);
                 productCmd.ExecuteNonQuery();
             }
 
-            string successMessage = $"Заказ №{OrderID} успешно обновлен!\n";
+            string successMessage = $"Заказ №{OrderID} успешно обновлен!\n\n";
             if (discount > 0)
             {
                 successMessage += $"Скидка: {GetDiscountPercentage(totalPrice):P0} ({discount:C})\n";

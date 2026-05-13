@@ -57,15 +57,12 @@ namespace FurnitureStore
             {
                 case "view":
                     label9.Visible = false;
-                    label4.Visible = false;
                     textBoxPasswd.Visible = false;
-                    textBoxConfPasswd.Visible = false;
                     buttonWrite.Visible = false;
 
                     textBoxFIO.ReadOnly = true;
                     textBoxLogin.ReadOnly = true;
                     textBoxPasswd.ReadOnly = true;
-                    textBoxConfPasswd.ReadOnly = true;
                     maskedTextBoxPhone.ReadOnly = true;
                     textBoxPassport.ReadOnly = true;
 
@@ -77,7 +74,6 @@ namespace FurnitureStore
                     textBoxFIO.Text = "";
                     textBoxLogin.Text = "";
                     textBoxPasswd.Text = "";
-                    textBoxConfPasswd.Text = "";
                     maskedTextBoxPhone.Text = "";
                     textBoxPassport.Text = "";
                     comboBoxRole.SelectedIndex = 0;
@@ -224,13 +220,6 @@ namespace FurnitureStore
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(textBoxConfPasswd.Text) && mode == "add")
-            {
-                MessageBox.Show("Введите подтверждение пароля!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                textBoxConfPasswd.Focus();
-                return;
-            }
-
             string userDigits = new string(maskedTextBoxPhone.Text.Where(char.IsDigit).ToArray());
             if (string.IsNullOrWhiteSpace(maskedTextBoxPhone.Text) || userDigits.Length < 11)
             {
@@ -258,21 +247,6 @@ namespace FurnitureStore
                 MessageBox.Show("Выберите роль!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 comboBoxRole.Focus();
                 return;
-            }
-
-            if (textBoxPasswd.Visible && textBoxConfPasswd.Visible)
-            {
-                string pass = textBoxPasswd.Text.Trim();
-                string confPass = textBoxConfPasswd.Text.Trim();
-
-                if (!string.IsNullOrEmpty(pass) || !string.IsNullOrEmpty(confPass))
-                {
-                    if (pass != confPass)
-                    {
-                        MessageBox.Show("Пароль и подтверждение пароля не совпадают!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
-                }
             }
 
             var fioParts = WorkerFIO.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);

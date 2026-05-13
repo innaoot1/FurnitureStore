@@ -40,7 +40,7 @@
             this.textBoxName.BackColor = System.Drawing.Color.White;
             this.textBoxName.Font = new System.Drawing.Font("Verdana", 15.75F);
             this.textBoxName.Location = new System.Drawing.Point(17, 50);
-            this.textBoxName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxName.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxName.MaxLength = 50;
             this.textBoxName.Name = "textBoxName";
             this.textBoxName.Size = new System.Drawing.Size(395, 39);
@@ -68,7 +68,7 @@
             this.buttonWrite.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonWrite.Font = new System.Drawing.Font("Verdana", 15.75F);
             this.buttonWrite.Location = new System.Drawing.Point(231, 112);
-            this.buttonWrite.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonWrite.Margin = new System.Windows.Forms.Padding(4);
             this.buttonWrite.Name = "buttonWrite";
             this.buttonWrite.Size = new System.Drawing.Size(185, 65);
             this.buttonWrite.TabIndex = 37;
@@ -83,7 +83,7 @@
             this.buttonBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonBack.Font = new System.Drawing.Font("Verdana", 15.75F);
             this.buttonBack.Location = new System.Drawing.Point(13, 112);
-            this.buttonBack.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonBack.Margin = new System.Windows.Forms.Padding(4);
             this.buttonBack.Name = "buttonBack";
             this.buttonBack.Size = new System.Drawing.Size(120, 65);
             this.buttonBack.TabIndex = 38;
@@ -105,7 +105,7 @@
             this.Controls.Add(this.buttonBack);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Insert";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Редактирование";

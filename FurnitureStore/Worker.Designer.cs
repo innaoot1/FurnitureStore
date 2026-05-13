@@ -182,16 +182,16 @@
             // 
             // buttonClearFilters
             // 
-            this.buttonClearFilters.BackColor = System.Drawing.Color.Transparent;
+            this.buttonClearFilters.BackColor = System.Drawing.Color.MistyRose;
             this.buttonClearFilters.FlatAppearance.BorderSize = 0;
             this.buttonClearFilters.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonClearFilters.Font = new System.Drawing.Font("Verdana", 15.75F);
             this.buttonClearFilters.Location = new System.Drawing.Point(626, 470);
             this.buttonClearFilters.Margin = new System.Windows.Forms.Padding(4);
             this.buttonClearFilters.Name = "buttonClearFilters";
-            this.buttonClearFilters.Size = new System.Drawing.Size(46, 38);
+            this.buttonClearFilters.Size = new System.Drawing.Size(113, 38);
             this.buttonClearFilters.TabIndex = 25;
-            this.buttonClearFilters.Text = "Х";
+            this.buttonClearFilters.Text = "Сброс";
             this.buttonClearFilters.UseVisualStyleBackColor = false;
             this.buttonClearFilters.Click += new System.EventHandler(this.buttonClearFilters_Click);
             // 

@@ -282,10 +282,6 @@ namespace FurnitureStore
             {
                 e.Value = FormatPassport(text);
             }
-            else if (columnName == "Логин")
-            {
-                e.Value = FormatUserName(text);
-            }
         }
 
         private string FormatFullName(string fullName)

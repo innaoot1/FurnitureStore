@@ -161,7 +161,9 @@ namespace FurnitureStore
         {
             int currentSellerId = GetCurrentSellerId();
             OrdersInsert OrdersInsert = new OrdersInsert("add", 0, currentSellerId);
+            this.Visible = false;
             OrdersInsert.ShowDialog();
+            this.Visible = true;
             LoadOrders();
         }
 
@@ -195,8 +197,9 @@ namespace FurnitureStore
                 OrderDate = Convert.ToDateTime(row.Cells["Дата заказа"].Value),
                 OrderPrice = Convert.ToInt32(row.Cells["Сумма заказа"].Value)
             };
-
+            this.Visible = false;
             OrdersInsert.ShowDialog();
+            this.Visible = true;
             LoadOrders();
         }
 
