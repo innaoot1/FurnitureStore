@@ -1,12 +1,9 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Word = Microsoft.Office.Interop.Word;
 
@@ -16,10 +13,18 @@ namespace FurnitureStore
     {
         private int roleId;
         private DataTable orderTable;
+        private DataView currentView;
+        private PaginationManager pagination;
 
         public Orders(int role)
         {
             InitializeComponent();
+            pagination = new PaginationManager(
+                dataGridView1,
+                paginationPanel,
+                labelPageInfo,
+                label2);
+
             roleId = role;
             ConfigureButtons();
             AutoLockManager.StartMonitoring();
@@ -71,9 +76,10 @@ namespace FurnitureStore
                     MySqlDataAdapter da = new MySqlDataAdapter(cmd);
                     orderTable = new DataTable();
                     da.Fill(orderTable);
-                    dataGridView1.DataSource = orderTable;
+                    currentView = new DataView(orderTable);
+                    currentView.Sort = "ID ASC";
 
-                    label2.Text = $"Всего: {orderTable.Rows.Count}";
+                    pagination.SetData(currentView);
 
                     if (dataGridView1.Columns.Contains("ID"))
                         dataGridView1.Columns["ID"].Visible = false;
@@ -113,48 +119,64 @@ namespace FurnitureStore
 
         private void ApplyFilters()
         {
-            if (orderTable == null) return;
+            if (orderTable == null)
+                return;
 
-            string searchText = textBoxSearch.Text.Trim();
-            string selectedStatus = comboBoxFilter.SelectedItem?.ToString() ?? "";
-            string sortOption = comboBoxSort.SelectedItem?.ToString() ?? "";
+            string searchText =
+                textBoxSearch.Text.Trim().Replace("'", "''");
 
-            DataView view = new DataView(orderTable);
+            string selectedStatus =
+                comboBoxFilter.SelectedItem?.ToString() ?? "";
+
+            string sortOption =
+                comboBoxSort.SelectedItem?.ToString() ?? "";
+
+            currentView = new DataView(orderTable);
+
             string filter = "";
 
             if (!string.IsNullOrEmpty(searchText))
             {
-                filter = $@"Convert([Номер заказа], 'System.String') LIKE '%{searchText}%' 
-                    OR [Сотрудник] LIKE '%{searchText}%' 
-                    OR [Клиент] LIKE '%{searchText}%'";
+                filter =
+                    $@"Convert([Номерзаказа], 'System.String')
+            LIKE '%{searchText}%'
+            OR [Сотрудник] LIKE '%{searchText}%'
+            OR [Клиент] LIKE '%{searchText}%'";
             }
 
             if (!string.IsNullOrEmpty(selectedStatus))
             {
+                string statusFilter =
+                    $"[Статусзаказа] = '{selectedStatus}'";
+
                 if (!string.IsNullOrEmpty(filter))
-                    filter += " AND ";
-                filter += $"[Статус заказа] = '{selectedStatus}'";
+                    filter = $"({filter}) AND ({statusFilter})";
+                else
+                    filter = statusFilter;
             }
 
-            view.RowFilter = filter;
+            currentView.RowFilter = filter;
 
             if (sortOption == "По возрастанию")
-                view.Sort = "[Сумма заказа] ASC";
+                currentView.Sort = "[Суммазаказа] ASC";
             else if (sortOption == "По убыванию")
-                view.Sort = "[Сумма заказа] DESC";
+                currentView.Sort = "[Суммазаказа] DESC";
             else
-                view.Sort = "";
+                currentView.Sort = "ID ASC";
 
-            dataGridView1.DataSource = view;
-
-            label2.Text = $"Всего: {view.Count}";
+            pagination.SetData(currentView);
         }
 
         private void buttonClearFilters_Click(object sender, EventArgs e)
         {
             textBoxSearch.Text = "";
+
             comboBoxFilter.SelectedIndex = 0;
             comboBoxSort.SelectedIndex = 0;
+
+            currentView = new DataView(orderTable);
+
+            pagination.SetData(currentView);
         }
 
         private void buttonCreate_Click(object sender, EventArgs e)

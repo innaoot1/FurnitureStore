@@ -78,6 +78,7 @@
     <Compile Include="ManagementDB.Designer.cs">
       <DependentUpon>ManagementDB.cs</DependentUpon>
     </Compile>
+    <Compile Include="PaginationManager.cs" />
     <Compile Include="SupplierInsert.cs">
       <SubType>Form</SubType>
     </Compile>

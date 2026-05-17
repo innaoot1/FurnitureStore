@@ -103,7 +103,7 @@ namespace FurnitureStore
             this.buttonUpdate.FlatAppearance.BorderSize = 0;
             this.buttonUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonUpdate.Font = new System.Drawing.Font("Verdana", 15.75F);
-            this.buttonUpdate.Location = new System.Drawing.Point(357, 355);
+            this.buttonUpdate.Location = new System.Drawing.Point(338, 355);
             this.buttonUpdate.Margin = new System.Windows.Forms.Padding(4);
             this.buttonUpdate.Name = "buttonUpdate";
             this.buttonUpdate.Size = new System.Drawing.Size(204, 82);
@@ -117,10 +117,10 @@ namespace FurnitureStore
             this.buttonCreate.FlatAppearance.BorderSize = 0;
             this.buttonCreate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonCreate.Font = new System.Drawing.Font("Verdana", 15.75F);
-            this.buttonCreate.Location = new System.Drawing.Point(569, 355);
+            this.buttonCreate.Location = new System.Drawing.Point(550, 355);
             this.buttonCreate.Margin = new System.Windows.Forms.Padding(4);
             this.buttonCreate.Name = "buttonCreate";
-            this.buttonCreate.Size = new System.Drawing.Size(218, 82);
+            this.buttonCreate.Size = new System.Drawing.Size(237, 82);
             this.buttonCreate.TabIndex = 44;
             this.buttonCreate.Text = "Восстановить структуру БД";
             this.buttonCreate.UseVisualStyleBackColor = false;

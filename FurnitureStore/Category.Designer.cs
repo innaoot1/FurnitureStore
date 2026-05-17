@@ -34,6 +34,7 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -106,6 +107,21 @@
             this.label3.TabIndex = 5;
             this.label3.Text = "Всего:";
             // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.MistyRose;
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Verdana", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button1.Location = new System.Drawing.Point(663, 562);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(170, 65);
+            this.button1.TabIndex = 2;
+            this.button1.Text = "Изменить";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.buttonCreate_Click);
+            // 
             // Category
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -119,6 +135,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.buttonBack);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.buttonCreate);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -139,5 +156,6 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button button1;
     }
 }

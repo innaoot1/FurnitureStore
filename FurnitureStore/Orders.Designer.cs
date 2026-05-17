@@ -51,6 +51,8 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.label8 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.labelPageInfo = new System.Windows.Forms.Label();
+            this.paginationPanel = new System.Windows.Forms.FlowLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -59,7 +61,7 @@
             this.comboBoxSort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxSort.Font = new System.Drawing.Font("Verdana", 15.75F);
             this.comboBoxSort.FormattingEnabled = true;
-            this.comboBoxSort.Location = new System.Drawing.Point(507, 466);
+            this.comboBoxSort.Location = new System.Drawing.Point(511, 495);
             this.comboBoxSort.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxSort.Name = "comboBoxSort";
             this.comboBoxSort.Size = new System.Drawing.Size(252, 40);
@@ -74,7 +76,7 @@
             this.label4.AutoSize = true;
             this.label4.BackColor = System.Drawing.Color.Transparent;
             this.label4.Font = new System.Drawing.Font("Verdana", 15.75F);
-            this.label4.Location = new System.Drawing.Point(500, 430);
+            this.label4.Location = new System.Drawing.Point(504, 459);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(116, 32);
@@ -86,7 +88,7 @@
             this.comboBoxFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxFilter.Font = new System.Drawing.Font("Verdana", 15.75F);
             this.comboBoxFilter.FormattingEnabled = true;
-            this.comboBoxFilter.Location = new System.Drawing.Point(259, 466);
+            this.comboBoxFilter.Location = new System.Drawing.Point(263, 495);
             this.comboBoxFilter.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxFilter.Name = "comboBoxFilter";
             this.comboBoxFilter.Size = new System.Drawing.Size(240, 40);
@@ -101,7 +103,7 @@
             this.label3.AutoSize = true;
             this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Font = new System.Drawing.Font("Verdana", 15.75F);
-            this.label3.Location = new System.Drawing.Point(252, 430);
+            this.label3.Location = new System.Drawing.Point(256, 459);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(118, 32);
@@ -112,7 +114,7 @@
             // 
             this.textBoxSearch.BackColor = System.Drawing.Color.White;
             this.textBoxSearch.Font = new System.Drawing.Font("Verdana", 15.75F);
-            this.textBoxSearch.Location = new System.Drawing.Point(9, 466);
+            this.textBoxSearch.Location = new System.Drawing.Point(13, 495);
             this.textBoxSearch.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxSearch.MaxLength = 50;
             this.textBoxSearch.Name = "textBoxSearch";
@@ -129,7 +131,7 @@
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Verdana", 15.75F);
-            this.label1.Location = new System.Drawing.Point(3, 430);
+            this.label1.Location = new System.Drawing.Point(7, 459);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(110, 32);
@@ -203,6 +205,7 @@
             // 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.AllowUserToResizeRows = false;
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Top;
@@ -213,6 +216,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersWidth = 51;
+            this.dataGridView1.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(1024, 374);
             this.dataGridView1.TabIndex = 30;
@@ -257,7 +261,7 @@
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.Font = new System.Drawing.Font("Verdana", 15.75F);
-            this.label2.Location = new System.Drawing.Point(855, 430);
+            this.label2.Location = new System.Drawing.Point(859, 459);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(105, 32);
@@ -286,7 +290,7 @@
             this.buttonClearFilters.FlatAppearance.BorderSize = 0;
             this.buttonClearFilters.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonClearFilters.Font = new System.Drawing.Font("Verdana", 15.75F);
-            this.buttonClearFilters.Location = new System.Drawing.Point(765, 466);
+            this.buttonClearFilters.Location = new System.Drawing.Point(769, 495);
             this.buttonClearFilters.Margin = new System.Windows.Forms.Padding(4);
             this.buttonClearFilters.Name = "buttonClearFilters";
             this.buttonClearFilters.Size = new System.Drawing.Size(120, 38);
@@ -298,7 +302,7 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.LightGray;
-            this.panel1.Location = new System.Drawing.Point(160, 395);
+            this.panel1.Location = new System.Drawing.Point(161, 430);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(20, 20);
             this.panel1.TabIndex = 44;
@@ -311,7 +315,7 @@
             this.label5.AutoSize = true;
             this.label5.BackColor = System.Drawing.Color.Transparent;
             this.label5.Font = new System.Drawing.Font("Verdana", 13.3F);
-            this.label5.Location = new System.Drawing.Point(181, 390);
+            this.label5.Location = new System.Drawing.Point(182, 425);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(180, 28);
@@ -326,7 +330,7 @@
             this.label7.AutoSize = true;
             this.label7.BackColor = System.Drawing.Color.Transparent;
             this.label7.Font = new System.Drawing.Font("Verdana", 13.3F);
-            this.label7.Location = new System.Drawing.Point(396, 390);
+            this.label7.Location = new System.Drawing.Point(397, 425);
             this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(223, 28);
@@ -336,7 +340,7 @@
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.LightGreen;
-            this.panel3.Location = new System.Drawing.Point(376, 395);
+            this.panel3.Location = new System.Drawing.Point(377, 430);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(20, 20);
             this.panel3.TabIndex = 44;
@@ -349,7 +353,7 @@
             this.label8.AutoSize = true;
             this.label8.BackColor = System.Drawing.Color.Transparent;
             this.label8.Font = new System.Drawing.Font("Verdana", 13.3F);
-            this.label8.Location = new System.Drawing.Point(647, 390);
+            this.label8.Location = new System.Drawing.Point(648, 425);
             this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(203, 28);
@@ -359,10 +363,35 @@
             // panel4
             // 
             this.panel4.BackColor = System.Drawing.Color.LightCoral;
-            this.panel4.Location = new System.Drawing.Point(627, 395);
+            this.panel4.Location = new System.Drawing.Point(628, 430);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(20, 20);
             this.panel4.TabIndex = 44;
+            // 
+            // labelPageInfo
+            // 
+            this.labelPageInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelPageInfo.AutoSize = true;
+            this.labelPageInfo.BackColor = System.Drawing.Color.Transparent;
+            this.labelPageInfo.Font = new System.Drawing.Font("Verdana", 14F);
+            this.labelPageInfo.ForeColor = System.Drawing.Color.Black;
+            this.labelPageInfo.Location = new System.Drawing.Point(9, 381);
+            this.labelPageInfo.Name = "labelPageInfo";
+            this.labelPageInfo.Size = new System.Drawing.Size(212, 29);
+            this.labelPageInfo.TabIndex = 63;
+            this.labelPageInfo.Text = "Страница 1 из 1";
+            this.labelPageInfo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // paginationPanel
+            // 
+            this.paginationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.paginationPanel.BackColor = System.Drawing.Color.Transparent;
+            this.paginationPanel.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
+            this.paginationPanel.Location = new System.Drawing.Point(279, 381);
+            this.paginationPanel.Name = "paginationPanel";
+            this.paginationPanel.Size = new System.Drawing.Size(733, 40);
+            this.paginationPanel.TabIndex = 62;
+            this.paginationPanel.WrapContents = false;
             // 
             // Orders
             // 
@@ -373,6 +402,8 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1024, 640);
             this.ControlBox = false;
+            this.Controls.Add(this.labelPageInfo);
+            this.Controls.Add(this.paginationPanel);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel1);
@@ -432,5 +463,7 @@
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.Label labelPageInfo;
+        private System.Windows.Forms.FlowLayoutPanel paginationPanel;
     }
 }
