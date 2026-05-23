@@ -53,10 +53,10 @@
             this.textBoxManufacturer.Font = new System.Drawing.Font("Verdana", 15.75F);
             this.textBoxManufacturer.Location = new System.Drawing.Point(12, 290);
             this.textBoxManufacturer.Margin = new System.Windows.Forms.Padding(4);
-            this.textBoxManufacturer.MaxLength = 50;
+            this.textBoxManufacturer.MaxLength = 100;
             this.textBoxManufacturer.Name = "textBoxManufacturer";
             this.textBoxManufacturer.Size = new System.Drawing.Size(461, 39);
-            this.textBoxManufacturer.TabIndex = 24;
+            this.textBoxManufacturer.TabIndex = 4;
             this.textBoxManufacturer.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxManufacturer_KeyPress);
             // 
             // textBoxPrice
@@ -67,7 +67,7 @@
             this.textBoxPrice.MaxLength = 13;
             this.textBoxPrice.Name = "textBoxPrice";
             this.textBoxPrice.Size = new System.Drawing.Size(461, 39);
-            this.textBoxPrice.TabIndex = 25;
+            this.textBoxPrice.TabIndex = 3;
             this.textBoxPrice.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxPrice_KeyPress);
             this.textBoxPrice.Leave += new System.EventHandler(this.textBoxPrice_Leave);
             // 
@@ -76,10 +76,10 @@
             this.textBoxName.Font = new System.Drawing.Font("Verdana", 15.75F);
             this.textBoxName.Location = new System.Drawing.Point(12, 49);
             this.textBoxName.Margin = new System.Windows.Forms.Padding(4);
-            this.textBoxName.MaxLength = 50;
+            this.textBoxName.MaxLength = 100;
             this.textBoxName.Name = "textBoxName";
             this.textBoxName.Size = new System.Drawing.Size(461, 39);
-            this.textBoxName.TabIndex = 26;
+            this.textBoxName.TabIndex = 1;
             this.textBoxName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxName_KeyPress);
             // 
             // label5
@@ -159,28 +159,33 @@
             // 
             // comboBoxSupplier
             // 
-            this.comboBoxSupplier.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxSupplier.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.comboBoxSupplier.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.comboBoxSupplier.Font = new System.Drawing.Font("Verdana", 15.75F);
             this.comboBoxSupplier.FormattingEnabled = true;
             this.comboBoxSupplier.Location = new System.Drawing.Point(12, 365);
             this.comboBoxSupplier.Margin = new System.Windows.Forms.Padding(4);
+            this.comboBoxSupplier.MaxLength = 100;
             this.comboBoxSupplier.Name = "comboBoxSupplier";
             this.comboBoxSupplier.Size = new System.Drawing.Size(460, 40);
-            this.comboBoxSupplier.TabIndex = 16;
+            this.comboBoxSupplier.TabIndex = 5;
             this.comboBoxSupplier.SelectedIndexChanged += new System.EventHandler(this.comboBoxSupplier_SelectedIndexChanged);
+            this.comboBoxSupplier.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.comboBoxSupplier_KeyPress);
             // 
             // comboBoxCategory
             // 
-            this.comboBoxCategory.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.comboBoxCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxCategory.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.comboBoxCategory.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.comboBoxCategory.Font = new System.Drawing.Font("Verdana", 15.75F);
             this.comboBoxCategory.FormattingEnabled = true;
             this.comboBoxCategory.Location = new System.Drawing.Point(12, 129);
             this.comboBoxCategory.Margin = new System.Windows.Forms.Padding(4);
+            this.comboBoxCategory.MaxLength = 50;
             this.comboBoxCategory.Name = "comboBoxCategory";
             this.comboBoxCategory.Size = new System.Drawing.Size(461, 40);
-            this.comboBoxCategory.TabIndex = 14;
+            this.comboBoxCategory.TabIndex = 2;
             this.comboBoxCategory.SelectedIndexChanged += new System.EventHandler(this.comboBoxCategory_SelectedIndexChanged);
+            this.comboBoxCategory.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.comboBoxCategory_KeyPress);
             // 
             // label7
             // 
@@ -204,41 +209,35 @@
             this.textBoxDescription.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxDescription.Name = "textBoxDescription";
             this.textBoxDescription.Size = new System.Drawing.Size(459, 39);
-            this.textBoxDescription.TabIndex = 24;
+            this.textBoxDescription.TabIndex = 6;
             this.textBoxDescription.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxDescription_KeyPress);
             // 
             // buttonBack
             // 
-            this.buttonBack.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonBack.BackColor = System.Drawing.Color.MistyRose;
             this.buttonBack.FlatAppearance.BorderSize = 0;
             this.buttonBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonBack.Font = new System.Drawing.Font("Verdana", 15.75F);
-            this.buttonBack.Location = new System.Drawing.Point(14, 562);
+            this.buttonBack.Location = new System.Drawing.Point(14, 513);
             this.buttonBack.Margin = new System.Windows.Forms.Padding(4);
             this.buttonBack.Name = "buttonBack";
             this.buttonBack.Size = new System.Drawing.Size(120, 65);
-            this.buttonBack.TabIndex = 28;
+            this.buttonBack.TabIndex = 9;
             this.buttonBack.Text = "Назад";
             this.buttonBack.UseVisualStyleBackColor = false;
             this.buttonBack.Click += new System.EventHandler(this.buttonBack_Click);
             // 
             // buttonWrite
             // 
-            this.buttonWrite.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonWrite.BackColor = System.Drawing.Color.MistyRose;
             this.buttonWrite.FlatAppearance.BorderSize = 0;
             this.buttonWrite.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonWrite.Font = new System.Drawing.Font("Verdana", 15.75F);
-            this.buttonWrite.Location = new System.Drawing.Point(826, 562);
+            this.buttonWrite.Location = new System.Drawing.Point(826, 513);
             this.buttonWrite.Margin = new System.Windows.Forms.Padding(4);
             this.buttonWrite.Name = "buttonWrite";
             this.buttonWrite.Size = new System.Drawing.Size(185, 65);
-            this.buttonWrite.TabIndex = 28;
+            this.buttonWrite.TabIndex = 8;
             this.buttonWrite.Text = "Сохранить";
             this.buttonWrite.UseVisualStyleBackColor = false;
             this.buttonWrite.Click += new System.EventHandler(this.buttonWrite_Click);
@@ -264,7 +263,7 @@
             this.buttonImage.Margin = new System.Windows.Forms.Padding(4);
             this.buttonImage.Name = "buttonImage";
             this.buttonImage.Size = new System.Drawing.Size(460, 47);
-            this.buttonImage.TabIndex = 28;
+            this.buttonImage.TabIndex = 7;
             this.buttonImage.Text = "Выбрать фото";
             this.buttonImage.UseVisualStyleBackColor = false;
             this.buttonImage.Click += new System.EventHandler(this.buttonImage_Click);
@@ -275,7 +274,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Thistle;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(1024, 640);
+            this.ClientSize = new System.Drawing.Size(1024, 594);
             this.ControlBox = false;
             this.Controls.Add(this.pictureBoxImage);
             this.Controls.Add(this.buttonImage);

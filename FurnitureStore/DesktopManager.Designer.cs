@@ -60,7 +60,7 @@
             this.buttonExit.Margin = new System.Windows.Forms.Padding(4);
             this.buttonExit.Name = "buttonExit";
             this.buttonExit.Size = new System.Drawing.Size(120, 65);
-            this.buttonExit.TabIndex = 6;
+            this.buttonExit.TabIndex = 5;
             this.buttonExit.Text = "Выйти";
             this.buttonExit.UseVisualStyleBackColor = false;
             this.buttonExit.Click += new System.EventHandler(this.button6_Click);
@@ -75,7 +75,7 @@
             this.buttonProduct.Margin = new System.Windows.Forms.Padding(4);
             this.buttonProduct.Name = "buttonProduct";
             this.buttonProduct.Size = new System.Drawing.Size(205, 65);
-            this.buttonProduct.TabIndex = 10;
+            this.buttonProduct.TabIndex = 4;
             this.buttonProduct.Text = "Товары";
             this.buttonProduct.UseVisualStyleBackColor = false;
             this.buttonProduct.Click += new System.EventHandler(this.button7_Click);
@@ -90,7 +90,7 @@
             this.buttonSupplier.Margin = new System.Windows.Forms.Padding(4);
             this.buttonSupplier.Name = "buttonSupplier";
             this.buttonSupplier.Size = new System.Drawing.Size(205, 65);
-            this.buttonSupplier.TabIndex = 14;
+            this.buttonSupplier.TabIndex = 1;
             this.buttonSupplier.Text = "Поставщики";
             this.buttonSupplier.UseVisualStyleBackColor = false;
             this.buttonSupplier.Click += new System.EventHandler(this.buttonSupplier_Click);
@@ -105,7 +105,7 @@
             this.buttonCategory.Margin = new System.Windows.Forms.Padding(4);
             this.buttonCategory.Name = "buttonCategory";
             this.buttonCategory.Size = new System.Drawing.Size(205, 65);
-            this.buttonCategory.TabIndex = 19;
+            this.buttonCategory.TabIndex = 2;
             this.buttonCategory.Text = "Категории";
             this.buttonCategory.UseVisualStyleBackColor = false;
             this.buttonCategory.Click += new System.EventHandler(this.buttonCategory_Click);
@@ -132,7 +132,7 @@
             this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(205, 65);
-            this.button1.TabIndex = 10;
+            this.button1.TabIndex = 3;
             this.button1.Text = "Заказы";
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);

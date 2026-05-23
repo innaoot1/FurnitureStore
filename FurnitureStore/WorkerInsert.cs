@@ -16,12 +16,22 @@ namespace FurnitureStore
     {
         private string mode;
         public int WorkerID { get; set; }
-
-        public WorkerInsert(string mode)
+        private Form parentForm;
+        public WorkerInsert(string mode, Form parentForm = null)
         {
             InitializeComponent();
             this.mode = mode;
+            this.parentForm = parentForm;
+
             AutoLockManager.StartMonitoring();
+
+            if (parentForm != null)
+            {
+                BlurEffect.ShowDimmed(parentForm);
+            }
+
+            KeyboardLayoutManager.AttachRussianLayout(textBoxFIO);
+            KeyboardLayoutManager.AttachEnglishLayout(textBoxLogin, textBoxPasswd);
 
             LoadRoles();
             ApplyMode();
@@ -87,7 +97,7 @@ namespace FurnitureStore
                     maskedTextBoxPhone.ReadOnly = false;
                     textBoxPassport.ReadOnly = false;
 
-                    comboBoxRole.Enabled = true;
+                    comboBoxRole.Enabled = false;
 
                     buttonWrite.Visible = true;
                     break;
@@ -348,14 +358,22 @@ namespace FurnitureStore
 
                         cmd.ExecuteNonQuery();
 
-                        MessageBox.Show(
-                            $"Данные сотрудника успешно обновлены!\n" +
-                            $"ФИО: \"{textBoxFIO.Text}\"\n\n" +
-                            "Примечание: в существующих заказах останется старое ФИО сотрудника, " +
-                            "в новых заказах будет использоваться новое ФИО.",
-                            "Успех",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Information);
+                        string roleName = comboBoxRole.Text;
+
+                        string successMessage;
+                        if (roleName == "Продавец")
+                        {
+                            successMessage = $"Данные сотрудника успешно обновлены!\n" +
+                                             $"ФИО: \"{textBoxFIO.Text}\"\n\n" +
+                                             "Примечание: в существующих заказах останется старое ФИО сотрудника, " +
+                                             "в новых заказах будет использоваться новое ФИО.";
+                        }
+                        else
+                        {
+                            successMessage = $"Данные сотрудника успешно обновлены!\nФИО: \"{textBoxFIO.Text}\"";
+                        }
+
+                        MessageBox.Show(successMessage, "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
 
                     this.Close();
@@ -525,6 +543,15 @@ namespace FurnitureStore
                 MessageBox.Show("Можно использовать не более двух пробелов.", "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             if (showDashWarning)
                 MessageBox.Show("Можно использовать только одно тире.", "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            base.OnFormClosed(e);
+            if (parentForm != null)
+            {
+                BlurEffect.HideDimmed();
+            }
         }
     }
 }

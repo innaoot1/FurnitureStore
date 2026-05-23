@@ -51,7 +51,7 @@ namespace FurnitureStore
             this.comboBoxCategory.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxCategory.Name = "comboBoxCategory";
             this.comboBoxCategory.Size = new System.Drawing.Size(378, 40);
-            this.comboBoxCategory.TabIndex = 49;
+            this.comboBoxCategory.TabIndex = 1;
             // 
             // labelCategory
             // 
@@ -78,7 +78,7 @@ namespace FurnitureStore
             this.buttonDelete.Margin = new System.Windows.Forms.Padding(4);
             this.buttonDelete.Name = "buttonDelete";
             this.buttonDelete.Size = new System.Drawing.Size(378, 56);
-            this.buttonDelete.TabIndex = 47;
+            this.buttonDelete.TabIndex = 2;
             this.buttonDelete.Text = "Файл для импорта";
             this.buttonDelete.UseVisualStyleBackColor = false;
             // 
@@ -92,7 +92,7 @@ namespace FurnitureStore
             this.buttonBack.Margin = new System.Windows.Forms.Padding(4);
             this.buttonBack.Name = "buttonBack";
             this.buttonBack.Size = new System.Drawing.Size(120, 82);
-            this.buttonBack.TabIndex = 46;
+            this.buttonBack.TabIndex = 9;
             this.buttonBack.Text = "Назад";
             this.buttonBack.UseVisualStyleBackColor = false;
             this.buttonBack.Click += new System.EventHandler(this.buttonBack_Click);
@@ -107,7 +107,7 @@ namespace FurnitureStore
             this.buttonUpdate.Margin = new System.Windows.Forms.Padding(4);
             this.buttonUpdate.Name = "buttonUpdate";
             this.buttonUpdate.Size = new System.Drawing.Size(204, 82);
-            this.buttonUpdate.TabIndex = 45;
+            this.buttonUpdate.TabIndex = 8;
             this.buttonUpdate.Text = "Резервное копирование";
             this.buttonUpdate.UseVisualStyleBackColor = false;
             // 
@@ -121,7 +121,7 @@ namespace FurnitureStore
             this.buttonCreate.Margin = new System.Windows.Forms.Padding(4);
             this.buttonCreate.Name = "buttonCreate";
             this.buttonCreate.Size = new System.Drawing.Size(237, 82);
-            this.buttonCreate.TabIndex = 44;
+            this.buttonCreate.TabIndex = 7;
             this.buttonCreate.Text = "Восстановить структуру БД";
             this.buttonCreate.UseVisualStyleBackColor = false;
             // 
@@ -149,7 +149,7 @@ namespace FurnitureStore
             this.comboBox1.Margin = new System.Windows.Forms.Padding(4);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(378, 40);
-            this.comboBox1.TabIndex = 49;
+            this.comboBox1.TabIndex = 4;
             // 
             // button1
             // 
@@ -161,7 +161,7 @@ namespace FurnitureStore
             this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(378, 56);
-            this.button1.TabIndex = 47;
+            this.button1.TabIndex = 5;
             this.button1.Text = "Файл для экспорта";
             this.button1.UseVisualStyleBackColor = false;
             // 
@@ -175,7 +175,7 @@ namespace FurnitureStore
             this.button2.Margin = new System.Windows.Forms.Padding(4);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(378, 56);
-            this.button2.TabIndex = 47;
+            this.button2.TabIndex = 3;
             this.button2.Text = "Импортировать данные";
             this.button2.UseVisualStyleBackColor = false;
             // 
@@ -189,7 +189,7 @@ namespace FurnitureStore
             this.button3.Margin = new System.Windows.Forms.Padding(4);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(378, 56);
-            this.button3.TabIndex = 47;
+            this.button3.TabIndex = 6;
             this.button3.Text = "Экспортировать данные";
             this.button3.UseVisualStyleBackColor = false;
             // 

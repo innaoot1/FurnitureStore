@@ -15,7 +15,6 @@ namespace FurnitureStore
         public DesktopManager()
         {
             InitializeComponent();
-            AutoLockManager.StartMonitoring();
         }
 
         private void button7_Click(object sender, EventArgs e)
@@ -28,7 +27,16 @@ namespace FurnitureStore
 
         private void button6_Click(object sender, EventArgs e)
         {
-            this.Close();
+            DialogResult result = MessageBox.Show(
+                "Вы действительно хотите выйти?",
+                "Подтверждение выхода",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                this.Close();
+            }
         }
 
         private void buttonSupplier_Click(object sender, EventArgs e)

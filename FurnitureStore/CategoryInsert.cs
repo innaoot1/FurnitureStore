@@ -1,30 +1,29 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace FurnitureStore
 {
-    public partial class Insert : Form
+    public partial class CategoryInsert : Form
     {
-        private string tableName;
         private string mode;
         private int recordId;
-        public Insert(string tableName, string mode, int recordId = 0, string currentValue = "")
+        private Form parentForm;
+        public CategoryInsert(string mode, int recordId = 0, string currentValue = "", Form parentForm = null)
         {
             InitializeComponent();
-            this.tableName = tableName;
             this.mode = mode;
             this.recordId = recordId;
-            AutoLockManager.StartMonitoring();
+            this.parentForm = parentForm;
 
-            if (mode == "edit" && tableName == "Supplier")
+            if (parentForm != null)
+            {
+                BlurEffect.ShowDimmed(parentForm);
+            }
+
+            KeyboardLayoutManager.AttachRussianLayout(textBoxName);
+
+            if (mode == "edit")
             {
                 textBoxName.Text = currentValue;
             }
@@ -40,7 +39,7 @@ namespace FurnitureStore
             string value = textBoxName.Text.Trim();
             if (string.IsNullOrWhiteSpace(value))
             {
-                MessageBox.Show("Введите значение!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Введите название категории!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -51,41 +50,29 @@ namespace FurnitureStore
                     con.Open();
                     MySqlCommand cmd;
 
-                    string nameColumn = "";
-
-                    switch (tableName)
-                    {
-                        case "Category":
-                            nameColumn = "CategoryName";
-                            break;
-                        case "Supplier":
-                            nameColumn = "SupplierName";
-                            break;
-                        default:
-                            throw new Exception("Неизвестная таблица!");
-                    }
-
                     string duplicateQuery;
-                    if (mode == "edit" && tableName == "Supplier")
+                    if (mode == "edit")
                     {
-                        duplicateQuery = $"SELECT COUNT(*) FROM {tableName} WHERE {nameColumn} = @name AND SupplierID <> @id";
+                        duplicateQuery = "SELECT COUNT(*) FROM Category WHERE CategoryName = @name AND CategoryID <> @id";
                     }
                     else
                     {
-                        duplicateQuery = $"SELECT COUNT(*) FROM {tableName} WHERE {nameColumn} = @name";
+                        duplicateQuery = "SELECT COUNT(*) FROM Category WHERE CategoryName = @name";
                     }
 
                     using (MySqlCommand checkCmd = new MySqlCommand(duplicateQuery, con))
                     {
                         checkCmd.Parameters.AddWithValue("@name", value);
-                        if (mode == "edit" && tableName == "Supplier")
+                        if (mode == "edit")
+                        {
                             checkCmd.Parameters.AddWithValue("@id", recordId);
+                        }
 
                         int count = Convert.ToInt32(checkCmd.ExecuteScalar());
                         if (count > 0)
                         {
                             MessageBox.Show(
-                                $"Запись с таким наименованием уже существует в таблице \"{tableName}\"!",
+                                "Категория с таким названием уже существует!",
                                 "Ошибка дублирования",
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Error);
@@ -93,27 +80,20 @@ namespace FurnitureStore
                         }
                     }
 
-                    if (mode == "edit" && tableName == "Supplier")
+                    if (mode == "edit")
                     {
-                        cmd = new MySqlCommand($"UPDATE {tableName} SET {nameColumn}=@name WHERE SupplierID=@id", con);
+                        cmd = new MySqlCommand("UPDATE Category SET CategoryName = @name WHERE CategoryID = @id", con);
                         cmd.Parameters.AddWithValue("@name", value);
                         cmd.Parameters.AddWithValue("@id", recordId);
                         cmd.ExecuteNonQuery();
-
-                        MessageBox.Show(
-                            "Изменения успешно сохранены!\n\n" +
-                            "Примечание: в существующих товарах останется старое название поставщика, " +
-                            "в новых товарах будет использоваться новое название.",
-                            "Успех",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Information);
+                        MessageBox.Show("Категория успешно обновлена!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     else
                     {
-                        cmd = new MySqlCommand($"INSERT INTO {tableName} ({nameColumn}) VALUES (@name)", con);
+                        cmd = new MySqlCommand("INSERT INTO Category (CategoryName) VALUES (@name)", con);
                         cmd.Parameters.AddWithValue("@name", value);
                         cmd.ExecuteNonQuery();
-                        MessageBox.Show("Запись успешно добавлена!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Категория успешно добавлена!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
 
                     this.Close();
@@ -131,6 +111,15 @@ namespace FurnitureStore
                 !System.Text.RegularExpressions.Regex.IsMatch(e.KeyChar.ToString(), @"^[а-яА-Я-\s]$"))
             {
                 e.Handled = true;
+            }
+        }
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            base.OnFormClosed(e);
+            if (parentForm != null)
+            {
+                BlurEffect.HideDimmed();
             }
         }
     }

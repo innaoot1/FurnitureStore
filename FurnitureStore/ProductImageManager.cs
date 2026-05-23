@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -184,18 +185,62 @@ namespace FurnitureStore
             }
         }
 
+        public byte[] CompressImageIfNeeded(byte[] imageData, long maxSizeBytes = 3 * 1024 * 1024)
+        {
+            if (imageData.Length <= maxSizeBytes)
+                return imageData;
+
+            try
+            {
+                using (var inputStream = new MemoryStream(imageData))
+                using (var originalImage = Image.FromStream(inputStream))
+                {
+                    ImageCodecInfo jpgEncoder = ImageCodecInfo.GetImageDecoders()
+                        .FirstOrDefault(c => c.FormatID == ImageFormat.Jpeg.Guid);
+
+                    if (jpgEncoder == null)
+                        return null;
+
+                    long quality = 90;
+
+                    while (quality >= 10)
+                    {
+                        using (var ms = new MemoryStream())
+                        {
+                            EncoderParameters encoderParams = new EncoderParameters(1);
+
+                            encoderParams.Param[0] = new EncoderParameter(
+                                System.Drawing.Imaging.Encoder.Quality,
+                                quality);
+
+                            originalImage.Save(ms, jpgEncoder, encoderParams);
+
+                            if (ms.Length <= maxSizeBytes)
+                            {
+                                return ms.ToArray();
+                            }
+                        }
+
+                        quality -= 10;
+                    }
+                }
+            }
+            catch
+            {
+            }
+
+            return null;
+        }
+
         public bool ValidateImageFile(string filePath)
         {
             try
             {
                 string fileExtension = Path.GetExtension(filePath).ToLower();
-                if (fileExtension != ".jpg" && fileExtension != ".jpeg" && fileExtension != ".png")
-                {
-                    return false;
-                }
 
-                FileInfo fileInfo = new FileInfo(filePath);
-                if (fileInfo.Length > 3 * 1024 * 1024) // 3 МБ
+                if (fileExtension != ".jpg" &&
+                    fileExtension != ".jpeg" &&
+                    fileExtension != ".png")
                 {
                     return false;
                 }
@@ -205,7 +250,7 @@ namespace FurnitureStore
                     return true;
                 }
             }
-            catch (Exception)
+            catch
             {
                 return false;
             }

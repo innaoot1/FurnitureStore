@@ -9,13 +9,22 @@ namespace FurnitureStore
     {
         private string mode;
         public int ClientID { get; set; }
-
-        public ClientsInsert(string mode)
+        private Form parentForm;
+        public ClientsInsert(string mode, Form parentForm = null)
         {
             InitializeComponent();
             this.mode = mode;
-            ApplyMode();
+            ApplyMode(); 
+            this.parentForm = parentForm;
+
             AutoLockManager.StartMonitoring();
+
+            if (parentForm != null)
+            {
+                BlurEffect.ShowDimmed(parentForm);
+            }
+
+            KeyboardLayoutManager.AttachRussianLayout(textBoxFIO);
         }
 
         private void ApplyMode()
@@ -244,6 +253,15 @@ namespace FurnitureStore
                     mtb.SelectionStart = i + 1;
                     break;
                 }
+            }
+        }
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            base.OnFormClosed(e);
+            if (parentForm != null)
+            {
+                BlurEffect.HideDimmed();
             }
         }
     }

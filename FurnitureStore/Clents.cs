@@ -18,6 +18,8 @@ namespace FurnitureStore
         {
             InitializeComponent();
             AutoLockManager.StartMonitoring();
+
+            KeyboardLayoutManager.AttachRussianLayout(textBoxSearch);
         }
 
         private void Clents_Load(object sender, EventArgs e)
@@ -155,7 +157,7 @@ namespace FurnitureStore
             string name = dataGridView1.CurrentRow.Cells["ФИО клиента"].Value.ToString();
             string phone = dataGridView1.CurrentRow.Cells["Телефон"].Value.ToString();
 
-            ClientsInsert form = new ClientsInsert("edit")
+            ClientsInsert form = new ClientsInsert("edit", this)
             {
                 ClientID = id,
                 ClientFIO = name,
@@ -168,7 +170,7 @@ namespace FurnitureStore
 
         private void buttonCreate_Click(object sender, EventArgs e)
         {
-            ClientsInsert form = new ClientsInsert("add");
+            ClientsInsert form = new ClientsInsert("add", this);
             form.ShowDialog();
             Clents_Load(null, null);
         }
@@ -176,37 +178,6 @@ namespace FurnitureStore
         private void buttonBack_Click(object sender, EventArgs e)
         {
             this.Close();
-        }
-
-        private (string FIO, string Phone) GetClientData(int clientId)
-        {
-            try
-            {
-                using (MySqlConnection con = new MySqlConnection(connStr.ConnectionString))
-                {
-                    con.Open();
-                    MySqlCommand cmd = new MySqlCommand(
-                        "SELECT CustomersFIO, CustomersPhone FROM Customers WHERE CustomersID = @id", con);
-                    cmd.Parameters.AddWithValue("@id", clientId);
-
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            return (
-                                reader.GetString("CustomersFIO"),
-                                reader.GetString("CustomersPhone")
-                            );
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ошибка при получении данных клиента: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
-            return ("", "");
         }
 
         private void textBoxSearch_KeyPress(object sender, KeyPressEventArgs e)
@@ -376,6 +347,15 @@ namespace FurnitureStore
         private void buttonClearFilters_Click(object sender, EventArgs e)
         {
             textBoxSearch.Text = "";
+        }
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                buttonUpdate.Enabled = true;
+                buttonDelete.Enabled = true;
+            }
         }
     }
 }

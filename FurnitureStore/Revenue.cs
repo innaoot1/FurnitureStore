@@ -9,11 +9,18 @@ namespace FurnitureStore
 {
     public partial class Revenue : Form
     {
-        public Revenue()
+        private Form parentForm;
+        public Revenue(Form parentForm = null)
         {
+            this.parentForm = parentForm;
+
+            if (parentForm != null)
+            {
+                BlurEffect.ShowDimmed(parentForm);
+            }
+
             InitializeComponent();
             LoadDateRangeFromDatabase();
-            AutoLockManager.StartMonitoring();
         }
 
         private void LoadDateRangeFromDatabase()
@@ -308,6 +315,15 @@ namespace FurnitureStore
             if (dateTimePicker2.Value < dateTimePicker1.Value)
             {
                 dateTimePicker1.Value = dateTimePicker2.Value;
+            }
+        }
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            base.OnFormClosed(e);
+            if (parentForm != null)
+            {
+                BlurEffect.HideDimmed();
             }
         }
     }

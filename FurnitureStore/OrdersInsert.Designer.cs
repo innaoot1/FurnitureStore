@@ -131,11 +131,11 @@
             this.buttonPlus.FlatAppearance.BorderSize = 0;
             this.buttonPlus.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonPlus.Font = new System.Drawing.Font("Verdana", 15.75F);
-            this.buttonPlus.Location = new System.Drawing.Point(507, 214);
+            this.buttonPlus.Location = new System.Drawing.Point(504, 255);
             this.buttonPlus.Margin = new System.Windows.Forms.Padding(4);
             this.buttonPlus.Name = "buttonPlus";
             this.buttonPlus.Size = new System.Drawing.Size(45, 40);
-            this.buttonPlus.TabIndex = 41;
+            this.buttonPlus.TabIndex = 5;
             this.buttonPlus.Text = "+";
             this.buttonPlus.UseVisualStyleBackColor = false;
             this.buttonPlus.Click += new System.EventHandler(this.buttonPlus_Click);
@@ -165,7 +165,7 @@
             this.buttonBack.Margin = new System.Windows.Forms.Padding(4);
             this.buttonBack.Name = "buttonBack";
             this.buttonBack.Size = new System.Drawing.Size(120, 65);
-            this.buttonBack.TabIndex = 43;
+            this.buttonBack.TabIndex = 8;
             this.buttonBack.Text = "Назад";
             this.buttonBack.UseVisualStyleBackColor = false;
             this.buttonBack.Click += new System.EventHandler(this.buttonBack_Click);
@@ -178,17 +178,17 @@
             this.dateTimePicker1.Margin = new System.Windows.Forms.Padding(4);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(482, 39);
-            this.dateTimePicker1.TabIndex = 46;
+            this.dateTimePicker1.TabIndex = 6;
             // 
             // textBoxProductCount
             // 
             this.textBoxProductCount.Font = new System.Drawing.Font("Verdana", 15.75F);
             this.textBoxProductCount.Location = new System.Drawing.Point(20, 295);
             this.textBoxProductCount.Margin = new System.Windows.Forms.Padding(4);
-            this.textBoxProductCount.MaxLength = 3;
+            this.textBoxProductCount.MaxLength = 2;
             this.textBoxProductCount.Name = "textBoxProductCount";
             this.textBoxProductCount.Size = new System.Drawing.Size(485, 39);
-            this.textBoxProductCount.TabIndex = 45;
+            this.textBoxProductCount.TabIndex = 4;
             this.textBoxProductCount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxProductCount_KeyPress);
             // 
             // comboBoxProduct
@@ -199,9 +199,11 @@
             this.comboBoxProduct.FormattingEnabled = true;
             this.comboBoxProduct.Location = new System.Drawing.Point(23, 214);
             this.comboBoxProduct.Margin = new System.Windows.Forms.Padding(4);
+            this.comboBoxProduct.MaxLength = 100;
             this.comboBoxProduct.Name = "comboBoxProduct";
             this.comboBoxProduct.Size = new System.Drawing.Size(482, 40);
-            this.comboBoxProduct.TabIndex = 44;
+            this.comboBoxProduct.TabIndex = 3;
+            this.comboBoxProduct.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.comboBoxProduct_KeyPress);
             // 
             // comboBoxClient
             // 
@@ -211,9 +213,12 @@
             this.comboBoxClient.FormattingEnabled = true;
             this.comboBoxClient.Location = new System.Drawing.Point(23, 127);
             this.comboBoxClient.Margin = new System.Windows.Forms.Padding(4);
+            this.comboBoxClient.MaxLength = 100;
             this.comboBoxClient.Name = "comboBoxClient";
             this.comboBoxClient.Size = new System.Drawing.Size(482, 40);
-            this.comboBoxClient.TabIndex = 44;
+            this.comboBoxClient.TabIndex = 2;
+            this.comboBoxClient.TextChanged += new System.EventHandler(this.comboBoxClient_TextChanged);
+            this.comboBoxClient.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.comboBoxClient_KeyPress);
             // 
             // comboBoxWorker
             // 
@@ -225,7 +230,7 @@
             this.comboBoxWorker.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxWorker.Name = "comboBoxWorker";
             this.comboBoxWorker.Size = new System.Drawing.Size(482, 40);
-            this.comboBoxWorker.TabIndex = 44;
+            this.comboBoxWorker.TabIndex = 1;
             // 
             // comboBoxStatus
             // 
@@ -237,7 +242,7 @@
             this.comboBoxStatus.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxStatus.Name = "comboBoxStatus";
             this.comboBoxStatus.Size = new System.Drawing.Size(484, 40);
-            this.comboBoxStatus.TabIndex = 44;
+            this.comboBoxStatus.TabIndex = 7;
             // 
             // label6
             // 
@@ -269,7 +274,7 @@
             this.dataGridView1.RowTemplate.Height = 24;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(839, 323);
-            this.dataGridView1.TabIndex = 47;
+            this.dataGridView1.TabIndex = 9;
             // 
             // label7
             // 
@@ -283,7 +288,7 @@
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(414, 62);
             this.label7.TabIndex = 32;
-            this.label7.Text = "Скидка: 10% (от 10000 р.) Скидка: 15% ( от 20000 р.)";
+            this.label7.Text = "Скидка: 10% (от 10000 р.) Скидка: 15% (от 20000 р.)";
             // 
             // label8
             // 

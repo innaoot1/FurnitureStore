@@ -76,12 +76,20 @@ namespace FurnitureStore
 
             dataGridView.DataSource = pageTable;
 
+            dataGridView.DataBindingComplete -= DataGridView_DataBindingComplete;
+            dataGridView.DataBindingComplete += DataGridView_DataBindingComplete;
+
             StretchRows();
 
             labelTotal.Text = $"Всего: {totalRows}";
             labelPageInfo.Text = $"Страница {CurrentPage} из {TotalPages}";
 
             CreateButtons();
+        }
+
+        private void DataGridView_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            StretchRows();
         }
 
         private void StretchRows()

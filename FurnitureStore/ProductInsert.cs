@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -22,7 +23,7 @@ namespace FurnitureStore
         public int ProductID { get; set; }
         private int selectedCategoryId;
         private int selectedSupplierId;
-
+        private Form parentForm;
         public new string ProductName
         {
             get => textBoxName.Text.Trim();
@@ -61,13 +62,20 @@ namespace FurnitureStore
             set => selectedImageHash = value;
         }
 
-        public ProductInsert(string mode)
+        public ProductInsert(string mode, Form parentForm = null)
         {
             InitializeComponent();
             this.mode = mode;
+            this.parentForm = parentForm;
+
+            if (parentForm != null)
+            {
+                BlurEffect.ShowDimmed(parentForm);
+            }
+
             LoadComboBoxes();
 
-            AutoLockManager.StartMonitoring();
+            KeyboardLayoutManager.AttachRussianLayout(textBoxName, textBoxDescription, textBoxManufacturer, comboBoxCategory, comboBoxSupplier);
 
             if (mode == "add")
             {
@@ -489,8 +497,24 @@ namespace FurnitureStore
 
                     try
                     {
-                        byte[] imageData = File.ReadAllBytes(ofd.FileName);
-                        string imageHash = ProductImageManager.Instance.CalculateImageHash(imageData);
+                        byte[] originalImageData = File.ReadAllBytes(ofd.FileName);
+
+                        byte[] imageData =
+                            ProductImageManager.Instance.CompressImageIfNeeded(originalImageData);
+
+                        if (imageData == null)
+                        {
+                            MessageBox.Show(
+                                "Не удалось сжать изображение до допустимого размера.\nВыберите другое изображение.",
+                                "Ошибка",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+
+                            return;
+                        }
+
+                        string imageHash =
+                            ProductImageManager.Instance.CalculateImageHash(imageData);
 
                         using (var con = new MySqlConnection(connStr.ConnectionString))
                         {
@@ -559,6 +583,33 @@ namespace FurnitureStore
             {
                 pictureBoxImage.Image.Dispose();
                 pictureBoxImage.Image = null;
+            }
+        }
+
+        private void comboBoxCategory_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) &&
+                !Regex.IsMatch(e.KeyChar.ToString(), @"^[а-яА-Я-\s]$"))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void comboBoxSupplier_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) &&
+                !Regex.IsMatch(e.KeyChar.ToString(), @"^[а-яА-Я-\s]$"))
+            {
+                e.Handled = true;
+            }
+        }
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            base.OnFormClosed(e);
+            if (parentForm != null)
+            {
+                BlurEffect.HideDimmed();
             }
         }
     }

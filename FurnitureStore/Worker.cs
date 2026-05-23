@@ -20,6 +20,8 @@ namespace FurnitureStore
         {
             InitializeComponent();
             AutoLockManager.StartMonitoring();
+
+            KeyboardLayoutManager.AttachRussianLayout(textBoxWorker);
         }
 
         private void buttonBack_Click(object sender, EventArgs e)
@@ -100,12 +102,24 @@ namespace FurnitureStore
             }
 
             string workerFIO = dataGridView1.CurrentRow.Cells["Сотрудник"].Value.ToString();
+            string workerRole = dataGridView1.CurrentRow.Cells["Роль"].Value.ToString();
 
-            bool hasOrders = CheckIfWorkerHasOrders(selectedWorkerId);
+            bool hasOrders = false;
+            if (workerRole == "Продавец")
+            {
+                hasOrders = CheckIfWorkerHasOrders(selectedWorkerId);
+            }
 
-            string message = hasOrders
-                ? $"Сотрудник \"{workerFIO}\" имеет заказы в базе. При удалении:\n- Существующие заказы сохранят данные сотрудника\n- Новые заказы нельзя будет создать с этим сотрудником\n\nПродолжить удаление?"
-                : $"Удалить сотрудника \"{workerFIO}\"?";
+            string message;
+
+            if (hasOrders)
+            {
+                message = $"Сотрудник \"{workerFIO}\" имеет заказы в базе. При удалении:\n- Существующие заказы сохранят данные сотрудника\n- Новые заказы нельзя будет создать с этим сотрудником\n\nПродолжить удаление?";
+            }
+            else
+            {
+                message = $"Удалить сотрудника \"{workerFIO}\"?";
+            }
 
             DialogResult result = MessageBox.Show(message, "Удаление сотрудника",
                 MessageBoxButtons.YesNo, hasOrders ? MessageBoxIcon.Warning : MessageBoxIcon.Question);
@@ -169,7 +183,7 @@ namespace FurnitureStore
 
             DataGridViewRow row = dataGridView1.CurrentRow;
 
-            WorkerInsert WorkerInsert = new WorkerInsert("edit")
+            WorkerInsert WorkerInsert = new WorkerInsert("edit", this)
             {
                 WorkerFIO = row.Cells["Сотрудник"].Value.ToString(),
                 WorkerLogin = row.Cells["Логин"].Value.ToString(),
@@ -185,7 +199,7 @@ namespace FurnitureStore
 
         private void buttonCreate_Click(object sender, EventArgs e)
         {
-            WorkerInsert WorkerInsert = new WorkerInsert("add");
+            WorkerInsert WorkerInsert = new WorkerInsert("add", this);
             WorkerInsert.ShowDialog();
             LoadWorkers();
         }
@@ -349,22 +363,6 @@ namespace FurnitureStore
             }
         }
 
-        private string FormatUserName(string login)
-        {
-            if (string.IsNullOrEmpty(login))
-                return string.Empty;
-
-            if (login.Length >= 3)
-            {
-                string visiblePart = login.Substring(0, 3);
-                return $"{visiblePart}***";
-            }
-            else
-            {
-                return $"{login}***";
-            }
-        }
-
         private void textBoxWorker_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsControl(e.KeyChar) &&
@@ -378,31 +376,13 @@ namespace FurnitureStore
         {
             if (e.RowIndex >= 0)
             {
-                buttonUpdate.Enabled = true;
-
                 DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
-                string role = row.Cells["Роль"].Value?.ToString() ?? "";
+                int selectedWorkerId = Convert.ToInt32(row.Cells["ID"].Value);
 
-                buttonDelete.Enabled = (role != "Администратор");
-            }
-        }
-
-        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
-        {
-            if (dataGridView1.CurrentRow != null)
-            {
                 buttonUpdate.Enabled = true;
 
-                DataGridViewRow row = dataGridView1.CurrentRow;
-                string role = row.Cells["Роль"].Value?.ToString() ?? "";
-
-                buttonDelete.Enabled = (role != "Администратор");
+                buttonDelete.Enabled = (selectedWorkerId != CurrentUserID);
             }
-        }
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
         }
     }
 }

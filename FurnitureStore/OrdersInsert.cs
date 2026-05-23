@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace FurnitureStore
@@ -31,15 +33,25 @@ namespace FurnitureStore
         }
         public string OrderStatus { get; set; }
         public int OrderPrice { get; set; }
-
-        public OrdersInsert(string mode, int orderId, int currentWorkerId = 0)
+        private Form parentForm;
+        public OrdersInsert(string mode, int orderId, int currentWorkerId = 0, Form parentForm = null)
         {
             InitializeComponent();
             this.mode = mode;
             this.OrderID = orderId;
             this.currentWorkerId = currentWorkerId;
-            InitializeOrderItemsTable();
+            this.parentForm = parentForm;
+
             AutoLockManager.StartMonitoring();
+
+            if (parentForm != null)
+            {
+                BlurEffect.ShowDimmed(parentForm);
+            }
+
+            InitializeOrderItemsTable();
+
+            KeyboardLayoutManager.AttachRussianLayout(comboBoxClient, comboBoxProduct);
 
             LoadComboBoxData();
 
@@ -290,8 +302,8 @@ namespace FurnitureStore
                 SELECT 
                     p.ProductID, 
                     COALESCE(op.OriginalProductName, p.ProductName) as ProductName, 
-                    op.ProductCount, 
-                    p.ProductPrice
+                    op.ProductCount,
+                    COALESCE(op.OriginalPrice, p.ProductPrice) as ProductPrice
                 FROM OrderProduct op
                 JOIN Product p ON op.ProductID = p.ProductID
                 WHERE op.OrderID = @OrderID", con);
@@ -397,7 +409,8 @@ namespace FurnitureStore
             decimal total = price * quantity;
 
             var existingRow = orderItemsTable.AsEnumerable()
-                .FirstOrDefault(row => Convert.ToInt32(row["ProductID"]) == productId);
+                .FirstOrDefault(row => Convert.ToInt32(row["ProductID"]) == productId &&
+                                       Convert.ToDecimal(row["Цена за единицу"]) == price);
 
             if (existingRow != null)
             {
@@ -544,10 +557,24 @@ namespace FurnitureStore
 
         private void CreateNewOrder(MySqlConnection con)
         {
+            var groupedItems = orderItemsTable.AsEnumerable()
+                .GroupBy(row => new {
+                    ProductID = Convert.ToInt32(row["ProductID"]),
+                    Price = Convert.ToDecimal(row["Цена за единицу"]),
+                    ProductName = row["Товар"].ToString()
+                })
+                .Select(g => new {
+                    g.Key.ProductID,
+                    g.Key.Price,
+                    g.Key.ProductName,
+                    TotalQuantity = g.Sum(row => Convert.ToInt32(row["Количество"]))
+                })
+                .ToList();
+
             decimal totalPrice = 0;
-            foreach (DataRow row in orderItemsTable.Rows)
+            foreach (var item in groupedItems)
             {
-                totalPrice += Convert.ToDecimal(row["Общая стоимость"]);
+                totalPrice += item.Price * item.TotalQuantity;
             }
 
             decimal discount = CalculateDiscount(totalPrice);
@@ -567,25 +594,18 @@ namespace FurnitureStore
 
             int newOrderId = Convert.ToInt32(orderCmd.ExecuteScalar());
 
-            foreach (DataRow row in orderItemsTable.Rows)
+            foreach (var item in groupedItems)
             {
-                int productId = Convert.ToInt32(row["ProductID"]);
-                int quantity = Convert.ToInt32(row["Количество"]);
-
-                string getProductNameQuery = "SELECT ProductName FROM Product WHERE ProductID = @productId";
-                MySqlCommand getNameCmd = new MySqlCommand(getProductNameQuery, con);
-                getNameCmd.Parameters.AddWithValue("@productId", productId);
-                string currentProductName = getNameCmd.ExecuteScalar()?.ToString() ?? row["Товар"].ToString();
-
                 string productQuery = @"INSERT INTO OrderProduct 
-            (OrderID, ProductID, ProductCount, OriginalProductName) 
-            VALUES (@OrderID, @ProductID, @ProductCount, @OriginalProductName)";
+            (OrderID, ProductID, ProductCount, OriginalPrice, OriginalProductName) 
+            VALUES (@OrderID, @ProductID, @ProductCount, @OriginalPrice, @OriginalProductName)";
 
                 MySqlCommand productCmd = new MySqlCommand(productQuery, con);
                 productCmd.Parameters.AddWithValue("@OrderID", newOrderId);
-                productCmd.Parameters.AddWithValue("@ProductID", productId);
-                productCmd.Parameters.AddWithValue("@ProductCount", quantity);
-                productCmd.Parameters.AddWithValue("@OriginalProductName", currentProductName);
+                productCmd.Parameters.AddWithValue("@ProductID", item.ProductID);
+                productCmd.Parameters.AddWithValue("@ProductCount", item.TotalQuantity);
+                productCmd.Parameters.AddWithValue("@OriginalPrice", item.Price);
+                productCmd.Parameters.AddWithValue("@OriginalProductName", item.ProductName);
                 productCmd.ExecuteNonQuery();
             }
 
@@ -606,10 +626,91 @@ namespace FurnitureStore
 
         private void UpdateExistingOrder(MySqlConnection con)
         {
-            decimal totalPrice = 0;
-            foreach (DataRow row in orderItemsTable.Rows)
+            Dictionary<string, int> existingItems = new Dictionary<string, int>();
+            string selectQuery = "SELECT ProductID, OriginalPrice, ProductCount FROM OrderProduct WHERE OrderID = @OrderID";
+            MySqlCommand selectCmd = new MySqlCommand(selectQuery, con);
+            selectCmd.Parameters.AddWithValue("@OrderID", OrderID);
+
+            using (MySqlDataReader reader = selectCmd.ExecuteReader())
             {
-                totalPrice += Convert.ToDecimal(row["Общая стоимость"]);
+                while (reader.Read())
+                {
+                    string key = $"{reader["ProductID"]}_{reader["OriginalPrice"]}";
+                    existingItems[key] = Convert.ToInt32(reader["ProductCount"]);
+                }
+            }
+
+            var newItems = orderItemsTable.AsEnumerable()
+                .GroupBy(row => new {
+                    ProductID = Convert.ToInt32(row["ProductID"]),
+                    Price = Convert.ToDecimal(row["Цена за единицу"]),
+                    ProductName = row["Товар"].ToString()
+                })
+                .Select(g => new {
+                    g.Key.ProductID,
+                    g.Key.Price,
+                    g.Key.ProductName,
+                    TotalQuantity = g.Sum(row => Convert.ToInt32(row["Количество"]))
+                })
+                .ToDictionary(x => $"{x.ProductID}_{x.Price}", x => x);
+
+            foreach (var item in newItems)
+            {
+                string key = item.Key;
+                var product = item.Value;
+
+                if (existingItems.ContainsKey(key))
+                {
+                    string updateQuery = @"UPDATE OrderProduct 
+                SET ProductCount = @ProductCount 
+                WHERE OrderID = @OrderID AND ProductID = @ProductID AND OriginalPrice = @OriginalPrice";
+
+                    MySqlCommand updateCmd = new MySqlCommand(updateQuery, con);
+                    updateCmd.Parameters.AddWithValue("@ProductCount", product.TotalQuantity);
+                    updateCmd.Parameters.AddWithValue("@OrderID", OrderID);
+                    updateCmd.Parameters.AddWithValue("@ProductID", product.ProductID);
+                    updateCmd.Parameters.AddWithValue("@OriginalPrice", product.Price);
+                    updateCmd.ExecuteNonQuery();
+                }
+                else
+                {
+                    string insertQuery = @"INSERT INTO OrderProduct 
+                (OrderID, ProductID, ProductCount, OriginalPrice, OriginalProductName) 
+                VALUES (@OrderID, @ProductID, @ProductCount, @OriginalPrice, @OriginalProductName)";
+
+                    MySqlCommand insertCmd = new MySqlCommand(insertQuery, con);
+                    insertCmd.Parameters.AddWithValue("@OrderID", OrderID);
+                    insertCmd.Parameters.AddWithValue("@ProductID", product.ProductID);
+                    insertCmd.Parameters.AddWithValue("@ProductCount", product.TotalQuantity);
+                    insertCmd.Parameters.AddWithValue("@OriginalPrice", product.Price);
+                    insertCmd.Parameters.AddWithValue("@OriginalProductName", product.ProductName);
+                    insertCmd.ExecuteNonQuery();
+                }
+            }
+
+            foreach (var existing in existingItems)
+            {
+                if (!newItems.ContainsKey(existing.Key))
+                {
+                    string[] parts = existing.Key.Split('_');
+                    int productId = Convert.ToInt32(parts[0]);
+                    decimal price = Convert.ToDecimal(parts[1]);
+
+                    string deleteQuery = @"DELETE FROM OrderProduct 
+                WHERE OrderID = @OrderID AND ProductID = @ProductID AND OriginalPrice = @OriginalPrice";
+
+                    MySqlCommand deleteCmd = new MySqlCommand(deleteQuery, con);
+                    deleteCmd.Parameters.AddWithValue("@OrderID", OrderID);
+                    deleteCmd.Parameters.AddWithValue("@ProductID", productId);
+                    deleteCmd.Parameters.AddWithValue("@OriginalPrice", price);
+                    deleteCmd.ExecuteNonQuery();
+                }
+            }
+
+            decimal totalPrice = 0;
+            foreach (var item in newItems.Values)
+            {
+                totalPrice += item.Price * item.TotalQuantity;
             }
 
             decimal discount = CalculateDiscount(totalPrice);
@@ -628,61 +729,7 @@ namespace FurnitureStore
             orderCmd.Parameters.AddWithValue("@OrderStatus", comboBoxStatus.SelectedItem.ToString());
             orderCmd.Parameters.AddWithValue("@OrderPrice", finalPrice);
             orderCmd.Parameters.AddWithValue("@OrderID", OrderID);
-
             orderCmd.ExecuteNonQuery();
-
-            Dictionary<int, string> existingOriginalNames = new Dictionary<int, string>();
-
-            string selectOriginalQuery = "SELECT ProductID, OriginalProductName FROM OrderProduct WHERE OrderID = @OrderID";
-            MySqlCommand selectCmd = new MySqlCommand(selectOriginalQuery, con);
-            selectCmd.Parameters.AddWithValue("@OrderID", OrderID);
-
-            using (MySqlDataReader reader = selectCmd.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    int productId = reader.GetInt32("ProductID");
-                    string originalName = reader.IsDBNull(reader.GetOrdinal("OriginalProductName"))
-                        ? null
-                        : reader.GetString("OriginalProductName");
-                    existingOriginalNames[productId] = originalName;
-                }
-            }
-
-            string deleteQuery = "DELETE FROM OrderProduct WHERE OrderID = @OrderID";
-            MySqlCommand deleteCmd = new MySqlCommand(deleteQuery, con);
-            deleteCmd.Parameters.AddWithValue("@OrderID", OrderID);
-            deleteCmd.ExecuteNonQuery();
-
-            foreach (DataRow row in orderItemsTable.Rows)
-            {
-                int productId = Convert.ToInt32(row["ProductID"]);
-                int quantity = Convert.ToInt32(row["Количество"]);
-                string originalProductName;
-
-                if (existingOriginalNames.ContainsKey(productId) && existingOriginalNames[productId] != null)
-                {
-                    originalProductName = existingOriginalNames[productId];
-                }
-                else
-                {
-                    string getProductNameQuery = "SELECT ProductName FROM Product WHERE ProductID = @productId";
-                    MySqlCommand getNameCmd = new MySqlCommand(getProductNameQuery, con);
-                    getNameCmd.Parameters.AddWithValue("@productId", productId);
-                    originalProductName = getNameCmd.ExecuteScalar()?.ToString() ?? row["Товар"].ToString();
-                }
-
-                string productQuery = @"INSERT INTO OrderProduct 
-            (OrderID, ProductID, ProductCount, OriginalProductName) 
-            VALUES (@OrderID, @ProductID, @ProductCount, @OriginalProductName)";
-
-                MySqlCommand productCmd = new MySqlCommand(productQuery, con);
-                productCmd.Parameters.AddWithValue("@OrderID", OrderID);
-                productCmd.Parameters.AddWithValue("@ProductID", productId);
-                productCmd.Parameters.AddWithValue("@ProductCount", quantity);
-                productCmd.Parameters.AddWithValue("@OriginalProductName", originalProductName);
-                productCmd.ExecuteNonQuery();
-            }
 
             string successMessage = $"Заказ №{OrderID} успешно обновлен!\n\n";
             if (discount > 0)
@@ -704,6 +751,126 @@ namespace FurnitureStore
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
             {
                 e.Handled = true;
+            }
+        }
+
+        private void comboBoxClient_TextChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(comboBoxClient.Text)) return;
+
+            int cursorPos = comboBoxClient.SelectionStart;
+            string input = comboBoxClient.Text;
+
+            int spaceCount = input.Count(c => c == ' ');
+            int dashCount = input.Count(c => c == '-');
+
+            if (spaceCount > 2)
+            {
+                int spaceCounter = 0;
+                StringBuilder sb = new StringBuilder();
+
+                for (int i = 0; i < input.Length; i++)
+                {
+                    if (input[i] == ' ')
+                    {
+                        spaceCounter++;
+                        if (spaceCounter <= 2)
+                        {
+                            sb.Append(input[i]);
+                        }
+                        else
+                        {
+                            if (i < cursorPos) cursorPos--;
+                        }
+                    }
+                    else
+                    {
+                        sb.Append(input[i]);
+                    }
+                }
+
+                input = sb.ToString();
+            }
+
+            if (dashCount > 1)
+            {
+                bool firstDashFound = false;
+                StringBuilder sb = new StringBuilder();
+
+                for (int i = 0; i < input.Length; i++)
+                {
+                    if (input[i] == '-')
+                    {
+                        if (!firstDashFound)
+                        {
+                            sb.Append(input[i]);
+                            firstDashFound = true;
+                        }
+                        else
+                        {
+                            if (i < cursorPos) cursorPos--;
+                        }
+                    }
+                    else
+                    {
+                        sb.Append(input[i]);
+                    }
+                }
+
+                input = sb.ToString();
+            }
+
+            string[] parts = input
+                .Split(new char[] { ' ', '-' }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(p => p.Length > 0 ? char.ToUpper(p[0]) + p.Substring(1).ToLower() : "")
+                .ToArray();
+
+            string result = input;
+            int index = 0;
+            foreach (string part in parts)
+            {
+                if (string.IsNullOrEmpty(part)) continue;
+
+                int pos = result.IndexOf(part, index, StringComparison.OrdinalIgnoreCase);
+                if (pos >= 0)
+                {
+                    result = result.Remove(pos, part.Length).Insert(pos, part);
+                    index = pos + part.Length;
+                }
+            }
+            if (comboBoxClient.Text != result)
+            {
+                comboBoxClient.TextChanged -= comboBoxClient_TextChanged;
+                comboBoxClient.Text = result;
+                comboBoxClient.SelectionStart = Math.Min(cursorPos, result.Length);
+                comboBoxClient.TextChanged += comboBoxClient_TextChanged;
+            }
+        }
+
+        private void comboBoxClient_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) &&
+                !Regex.IsMatch(e.KeyChar.ToString(), @"^[а-яА-Я-\s]$"))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void comboBoxProduct_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) &&
+                !Regex.IsMatch(e.KeyChar.ToString(), @"^[а-яА-Я-Э\s""]$"))
+            {
+                e.Handled = true;
+            }
+        }
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            base.OnFormClosed(e);
+            if (parentForm != null)
+            {
+                BlurEffect.HideDimmed();
             }
         }
     }

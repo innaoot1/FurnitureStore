@@ -47,7 +47,7 @@ namespace FurnitureStore
             this.buttonBack.Margin = new System.Windows.Forms.Padding(2);
             this.buttonBack.Name = "buttonBack";
             this.buttonBack.Size = new System.Drawing.Size(120, 65);
-            this.buttonBack.TabIndex = 26;
+            this.buttonBack.TabIndex = 1;
             this.buttonBack.Text = "Назад";
             this.buttonBack.UseVisualStyleBackColor = false;
             this.buttonBack.Click += new System.EventHandler(this.buttonBack_Click);
@@ -68,31 +68,31 @@ namespace FurnitureStore
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(800, 350);
-            this.dataGridView1.TabIndex = 25;
+            this.dataGridView1.TabIndex = 2;
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
             this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Font = new System.Drawing.Font("Verdana", 15.75F);
-            this.label3.Location = new System.Drawing.Point(474, 366);
+            this.label3.Location = new System.Drawing.Point(104, 361);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(105, 32);
+            this.label3.Size = new System.Drawing.Size(685, 32);
             this.label3.TabIndex = 27;
             this.label3.Text = "Всего:";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Verdana", 15.75F);
-            this.label1.Location = new System.Drawing.Point(474, 398);
+            this.label1.Location = new System.Drawing.Point(110, 393);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(116, 32);
+            this.label1.Size = new System.Drawing.Size(679, 103);
             this.label1.TabIndex = 27;
             this.label1.Text = "Сумма:";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // OrderItem
             // 
@@ -113,7 +113,6 @@ namespace FurnitureStore
             this.Text = "Состав заказа";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 

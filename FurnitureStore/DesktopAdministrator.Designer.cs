@@ -70,7 +70,7 @@
             this.buttonExit.Margin = new System.Windows.Forms.Padding(4);
             this.buttonExit.Name = "buttonExit";
             this.buttonExit.Size = new System.Drawing.Size(120, 65);
-            this.buttonExit.TabIndex = 14;
+            this.buttonExit.TabIndex = 3;
             this.buttonExit.Text = "Выйти";
             this.buttonExit.UseVisualStyleBackColor = false;
             this.buttonExit.Click += new System.EventHandler(this.button6_Click);
@@ -85,7 +85,7 @@
             this.buttonWorker.Margin = new System.Windows.Forms.Padding(4);
             this.buttonWorker.Name = "buttonWorker";
             this.buttonWorker.Size = new System.Drawing.Size(205, 73);
-            this.buttonWorker.TabIndex = 18;
+            this.buttonWorker.TabIndex = 1;
             this.buttonWorker.Text = "Сотрудники";
             this.buttonWorker.UseVisualStyleBackColor = false;
             this.buttonWorker.Click += new System.EventHandler(this.button8_Click);
@@ -100,7 +100,7 @@
             this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(205, 73);
-            this.button1.TabIndex = 18;
+            this.button1.TabIndex = 2;
             this.button1.Text = "Управление БД";
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);

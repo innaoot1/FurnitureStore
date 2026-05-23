@@ -110,6 +110,7 @@
             this.textBoxPasswd.Font = new System.Drawing.Font("Verdana", 14F);
             this.textBoxPasswd.Location = new System.Drawing.Point(139, 366);
             this.textBoxPasswd.Margin = new System.Windows.Forms.Padding(4);
+            this.textBoxPasswd.MaxLength = 50;
             this.textBoxPasswd.Name = "textBoxPasswd";
             this.textBoxPasswd.Size = new System.Drawing.Size(280, 36);
             this.textBoxPasswd.TabIndex = 2;
@@ -121,6 +122,7 @@
             this.textBoxLogin.Font = new System.Drawing.Font("Verdana", 14F);
             this.textBoxLogin.Location = new System.Drawing.Point(139, 293);
             this.textBoxLogin.Margin = new System.Windows.Forms.Padding(4);
+            this.textBoxLogin.MaxLength = 50;
             this.textBoxLogin.Name = "textBoxLogin";
             this.textBoxLogin.Size = new System.Drawing.Size(280, 36);
             this.textBoxLogin.TabIndex = 1;

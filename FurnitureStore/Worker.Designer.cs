@@ -53,7 +53,7 @@
             this.buttonBack.Margin = new System.Windows.Forms.Padding(4);
             this.buttonBack.Name = "buttonBack";
             this.buttonBack.Size = new System.Drawing.Size(120, 65);
-            this.buttonBack.TabIndex = 24;
+            this.buttonBack.TabIndex = 7;
             this.buttonBack.Text = "Назад";
             this.buttonBack.UseVisualStyleBackColor = false;
             this.buttonBack.Click += new System.EventHandler(this.buttonBack_Click);
@@ -61,6 +61,7 @@
             // buttonUpdate
             // 
             this.buttonUpdate.BackColor = System.Drawing.Color.MistyRose;
+            this.buttonUpdate.Enabled = false;
             this.buttonUpdate.FlatAppearance.BorderSize = 0;
             this.buttonUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonUpdate.Font = new System.Drawing.Font("Verdana", 15.75F);
@@ -68,7 +69,7 @@
             this.buttonUpdate.Margin = new System.Windows.Forms.Padding(4);
             this.buttonUpdate.Name = "buttonUpdate";
             this.buttonUpdate.Size = new System.Drawing.Size(170, 65);
-            this.buttonUpdate.TabIndex = 21;
+            this.buttonUpdate.TabIndex = 5;
             this.buttonUpdate.Text = "Изменить";
             this.buttonUpdate.UseVisualStyleBackColor = false;
             this.buttonUpdate.Click += new System.EventHandler(this.buttonUpdate_Click);
@@ -83,7 +84,7 @@
             this.buttonCreate.Margin = new System.Windows.Forms.Padding(4);
             this.buttonCreate.Name = "buttonCreate";
             this.buttonCreate.Size = new System.Drawing.Size(170, 65);
-            this.buttonCreate.TabIndex = 20;
+            this.buttonCreate.TabIndex = 4;
             this.buttonCreate.Text = "Добавить";
             this.buttonCreate.UseVisualStyleBackColor = false;
             this.buttonCreate.Click += new System.EventHandler(this.buttonCreate_Click);
@@ -104,15 +105,15 @@
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(1024, 415);
-            this.dataGridView1.TabIndex = 13;
+            this.dataGridView1.TabIndex = 8;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             this.dataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellDoubleClick);
             this.dataGridView1.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridView1_CellFormatting);
-            this.dataGridView1.SelectionChanged += new System.EventHandler(this.dataGridView1_SelectionChanged);
             // 
             // buttonDelete
             // 
             this.buttonDelete.BackColor = System.Drawing.Color.MistyRose;
+            this.buttonDelete.Enabled = false;
             this.buttonDelete.FlatAppearance.BorderSize = 0;
             this.buttonDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonDelete.Font = new System.Drawing.Font("Verdana", 15.75F);
@@ -120,7 +121,7 @@
             this.buttonDelete.Margin = new System.Windows.Forms.Padding(4);
             this.buttonDelete.Name = "buttonDelete";
             this.buttonDelete.Size = new System.Drawing.Size(170, 65);
-            this.buttonDelete.TabIndex = 25;
+            this.buttonDelete.TabIndex = 6;
             this.buttonDelete.Text = "Удалить";
             this.buttonDelete.UseVisualStyleBackColor = false;
             this.buttonDelete.Click += new System.EventHandler(this.buttonDelete_Click);
@@ -134,7 +135,7 @@
             this.comboBoxCategory.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxCategory.Name = "comboBoxCategory";
             this.comboBoxCategory.Size = new System.Drawing.Size(301, 40);
-            this.comboBoxCategory.TabIndex = 43;
+            this.comboBoxCategory.TabIndex = 2;
             this.comboBoxCategory.SelectedIndexChanged += new System.EventHandler(this.comboBoxCategory_SelectedIndexChanged);
             // 
             // labelCategory
@@ -158,10 +159,10 @@
             this.textBoxWorker.Font = new System.Drawing.Font("Verdana", 15.75F);
             this.textBoxWorker.Location = new System.Drawing.Point(9, 468);
             this.textBoxWorker.Margin = new System.Windows.Forms.Padding(4);
-            this.textBoxWorker.MaxLength = 50;
+            this.textBoxWorker.MaxLength = 100;
             this.textBoxWorker.Name = "textBoxWorker";
             this.textBoxWorker.Size = new System.Drawing.Size(296, 39);
-            this.textBoxWorker.TabIndex = 41;
+            this.textBoxWorker.TabIndex = 1;
             this.textBoxWorker.TextChanged += new System.EventHandler(this.textBoxWorker_TextChanged);
             this.textBoxWorker.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxWorker_KeyPress);
             // 
@@ -190,7 +191,7 @@
             this.buttonClearFilters.Margin = new System.Windows.Forms.Padding(4);
             this.buttonClearFilters.Name = "buttonClearFilters";
             this.buttonClearFilters.Size = new System.Drawing.Size(113, 38);
-            this.buttonClearFilters.TabIndex = 25;
+            this.buttonClearFilters.TabIndex = 3;
             this.buttonClearFilters.Text = "Сброс";
             this.buttonClearFilters.UseVisualStyleBackColor = false;
             this.buttonClearFilters.Click += new System.EventHandler(this.buttonClearFilters_Click);

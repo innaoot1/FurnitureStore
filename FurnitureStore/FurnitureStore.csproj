@@ -60,6 +60,7 @@
     <Compile Include="Autorizathion.Designer.cs">
       <DependentUpon>Autorizathion.cs</DependentUpon>
     </Compile>
+    <Compile Include="BlurEffect.cs" />
     <Compile Include="Category.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -72,6 +73,7 @@
     <Compile Include="Clents.Designer.cs">
       <DependentUpon>Clents.cs</DependentUpon>
     </Compile>
+    <Compile Include="KeyboardLayoutManager.cs" />
     <Compile Include="ManagementDB.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -111,11 +113,11 @@
     <Compile Include="DesktopSeller.Designer.cs">
       <DependentUpon>DesktopSeller.cs</DependentUpon>
     </Compile>
-    <Compile Include="Insert.cs">
+    <Compile Include="CategoryInsert.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Insert.Designer.cs">
-      <DependentUpon>Insert.cs</DependentUpon>
+    <Compile Include="CategoryInsert.Designer.cs">
+      <DependentUpon>CategoryInsert.cs</DependentUpon>
     </Compile>
     <Compile Include="OrderItem.cs">
       <SubType>Form</SubType>
@@ -206,8 +208,8 @@
     <EmbeddedResource Include="DesktopSeller.resx">
       <DependentUpon>DesktopSeller.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Insert.resx">
-      <DependentUpon>Insert.cs</DependentUpon>
+    <EmbeddedResource Include="CategoryInsert.resx">
+      <DependentUpon>CategoryInsert.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="OrderItem.resx">
       <DependentUpon>OrderItem.cs</DependentUpon>

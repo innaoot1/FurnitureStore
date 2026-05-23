@@ -10,12 +10,22 @@ namespace FurnitureStore
     {
         private string mode;
         public int SupplierID { get; set; }
-
-        public SupplierInsert(string mode)
+        private Form parentForm;
+        public SupplierInsert(string mode, Form parentForm = null)
         {
             InitializeComponent();
             this.mode = mode;
+            this.parentForm = parentForm;
+
             AutoLockManager.StartMonitoring();
+
+            if (parentForm != null)
+            {
+                BlurEffect.ShowDimmed(parentForm);
+            }
+
+            KeyboardLayoutManager.AttachRussianLayout(textBoxSupplierName, textBoxDescription, textBoxContactPerson, textBoxAddress);
+
             ApplyMode();
         }
 
@@ -471,6 +481,15 @@ namespace FurnitureStore
                     mtb.SelectionStart = i + 1;
                     break;
                 }
+            }
+        }
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            base.OnFormClosed(e);
+            if (parentForm != null)
+            {
+                BlurEffect.HideDimmed();
             }
         }
     }

@@ -65,7 +65,7 @@
             this.comboBoxSort.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxSort.Name = "comboBoxSort";
             this.comboBoxSort.Size = new System.Drawing.Size(252, 40);
-            this.comboBoxSort.TabIndex = 41;
+            this.comboBoxSort.TabIndex = 3;
             this.comboBoxSort.SelectedIndexChanged += new System.EventHandler(this.comboBox_SelectedIndexChanged);
             // 
             // label4
@@ -92,7 +92,7 @@
             this.comboBoxFilter.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxFilter.Name = "comboBoxFilter";
             this.comboBoxFilter.Size = new System.Drawing.Size(240, 40);
-            this.comboBoxFilter.TabIndex = 39;
+            this.comboBoxFilter.TabIndex = 2;
             this.comboBoxFilter.SelectedIndexChanged += new System.EventHandler(this.comboBox_SelectedIndexChanged);
             // 
             // label3
@@ -116,10 +116,10 @@
             this.textBoxSearch.Font = new System.Drawing.Font("Verdana", 15.75F);
             this.textBoxSearch.Location = new System.Drawing.Point(13, 495);
             this.textBoxSearch.Margin = new System.Windows.Forms.Padding(4);
-            this.textBoxSearch.MaxLength = 50;
+            this.textBoxSearch.MaxLength = 100;
             this.textBoxSearch.Name = "textBoxSearch";
             this.textBoxSearch.Size = new System.Drawing.Size(241, 39);
-            this.textBoxSearch.TabIndex = 36;
+            this.textBoxSearch.TabIndex = 1;
             this.textBoxSearch.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             this.textBoxSearch.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxSearch_KeyPress);
             // 
@@ -148,7 +148,7 @@
             this.buttonRevenue.Margin = new System.Windows.Forms.Padding(4);
             this.buttonRevenue.Name = "buttonRevenue";
             this.buttonRevenue.Size = new System.Drawing.Size(175, 74);
-            this.buttonRevenue.TabIndex = 31;
+            this.buttonRevenue.TabIndex = 4;
             this.buttonRevenue.Text = "Отчёт по выручке";
             this.buttonRevenue.UseVisualStyleBackColor = false;
             this.buttonRevenue.Visible = false;
@@ -157,6 +157,7 @@
             // buttonUpdate
             // 
             this.buttonUpdate.BackColor = System.Drawing.Color.MistyRose;
+            this.buttonUpdate.Enabled = false;
             this.buttonUpdate.FlatAppearance.BorderSize = 0;
             this.buttonUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonUpdate.Font = new System.Drawing.Font("Verdana", 15.75F);
@@ -164,7 +165,7 @@
             this.buttonUpdate.Margin = new System.Windows.Forms.Padding(4);
             this.buttonUpdate.Name = "buttonUpdate";
             this.buttonUpdate.Size = new System.Drawing.Size(171, 75);
-            this.buttonUpdate.TabIndex = 32;
+            this.buttonUpdate.TabIndex = 5;
             this.buttonUpdate.Text = "Изменить";
             this.buttonUpdate.UseVisualStyleBackColor = false;
             this.buttonUpdate.Visible = false;
@@ -180,7 +181,7 @@
             this.buttonCreate.Margin = new System.Windows.Forms.Padding(4);
             this.buttonCreate.Name = "buttonCreate";
             this.buttonCreate.Size = new System.Drawing.Size(175, 75);
-            this.buttonCreate.TabIndex = 33;
+            this.buttonCreate.TabIndex = 4;
             this.buttonCreate.Text = "Оформить новый";
             this.buttonCreate.UseVisualStyleBackColor = false;
             this.buttonCreate.Visible = false;
@@ -196,7 +197,7 @@
             this.buttonBack.Margin = new System.Windows.Forms.Padding(4);
             this.buttonBack.Name = "buttonBack";
             this.buttonBack.Size = new System.Drawing.Size(120, 75);
-            this.buttonBack.TabIndex = 34;
+            this.buttonBack.TabIndex = 8;
             this.buttonBack.Text = "Назад";
             this.buttonBack.UseVisualStyleBackColor = false;
             this.buttonBack.Click += new System.EventHandler(this.buttonBack_Click);
@@ -219,7 +220,7 @@
             this.dataGridView1.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(1024, 374);
-            this.dataGridView1.TabIndex = 30;
+            this.dataGridView1.TabIndex = 9;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             this.dataGridView1.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridView1_CellFormatting);
             this.dataGridView1.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.dataGridView1_RowPrePaint);
@@ -227,14 +228,15 @@
             // buttonCheck
             // 
             this.buttonCheck.BackColor = System.Drawing.Color.MistyRose;
+            this.buttonCheck.Enabled = false;
             this.buttonCheck.FlatAppearance.BorderSize = 0;
             this.buttonCheck.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonCheck.Font = new System.Drawing.Font("Verdana", 15.75F);
-            this.buttonCheck.Location = new System.Drawing.Point(322, 553);
+            this.buttonCheck.Location = new System.Drawing.Point(326, 551);
             this.buttonCheck.Margin = new System.Windows.Forms.Padding(4);
             this.buttonCheck.Name = "buttonCheck";
             this.buttonCheck.Size = new System.Drawing.Size(145, 74);
-            this.buttonCheck.TabIndex = 31;
+            this.buttonCheck.TabIndex = 7;
             this.buttonCheck.Text = "Выдать чек";
             this.buttonCheck.UseVisualStyleBackColor = false;
             this.buttonCheck.Visible = false;
@@ -243,14 +245,15 @@
             // buttonOrderItem
             // 
             this.buttonOrderItem.BackColor = System.Drawing.Color.MistyRose;
+            this.buttonOrderItem.Enabled = false;
             this.buttonOrderItem.FlatAppearance.BorderSize = 0;
             this.buttonOrderItem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonOrderItem.Font = new System.Drawing.Font("Verdana", 15.75F);
-            this.buttonOrderItem.Location = new System.Drawing.Point(653, 553);
+            this.buttonOrderItem.Location = new System.Drawing.Point(656, 551);
             this.buttonOrderItem.Margin = new System.Windows.Forms.Padding(4);
             this.buttonOrderItem.Name = "buttonOrderItem";
             this.buttonOrderItem.Size = new System.Drawing.Size(175, 74);
-            this.buttonOrderItem.TabIndex = 31;
+            this.buttonOrderItem.TabIndex = 5;
             this.buttonOrderItem.Text = "Состав заказа";
             this.buttonOrderItem.UseVisualStyleBackColor = false;
             this.buttonOrderItem.Visible = false;
@@ -261,7 +264,7 @@
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.Font = new System.Drawing.Font("Verdana", 15.75F);
-            this.label2.Location = new System.Drawing.Point(859, 459);
+            this.label2.Location = new System.Drawing.Point(859, 451);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(105, 32);
@@ -274,11 +277,11 @@
             this.button1.FlatAppearance.BorderSize = 0;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Verdana", 15.75F);
-            this.button1.Location = new System.Drawing.Point(472, 553);
+            this.button1.Location = new System.Drawing.Point(476, 551);
             this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(175, 74);
-            this.button1.TabIndex = 31;
+            this.button1.TabIndex = 6;
             this.button1.Text = "Состав заказа";
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Visible = false;
@@ -294,7 +297,7 @@
             this.buttonClearFilters.Margin = new System.Windows.Forms.Padding(4);
             this.buttonClearFilters.Name = "buttonClearFilters";
             this.buttonClearFilters.Size = new System.Drawing.Size(120, 38);
-            this.buttonClearFilters.TabIndex = 43;
+            this.buttonClearFilters.TabIndex = 4;
             this.buttonClearFilters.Text = "Сброс";
             this.buttonClearFilters.UseVisualStyleBackColor = false;
             this.buttonClearFilters.Click += new System.EventHandler(this.buttonClearFilters_Click);

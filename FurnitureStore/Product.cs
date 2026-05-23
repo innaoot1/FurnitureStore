@@ -25,7 +25,8 @@ namespace FurnitureStore
             roleId = role;
             ConfigureButtons();
             LoadPlugImage();
-            AutoLockManager.StartMonitoring();
+
+            KeyboardLayoutManager.AttachRussianLayout(textBoxSearch);
         }
 
         private void LoadPlugImage()
@@ -276,7 +277,7 @@ namespace FurnitureStore
 
         private void buttonCreate_Click(object sender, EventArgs e)
         {
-            ProductInsert form = new ProductInsert("add");
+            ProductInsert form = new ProductInsert("add", this);
             form.ShowDialog();
             LoadProducts();
         }
@@ -289,7 +290,7 @@ namespace FurnitureStore
 
             string photoHash = GetProductPhotoHashFromDatabase(Convert.ToInt32(row.Cells["ProductID"].Value));
 
-            ProductInsert form = new ProductInsert("edit");
+            ProductInsert form = new ProductInsert("edit", this);
             form.SetEditData(
                 productId: Convert.ToInt32(row.Cells["ProductID"].Value),
                 name: row.Cells["Товар"].Value?.ToString() ?? "",
@@ -423,6 +424,15 @@ namespace FurnitureStore
         private void dataGridView1_Sorted(object sender, EventArgs e)
         {
             LoadImagesToGrid();
+        }
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                buttonUpdate.Enabled = true;
+                buttonDelete.Enabled = true;
+            }
         }
     }
 }

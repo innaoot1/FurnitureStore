@@ -15,6 +15,8 @@ namespace FurnitureStore
         public Autorizathion()
         {
             InitializeComponent();
+
+            KeyboardLayoutManager.AttachEnglishLayout(textBoxLogin, textBoxPasswd);
         }
 
         private void button1_Click(object sender, EventArgs e)

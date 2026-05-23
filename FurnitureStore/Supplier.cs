@@ -13,6 +13,8 @@ namespace FurnitureStore
         {
             InitializeComponent();
             AutoLockManager.StartMonitoring();
+
+            KeyboardLayoutManager.AttachRussianLayout(textBoxSearch);
         }
 
         private void Supplier_Load(object sender, EventArgs e)
@@ -179,7 +181,7 @@ namespace FurnitureStore
             int id = Convert.ToInt32(dataGridView1.CurrentRow.Cells["SupplierID"].Value);
             var supplierData = GetSupplierData(id);
 
-            SupplierInsert form = new SupplierInsert("edit")
+            SupplierInsert form = new SupplierInsert("edit", this)
             {
                 SupplierID = id,
                 SupplierName = supplierData.Name,
@@ -237,7 +239,7 @@ namespace FurnitureStore
 
         private void buttonCreate_Click(object sender, EventArgs e)
         {
-            SupplierInsert form = new SupplierInsert("add");
+            SupplierInsert form = new SupplierInsert("add", this);
             form.ShowDialog();
             LoadSuppliers();
         }
@@ -388,6 +390,15 @@ namespace FurnitureStore
                     SupplierDescription = row.Cells["Описание"].Value?.ToString() ?? ""
                 };
                 form.ShowDialog();
+            }
+        }
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                buttonUpdate.Enabled = true;
+                buttonDelete.Enabled = true;
             }
         }
     }

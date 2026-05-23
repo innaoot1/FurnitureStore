@@ -1,6 +1,6 @@
 ﻿namespace FurnitureStore
 {
-    partial class Insert
+    partial class CategoryInsert
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Insert));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CategoryInsert));
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.buttonWrite = new System.Windows.Forms.Button();
@@ -44,7 +44,7 @@
             this.textBoxName.MaxLength = 50;
             this.textBoxName.Name = "textBoxName";
             this.textBoxName.Size = new System.Drawing.Size(395, 39);
-            this.textBoxName.TabIndex = 40;
+            this.textBoxName.TabIndex = 1;
             this.textBoxName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxName_KeyPress);
             // 
             // label1
@@ -71,7 +71,7 @@
             this.buttonWrite.Margin = new System.Windows.Forms.Padding(4);
             this.buttonWrite.Name = "buttonWrite";
             this.buttonWrite.Size = new System.Drawing.Size(185, 65);
-            this.buttonWrite.TabIndex = 37;
+            this.buttonWrite.TabIndex = 2;
             this.buttonWrite.Text = "Сохранить";
             this.buttonWrite.UseVisualStyleBackColor = false;
             this.buttonWrite.Click += new System.EventHandler(this.buttonWrite_Click);
@@ -86,12 +86,12 @@
             this.buttonBack.Margin = new System.Windows.Forms.Padding(4);
             this.buttonBack.Name = "buttonBack";
             this.buttonBack.Size = new System.Drawing.Size(120, 65);
-            this.buttonBack.TabIndex = 38;
+            this.buttonBack.TabIndex = 3;
             this.buttonBack.Text = "Назад";
             this.buttonBack.UseVisualStyleBackColor = false;
             this.buttonBack.Click += new System.EventHandler(this.button1_Click);
             // 
-            // Insert
+            // CategoryInsert
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -106,7 +106,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
-            this.Name = "Insert";
+            this.Name = "CategoryInsert";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Редактирование";
             this.ResumeLayout(false);

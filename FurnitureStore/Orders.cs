@@ -28,6 +28,8 @@ namespace FurnitureStore
             roleId = role;
             ConfigureButtons();
             AutoLockManager.StartMonitoring();
+
+            KeyboardLayoutManager.AttachRussianLayout(textBoxSearch);
         }
 
         private void ConfigureButtons()
@@ -99,12 +101,47 @@ namespace FurnitureStore
                     comboBoxSort.Items.Add("По возрастанию");
                     comboBoxSort.Items.Add("По убыванию");
                     comboBoxSort.SelectedIndex = 0;
+
+                    UpdateButtonsState();
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message.ToString(), "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void UpdateButtonsState()
+        {
+            if (dataGridView1.CurrentRow == null)
+            {
+                buttonUpdate.Enabled = false;
+                buttonCheck.Enabled = false;
+                buttonOrderItem.Enabled = false;
+                return;
+            }
+
+            string status = dataGridView1.CurrentRow.Cells["Статус заказа"].Value.ToString();
+
+            if (status == "Выполнен" || status == "Отменён")
+            {
+                buttonUpdate.Enabled = false;
+            }
+            else
+            {
+                buttonUpdate.Enabled = true;
+            }
+
+            if (status == "Отменён")
+            {
+                buttonCheck.Enabled = false;
+            }
+            else
+            {
+                buttonCheck.Enabled = true;
+            }
+
+            buttonOrderItem.Enabled = true;
         }
 
         private void comboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -138,7 +175,7 @@ namespace FurnitureStore
             if (!string.IsNullOrEmpty(searchText))
             {
                 filter =
-                    $@"Convert([Номерзаказа], 'System.String')
+                    $@"Convert([Номер заказа], 'System.String')
             LIKE '%{searchText}%'
             OR [Сотрудник] LIKE '%{searchText}%'
             OR [Клиент] LIKE '%{searchText}%'";
@@ -147,7 +184,7 @@ namespace FurnitureStore
             if (!string.IsNullOrEmpty(selectedStatus))
             {
                 string statusFilter =
-                    $"[Статусзаказа] = '{selectedStatus}'";
+                    $"[Статус заказа] = '{selectedStatus}'";
 
                 if (!string.IsNullOrEmpty(filter))
                     filter = $"({filter}) AND ({statusFilter})";
@@ -158,13 +195,15 @@ namespace FurnitureStore
             currentView.RowFilter = filter;
 
             if (sortOption == "По возрастанию")
-                currentView.Sort = "[Суммазаказа] ASC";
+                currentView.Sort = "[Сумма заказа] ASC";
             else if (sortOption == "По убыванию")
-                currentView.Sort = "[Суммазаказа] DESC";
+                currentView.Sort = "[Сумма заказа] DESC";
             else
                 currentView.Sort = "ID ASC";
 
             pagination.SetData(currentView);
+
+            UpdateButtonsState();
         }
 
         private void buttonClearFilters_Click(object sender, EventArgs e)
@@ -177,12 +216,14 @@ namespace FurnitureStore
             currentView = new DataView(orderTable);
 
             pagination.SetData(currentView);
+
+            UpdateButtonsState();
         }
 
         private void buttonCreate_Click(object sender, EventArgs e)
         {
             int currentSellerId = GetCurrentSellerId();
-            OrdersInsert OrdersInsert = new OrdersInsert("add", 0, currentSellerId);
+            OrdersInsert OrdersInsert = new OrdersInsert("add", 0, currentSellerId, this);
             this.Visible = false;
             OrdersInsert.ShowDialog();
             this.Visible = true;
@@ -214,7 +255,7 @@ namespace FurnitureStore
 
             int orderId = Convert.ToInt32(row.Cells["ID"].Value);
 
-            OrdersInsert OrdersInsert = new OrdersInsert("edit", orderId)
+            OrdersInsert OrdersInsert = new OrdersInsert("edit", orderId, 0, this)
             {
                 OrderDate = Convert.ToDateTime(row.Cells["Дата заказа"].Value),
                 OrderPrice = Convert.ToInt32(row.Cells["Сумма заказа"].Value)
@@ -232,7 +273,7 @@ namespace FurnitureStore
 
         private void buttonRevenue_Click(object sender, EventArgs e)
         {
-            Revenue Revenue = new Revenue();
+            Revenue Revenue = new Revenue(this);
             Revenue.ShowDialog();
         }
 
@@ -313,29 +354,30 @@ namespace FurnitureStore
                 content.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
                 content.Range.InsertParagraphAfter();
 
-                content.Range.Text = $"Кассир: {orderData.Employee}";
+                content.Range.Text = $"Продавец: {orderData.Employee}";
                 content.Range.Font.Name = "Arial";
                 content.Range.Font.Size = 9;
                 content.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
                 content.Range.InsertParagraphAfter();
 
-                content.Range.Text = $"Клиент: {orderData.Customer}";
-                content.Range.Font.Name = "Arial";
-                content.Range.Font.Size = 9;
-                content.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
-                content.Range.InsertParagraphAfter();
+                if (!string.IsNullOrEmpty(orderData.Customer))
+                {
+                    content.Range.Text = $"Клиент: {orderData.Customer}";
+                    content.Range.Font.Name = "Arial";
+                    content.Range.Font.Size = 9;
+                    content.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
+                    content.Range.InsertParagraphAfter();
+                }
 
-                content.Range.Text = $"Телефон: {orderData.Phone}";
-                content.Range.Font.Name = "Arial";
-                content.Range.Font.Size = 9;
-                content.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
-                content.Range.InsertParagraphAfter();
-
-                content.Range.Text = $"Адрес: {orderData.Address}";
-                content.Range.Font.Name = "Arial";
-                content.Range.Font.Size = 9;
-                content.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
-                content.Range.InsertParagraphAfter();
+                if (!string.IsNullOrEmpty(orderData.Phone))
+                {
+                    string formattedPhone = FormatPhoneNumber(orderData.Phone);
+                    content.Range.Text = $"Телефон: {formattedPhone}";
+                    content.Range.Font.Name = "Arial";
+                    content.Range.Font.Size = 9;
+                    content.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
+                    content.Range.InsertParagraphAfter();
+                }
 
                 content.Range.Text = "----------------------------------------";
                 content.Range.Font.Name = "Arial";
@@ -348,9 +390,6 @@ namespace FurnitureStore
                 content.Range.Font.Size = 10;
                 content.Range.Font.Bold = 1;
                 content.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
-                content.Range.InsertParagraphAfter();
-
-                content.Range.Text = "";
                 content.Range.InsertParagraphAfter();
 
                 decimal totalAmount = 0;
@@ -406,15 +445,24 @@ namespace FurnitureStore
                     content.Range.Font.Size = 9;
                     content.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
                     content.Range.InsertParagraphAfter();
+
+                    string discountInfo = "";
+                    if (totalAmount >= 20001)
+                        discountInfo = "Скидка 15% за сумму от 20 000₽";
+                    else if (totalAmount >= 10000)
+                        discountInfo = "Скидка 10% за сумму от 10 000₽";
+
+                    content.Range.Text = discountInfo;
+                    content.Range.Font.Name = "Arial";
+                    content.Range.Font.Size = 8;
+                    content.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
+                    content.Range.InsertParagraphAfter();
                 }
 
                 content.Range.Text = "========================================";
                 content.Range.Font.Name = "Arial";
                 content.Range.Font.Size = 9;
                 content.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
-                content.Range.InsertParagraphAfter();
-
-                content.Range.Text = "";
                 content.Range.InsertParagraphAfter();
 
                 content.Range.Text = "СПАСИБО ЗА ПОКУПКУ!";
@@ -517,8 +565,7 @@ namespace FurnitureStore
                     o.OrderPrice,
                     COALESCE(w.OriginalWorkerFIO, w.WorkerFIO) as WorkerFIO,
                     COALESCE(c.OriginalClientFIO, c.CustomersFIO) as CustomersFIO,
-                    c.CustomersPhone,
-                    c.CustomersAddress
+                    c.CustomersPhone
                 FROM `Order` o
                 JOIN Worker w ON o.OrderWorker = w.WorkerID
                 LEFT JOIN Customers c ON o.OrderCustomers = c.CustomersID
@@ -540,11 +587,9 @@ namespace FurnitureStore
                         TotalAmount = readerOrder.GetDecimal("OrderPrice"),
                         Employee = readerOrder.GetString("WorkerFIO"),
                         Customer = readerOrder.IsDBNull(readerOrder.GetOrdinal("CustomersFIO")) ?
-                            "Гость" : readerOrder.GetString("CustomersFIO"),
+                            null : readerOrder.GetString("CustomersFIO"), 
                         Phone = readerOrder.IsDBNull(readerOrder.GetOrdinal("CustomersPhone")) ?
-                            "Не указан" : readerOrder.GetString("CustomersPhone"),
-                        Address = readerOrder.IsDBNull(readerOrder.GetOrdinal("CustomersAddress")) ?
-                            "Не указан" : readerOrder.GetString("CustomersAddress")
+                            null : readerOrder.GetString("CustomersPhone")
                     };
 
                     readerOrder.Close();
@@ -586,12 +631,32 @@ namespace FurnitureStore
             }
         }
 
+        private string FormatPhoneNumber(string phone)
+        {
+            if (string.IsNullOrEmpty(phone))
+                return "Не указан";
+
+            string digitsOnly = new string(phone.Where(char.IsDigit).ToArray());
+
+            if (digitsOnly.Length == 11)
+            {
+                return $"+{digitsOnly[0]} ({digitsOnly.Substring(1, 3)}) {digitsOnly.Substring(4, 3)}-{digitsOnly.Substring(7, 2)}-{digitsOnly.Substring(9, 2)}";
+            }
+            else if (digitsOnly.Length == 10)
+            {
+                return $"+7 ({digitsOnly.Substring(0, 3)}) {digitsOnly.Substring(3, 3)}-{digitsOnly.Substring(6, 2)}-{digitsOnly.Substring(8, 2)}";
+            }
+            else
+            {
+                return phone;
+            }
+        }
+
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
             {
-                buttonUpdate.Enabled = true;
-                buttonCheck.Enabled = true;
+                UpdateButtonsState();
             }
         }
 
@@ -703,7 +768,6 @@ namespace FurnitureStore
         public string Employee { get; set; }
         public string Customer { get; set; }
         public string Phone { get; set; }
-        public string Address { get; set; }
         public List<ProductItem> Products { get; set; }
     }
 

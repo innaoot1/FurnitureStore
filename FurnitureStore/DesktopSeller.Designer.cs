@@ -71,7 +71,7 @@
             this.buttonExit.Margin = new System.Windows.Forms.Padding(4);
             this.buttonExit.Name = "buttonExit";
             this.buttonExit.Size = new System.Drawing.Size(120, 65);
-            this.buttonExit.TabIndex = 23;
+            this.buttonExit.TabIndex = 5;
             this.buttonExit.Text = "Выйти";
             this.buttonExit.UseVisualStyleBackColor = false;
             this.buttonExit.Click += new System.EventHandler(this.button6_Click);
@@ -86,7 +86,7 @@
             this.buttonClient.Margin = new System.Windows.Forms.Padding(4);
             this.buttonClient.Name = "buttonClient";
             this.buttonClient.Size = new System.Drawing.Size(205, 65);
-            this.buttonClient.TabIndex = 26;
+            this.buttonClient.TabIndex = 3;
             this.buttonClient.Text = "Клиенты";
             this.buttonClient.UseVisualStyleBackColor = false;
             this.buttonClient.Click += new System.EventHandler(this.button2_Click);
@@ -101,7 +101,7 @@
             this.buttonProduct.Margin = new System.Windows.Forms.Padding(4);
             this.buttonProduct.Name = "buttonProduct";
             this.buttonProduct.Size = new System.Drawing.Size(205, 65);
-            this.buttonProduct.TabIndex = 27;
+            this.buttonProduct.TabIndex = 1;
             this.buttonProduct.Text = "Товары";
             this.buttonProduct.UseVisualStyleBackColor = false;
             this.buttonProduct.Click += new System.EventHandler(this.button7_Click);
@@ -116,7 +116,7 @@
             this.buttonOrder.Margin = new System.Windows.Forms.Padding(4);
             this.buttonOrder.Name = "buttonOrder";
             this.buttonOrder.Size = new System.Drawing.Size(205, 65);
-            this.buttonOrder.TabIndex = 28;
+            this.buttonOrder.TabIndex = 2;
             this.buttonOrder.Text = "Заказы";
             this.buttonOrder.UseVisualStyleBackColor = false;
             this.buttonOrder.Click += new System.EventHandler(this.button1_Click);

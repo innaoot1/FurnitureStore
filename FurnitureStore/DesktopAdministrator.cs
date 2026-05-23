@@ -15,16 +15,25 @@ namespace FurnitureStore
         public DesktopAdministrator()
         {
             InitializeComponent();
-            AutoLockManager.StartMonitoring();
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
-            this.Close();
+            DialogResult result = MessageBox.Show(
+                "Вы действительно хотите выйти?",
+                "Подтверждение выхода",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                this.Close();
+            }
         }
         private void button8_Click(object sender, EventArgs e)
         {
             Worker Worker = new Worker();
+            Worker.CurrentUserID = CurrentUser.UserId;
             this.Visible = false;
             Worker.ShowDialog();
             this.Visible = true;
