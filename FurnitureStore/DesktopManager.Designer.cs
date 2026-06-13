@@ -145,7 +145,6 @@
             this.BackgroundImage = global::FurnitureStore.Properties.Resources.main;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(500, 372);
-            this.ControlBox = false;
             this.Controls.Add(this.buttonCategory);
             this.Controls.Add(this.buttonSupplier);
             this.Controls.Add(this.label3);
@@ -153,12 +152,14 @@
             this.Controls.Add(this.buttonExit);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.buttonProduct);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "DesktopManager";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Менеджер";
+            this.Text = "Рабочий стол";
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -26,6 +26,12 @@ namespace FurnitureStore
             if (mode == "edit")
             {
                 textBoxName.Text = currentValue;
+
+                this.Text = "Редактирование категории товаров";
+            }
+            else if (mode == "add")
+            {
+                this.Text = "Добавление категории товаров";
             }
         }
 
@@ -45,7 +51,7 @@ namespace FurnitureStore
 
             try
             {
-                using (MySqlConnection con = new MySqlConnection(connStr.ConnectionString))
+                using (MySqlConnection con = new MySqlConnection(connStr.GetConnectionString("db70")))
                 {
                     con.Open();
                     MySqlCommand cmd;

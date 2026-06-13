@@ -6,6 +6,10 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Word = Microsoft.Office.Interop.Word;
+using QuestPDF.Fluent;
+using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
+using System.IO;
 
 namespace FurnitureStore
 {
@@ -25,11 +29,30 @@ namespace FurnitureStore
                 labelPageInfo,
                 label2);
 
+            InitPerformanceTweaks();
+
             roleId = role;
             ConfigureButtons();
             AutoLockManager.StartMonitoring();
 
             KeyboardLayoutManager.AttachRussianLayout(textBoxSearch);
+        }
+
+        private void InitPerformanceTweaks()
+        {
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
+                          ControlStyles.AllPaintingInWmPaint |
+                          ControlStyles.UserPaint, true);
+            this.UpdateStyles();
+
+            typeof(DataGridView)
+                .GetProperty("DoubleBuffered",
+                    System.Reflection.BindingFlags.Instance |
+                    System.Reflection.BindingFlags.NonPublic)
+                .SetValue(dataGridView1, true, null);
+
+            dataGridView1.SizeChanged += (s, e) => pagination.RecalculateLayoutOnly();
+            this.Resize += (s, e) => pagination.RecalculateLayoutOnly();
         }
 
         private void ConfigureButtons()
@@ -57,7 +80,7 @@ namespace FurnitureStore
         {
             try
             {
-                using (MySqlConnection con = new MySqlConnection(connStr.ConnectionString))
+                using (MySqlConnection con = new MySqlConnection(connStr.GetConnectionString("db70")))
                 {
                     con.Open();
 
@@ -281,13 +304,101 @@ namespace FurnitureStore
         {
             if (dataGridView1.CurrentRow == null)
             {
-                MessageBox.Show("Выберите заказ для печати чека!", "Ошибка",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(
+                    "Выберите заказ для печати чека!",
+                    "Ошибка",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
                 return;
             }
 
-            int orderId = Convert.ToInt32(dataGridView1.CurrentRow.Cells["ID"].Value);
-            GenerateWordReceipt(orderId);
+            int orderId =
+                Convert.ToInt32(
+                    dataGridView1.CurrentRow.Cells["ID"].Value);
+
+            string status =
+                dataGridView1.CurrentRow.Cells["Статус заказа"]
+                .Value.ToString();
+
+            if (status == "Отменён")
+            {
+                MessageBox.Show(
+                    "Нельзя сформировать чек для отменённого заказа!",
+                    "Ошибка",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (status == "Новый")
+            {
+                DialogResult completeResult = MessageBox.Show(
+                    "После формирования чека заказ будет отмечен как выполненный.\n\nЗавершить заказ?",
+                    "Подтверждение",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (completeResult != DialogResult.Yes)
+                    return;
+
+                try
+                {
+                    using (MySqlConnection con =
+                        new MySqlConnection(connStr.GetConnectionString("db70")))
+                    {
+                        con.Open();
+
+                        MySqlCommand cmd = new MySqlCommand(
+                            @"UPDATE `Order`
+                      SET OrderStatus = 'Выполнен'
+                      WHERE OrderID = @id",
+                            con);
+
+                        cmd.Parameters.AddWithValue("@id", orderId);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    LoadOrders();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        ex.Message,
+                        "Ошибка",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                    return;
+                }
+            }
+
+            DialogResult formatResult =
+                MessageBox.Show(
+                    "Выберите формат:\nДа - Word\nНет - PDF",
+                    "Формат чека",
+                    MessageBoxButtons.YesNoCancel,
+                    MessageBoxIcon.Question);
+
+            if (formatResult == DialogResult.Cancel)
+                return;
+
+            string format =
+                formatResult == DialogResult.Yes
+                ? "Word"
+                : "PDF";
+
+            GenerateReceipt(orderId, format);
+        }
+
+        private void GenerateReceipt(int orderId, string format)
+        {
+            if (format == "Word")
+            {
+                GenerateWordReceipt(orderId);
+            }
+            else
+            {
+                GeneratePdfReceipt(orderId);
+            }
         }
 
         private void GenerateWordReceipt(int orderId)
@@ -529,6 +640,201 @@ namespace FurnitureStore
             }
         }
 
+        private void GeneratePdfReceipt(int orderId)
+        {
+            try
+            {
+                var orderData = GetOrderData(orderId);
+
+                if (orderData == null)
+                {
+                    MessageBox.Show(
+                        "Не удалось получить данные заказа",
+                        "Ошибка",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+
+                    return;
+                }
+
+                string folder = Path.Combine(
+                    Application.StartupPath,
+                    "Resources",
+                    "check");
+
+                Directory.CreateDirectory(folder);
+
+                string filePath = Path.Combine(
+                    folder,
+                    $"Чек_{orderId}.pdf");
+
+                QuestPDF.Settings.License = LicenseType.Community;
+
+                Document.Create(container =>
+                {
+                    container.Page(page =>
+                    {
+                        page.Size(283.46f, 841.89f);
+
+                        page.Margin(14.17f);
+
+                        page.DefaultTextStyle(x =>
+                            x.FontFamily("Arial")
+                             .FontSize(9));
+
+                        page.Content().Column(col =>
+                        {
+                            col.Spacing(2);
+
+                            col.Item()
+                                .AlignCenter()
+                                .Text("МАГАЗИН ОФИСНОЙ МЕБЕЛИ")
+                                .FontSize(12)
+                                .Bold();
+
+                            col.Item()
+                                .AlignCenter()
+                                .Text("КАССОВЫЙ ЧЕК")
+                                .FontSize(10)
+                                .Bold();
+
+                            col.Item()
+                                .AlignCenter()
+                                .Text("----------------------------------------")
+                                .FontSize(9);
+
+                            col.Item()
+                                .Text($"Заказ №: {orderData.OrderNumber}")
+                                .FontSize(9);
+
+                            col.Item()
+                                .Text($"Дата: {orderData.OrderDate:dd.MM.yy HH:mm}")
+                                .FontSize(9);
+
+                            col.Item()
+                                .Text($"Продавец: {orderData.Employee}")
+                                .FontSize(9);
+
+                            if (!string.IsNullOrEmpty(orderData.Customer))
+                            {
+                                col.Item()
+                                    .Text($"Клиент: {orderData.Customer}")
+                                    .FontSize(9);
+                            }
+
+                            if (!string.IsNullOrEmpty(orderData.Phone))
+                            {
+                                col.Item()
+                                    .Text($"Телефон: {FormatPhoneNumber(orderData.Phone)}")
+                                    .FontSize(9);
+                            }
+
+                            col.Item()
+                                .AlignCenter()
+                                .Text("----------------------------------------")
+                                .FontSize(9);
+
+                            col.Item()
+                                .AlignCenter()
+                                .Text("ТОВАРЫ")
+                                .FontSize(10)
+                                .Bold();
+
+                            decimal totalAmount = 0;
+
+                            foreach (var product in orderData.Products)
+                            {
+                                col.Item()
+                                    .Text(product.Name)
+                                    .FontSize(9);
+
+                                col.Item()
+                                    .AlignRight()
+                                    .Text($"{product.Quantity} x {product.Price:C} = {product.Total:C}")
+                                    .FontSize(9);
+
+                                totalAmount += product.Total;
+                            }
+
+                            decimal discount = 0;
+
+                            if (totalAmount >= 20001)
+                                discount = totalAmount * 0.15m;
+                            else if (totalAmount >= 10000)
+                                discount = totalAmount * 0.10m;
+
+                            decimal finalPrice = totalAmount - discount;
+
+                            col.Item()
+                                .AlignCenter()
+                                .Text("========================================")
+                                .FontSize(9);
+
+                            col.Item()
+                                .AlignCenter()
+                                .Text($"ИТОГО: {finalPrice:C}")
+                                .FontSize(10)
+                                .Bold();
+
+                            if (discount > 0)
+                            {
+                                col.Item()
+                                    .AlignCenter()
+                                    .Text($"Скидка: {discount:C}")
+                                    .FontSize(9);
+
+                                if (totalAmount >= 20001)
+                                {
+                                    col.Item()
+                                        .AlignCenter()
+                                        .Text("Скидка 15% за сумму от 20 000 ₽")
+                                        .FontSize(8);
+                                }
+                                else
+                                {
+                                    col.Item()
+                                        .AlignCenter()
+                                        .Text("Скидка 10% за сумму от 10 000 ₽")
+                                        .FontSize(8);
+                                }
+                            }
+
+                            col.Item()
+                                .AlignCenter()
+                                .Text("========================================")
+                                .FontSize(9);
+
+                            col.Item()
+                                .AlignCenter()
+                                .Text("СПАСИБО ЗА ПОКУПКУ!")
+                                .FontSize(10)
+                                .Bold();
+
+                            col.Item()
+                                .AlignCenter()
+                                .Text("ЖДЁМ ВАС СНОВА!")
+                                .FontSize(9);
+                        });
+                    });
+                })
+                .GeneratePdf(filePath);
+
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo()
+                {
+                    FileName = filePath,
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "Ошибка",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
         private void ReleaseObject(object obj)
         {
             try
@@ -553,7 +859,7 @@ namespace FurnitureStore
         {
             try
             {
-                using (MySqlConnection con = new MySqlConnection(connStr.ConnectionString))
+                using (MySqlConnection con = new MySqlConnection(connStr.GetConnectionString("db70")))
                 {
                     con.Open();
 
@@ -587,7 +893,7 @@ namespace FurnitureStore
                         TotalAmount = readerOrder.GetDecimal("OrderPrice"),
                         Employee = readerOrder.GetString("WorkerFIO"),
                         Customer = readerOrder.IsDBNull(readerOrder.GetOrdinal("CustomersFIO")) ?
-                            null : readerOrder.GetString("CustomersFIO"), 
+                            null : readerOrder.GetString("CustomersFIO"),
                         Phone = readerOrder.IsDBNull(readerOrder.GetOrdinal("CustomersPhone")) ?
                             null : readerOrder.GetString("CustomersPhone")
                     };
@@ -672,9 +978,7 @@ namespace FurnitureStore
             int selectedOrderId = Convert.ToInt32(dataGridView1.CurrentRow.Cells["ID"].Value);
 
             OrderItem orderItemForm = new OrderItem(selectedOrderId);
-            this.Visible = false;
             orderItemForm.ShowDialog();
-            this.Visible = true;
         }
 
         private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -737,23 +1041,23 @@ namespace FurnitureStore
             switch (status)
             {
                 case "Новый":
-                    row.DefaultCellStyle.BackColor = Color.LightGray;
-                    row.DefaultCellStyle.ForeColor = Color.Black;
+                    row.DefaultCellStyle.BackColor = System.Drawing.Color.LightGray;
+                    row.DefaultCellStyle.ForeColor = System.Drawing.Color.Black;
                     break;
 
                 case "Выполнен":
-                    row.DefaultCellStyle.BackColor = Color.LightGreen;
-                    row.DefaultCellStyle.ForeColor = Color.Black;
+                    row.DefaultCellStyle.BackColor = System.Drawing.Color.LightGreen;
+                    row.DefaultCellStyle.ForeColor = System.Drawing.Color.Black;
                     break;
 
                 case "Отменён":
-                    row.DefaultCellStyle.BackColor = Color.LightCoral;
-                    row.DefaultCellStyle.ForeColor = Color.Black;
+                    row.DefaultCellStyle.BackColor = System.Drawing.Color.LightCoral;
+                    row.DefaultCellStyle.ForeColor = System.Drawing.Color.Black;
                     break;
 
                 default:
-                    row.DefaultCellStyle.BackColor = Color.White;
-                    row.DefaultCellStyle.ForeColor = Color.Black;
+                    row.DefaultCellStyle.BackColor = System.Drawing.Color.White;
+                    row.DefaultCellStyle.ForeColor = System.Drawing.Color.Black;
                     break;
             }
         }

@@ -41,6 +41,9 @@ namespace FurnitureStore
                     textBoxINN.ReadOnly = true;
                     textBoxDescription.ReadOnly = true;
                     buttonWrite.Visible = false;
+
+                    this.Text = "Просмотр данных о поставщике";
+
                     break;
                 case "add":
                     textBoxSupplierName.Text = "";
@@ -50,6 +53,9 @@ namespace FurnitureStore
                     textBoxINN.Text = "";
                     textBoxDescription.Text = "";
                     buttonWrite.Visible = true;
+
+                    this.Text = "Добавление поставщика";
+
                     break;
                 case "edit":
                     textBoxSupplierName.ReadOnly = false;
@@ -59,6 +65,9 @@ namespace FurnitureStore
                     textBoxINN.ReadOnly = false;
                     textBoxDescription.ReadOnly = false;
                     buttonWrite.Visible = true;
+
+                    this.Text = "Редактирование поставщика";
+
                     break;
             }
         }
@@ -209,7 +218,7 @@ namespace FurnitureStore
         {
             try
             {
-                using (MySqlConnection con = new MySqlConnection(connStr.ConnectionString))
+                using (MySqlConnection con = new MySqlConnection(connStr.GetConnectionString("db70")))
                 {
                     con.Open();
                     string query = "SELECT COUNT(*) FROM Supplier WHERE SupplierName = @name AND IsActive = 1";
@@ -252,7 +261,7 @@ namespace FurnitureStore
 
             try
             {
-                using (MySqlConnection con = new MySqlConnection(connStr.ConnectionString))
+                using (MySqlConnection con = new MySqlConnection(connStr.GetConnectionString("db70")))
                 {
                     con.Open();
 

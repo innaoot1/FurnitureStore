@@ -35,8 +35,18 @@ namespace FurnitureStore
                     textBoxFIO.ReadOnly = true;
                     maskedTextBoxPhone.ReadOnly = true;
                     buttonWrite.Visible = false;
+
+                    this.Text = "Просмотр данных о клиенте";
                     break;
                 case "edit":
+
+                    this.Text = "Редактирование клиента";
+
+                    break;
+                case "add":
+
+                    this.Text = "Добавление клиента";
+
                     break;
             }
         }
@@ -80,7 +90,7 @@ namespace FurnitureStore
 
             try
             {
-                using (MySqlConnection con = new MySqlConnection(connStr.ConnectionString))
+                using (MySqlConnection con = new MySqlConnection(connStr.GetConnectionString("db70")))
                 {
                     con.Open();
                     MySqlCommand cmd;

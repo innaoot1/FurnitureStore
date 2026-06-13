@@ -92,6 +92,11 @@ namespace FurnitureStore
             StretchRows();
         }
 
+        public void RecalculateLayoutOnly()
+        {
+            StretchRows();
+        }
+
         private void StretchRows()
         {
             if (dataGridView.Rows.Count == 0)

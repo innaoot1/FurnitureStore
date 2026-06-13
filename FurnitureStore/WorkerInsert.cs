@@ -41,7 +41,7 @@ namespace FurnitureStore
         {
             try
             {
-                using (MySqlConnection con = new MySqlConnection(connStr.ConnectionString))
+                using (MySqlConnection con = new MySqlConnection(connStr.GetConnectionString("db70")))
                 {
                     con.Open();
                     DataTable rolesTable = new DataTable();
@@ -78,6 +78,8 @@ namespace FurnitureStore
 
                     comboBoxRole.Enabled = false;
 
+                    this.Text = "Просмотр данных о сотруднике";
+
                     break;
 
                 case "add":
@@ -89,6 +91,9 @@ namespace FurnitureStore
                     comboBoxRole.SelectedIndex = 0;
 
                     buttonWrite.Visible = true;
+
+                    this.Text = "Добавление сотрудника";
+
                     break;
 
                 case "edit":
@@ -100,6 +105,9 @@ namespace FurnitureStore
                     comboBoxRole.Enabled = false;
 
                     buttonWrite.Visible = true;
+
+                    this.Text = "Редактирование сотрудника";
+
                     break;
             }
         }
@@ -170,7 +178,7 @@ namespace FurnitureStore
         {
             try
             {
-                using (MySqlConnection con = new MySqlConnection(connStr.ConnectionString))
+                using (MySqlConnection con = new MySqlConnection(connStr.GetConnectionString("db70")))
                 {
                     con.Open();
 
@@ -269,7 +277,7 @@ namespace FurnitureStore
 
             try
             {
-                using (MySqlConnection con = new MySqlConnection(connStr.ConnectionString))
+                using (MySqlConnection con = new MySqlConnection(connStr.GetConnectionString("db70")))
                 {
                     con.Open();
 

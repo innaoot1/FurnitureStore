@@ -45,6 +45,7 @@
             // 
             // buttonBack
             // 
+            this.buttonBack.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.buttonBack.BackColor = System.Drawing.Color.MistyRose;
             this.buttonBack.FlatAppearance.BorderSize = 0;
             this.buttonBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -60,6 +61,7 @@
             // 
             // buttonUpdate
             // 
+            this.buttonUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonUpdate.BackColor = System.Drawing.Color.MistyRose;
             this.buttonUpdate.Enabled = false;
             this.buttonUpdate.FlatAppearance.BorderSize = 0;
@@ -76,6 +78,7 @@
             // 
             // buttonCreate
             // 
+            this.buttonCreate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCreate.BackColor = System.Drawing.Color.MistyRose;
             this.buttonCreate.FlatAppearance.BorderSize = 0;
             this.buttonCreate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -93,9 +96,11 @@
             // 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Top;
             this.dataGridView1.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
@@ -112,6 +117,7 @@
             // 
             // buttonDelete
             // 
+            this.buttonDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonDelete.BackColor = System.Drawing.Color.MistyRose;
             this.buttonDelete.Enabled = false;
             this.buttonDelete.FlatAppearance.BorderSize = 0;
@@ -128,6 +134,7 @@
             // 
             // comboBoxCategory
             // 
+            this.comboBoxCategory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.comboBoxCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxCategory.Font = new System.Drawing.Font("Verdana", 15.75F);
             this.comboBoxCategory.FormattingEnabled = true;
@@ -140,9 +147,7 @@
             // 
             // labelCategory
             // 
-            this.labelCategory.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelCategory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelCategory.AutoSize = true;
             this.labelCategory.BackColor = System.Drawing.Color.Transparent;
             this.labelCategory.Font = new System.Drawing.Font("Verdana", 15.75F);
@@ -155,6 +160,7 @@
             // 
             // textBoxWorker
             // 
+            this.textBoxWorker.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.textBoxWorker.BackColor = System.Drawing.Color.White;
             this.textBoxWorker.Font = new System.Drawing.Font("Verdana", 15.75F);
             this.textBoxWorker.Location = new System.Drawing.Point(9, 468);
@@ -168,9 +174,7 @@
             // 
             // labelWorker
             // 
-            this.labelWorker.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelWorker.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelWorker.AutoSize = true;
             this.labelWorker.BackColor = System.Drawing.Color.Transparent;
             this.labelWorker.Font = new System.Drawing.Font("Verdana", 15.75F);
@@ -183,6 +187,7 @@
             // 
             // buttonClearFilters
             // 
+            this.buttonClearFilters.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.buttonClearFilters.BackColor = System.Drawing.Color.MistyRose;
             this.buttonClearFilters.FlatAppearance.BorderSize = 0;
             this.buttonClearFilters.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -198,6 +203,7 @@
             // 
             // label3
             // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
             this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Font = new System.Drawing.Font("Verdana", 15.75F);
@@ -216,7 +222,6 @@
             this.BackgroundImage = global::FurnitureStore.Properties.Resources.main;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1024, 640);
-            this.ControlBox = false;
             this.Controls.Add(this.label3);
             this.Controls.Add(this.comboBoxCategory);
             this.Controls.Add(this.labelCategory);
@@ -228,9 +233,10 @@
             this.Controls.Add(this.buttonUpdate);
             this.Controls.Add(this.buttonCreate);
             this.Controls.Add(this.dataGridView1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
+            this.MinimumSize = new System.Drawing.Size(1024, 640);
             this.Name = "Worker";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Сотрудники";

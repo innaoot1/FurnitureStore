@@ -131,7 +131,6 @@
             this.BackColor = System.Drawing.Color.Thistle;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(556, 290);
-            this.ControlBox = false;
             this.Controls.Add(this.buttonGenerate);
             this.Controls.Add(this.buttonBack);
             this.Controls.Add(this.dateTimePicker2);
@@ -139,12 +138,14 @@
             this.Controls.Add(this.dateTimePicker1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "Revenue";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Выручка";
+            this.Text = "Создание отчёта по выручке за период";
             this.ResumeLayout(false);
             this.PerformLayout();
 

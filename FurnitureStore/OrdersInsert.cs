@@ -134,6 +134,9 @@ namespace FurnitureStore
 
                     comboBoxStatus.Enabled = false;
                     comboBoxStatus.SelectedItem = "Новый";
+
+                    this.Text = "Оформление заказа";
+
                     break;
 
                 case "edit":
@@ -142,6 +145,9 @@ namespace FurnitureStore
 
                     comboBoxClient.Enabled = false;
                     comboBoxStatus.Enabled = true;
+
+                    this.Text = "Редактирование заказа";
+
                     break;
             }
         }
@@ -150,7 +156,7 @@ namespace FurnitureStore
         {
             try
             {
-                using (MySqlConnection con = new MySqlConnection(connStr.ConnectionString))
+                using (MySqlConnection con = new MySqlConnection(connStr.GetConnectionString("db70")))
                 {
                     con.Open();
 
@@ -238,7 +244,7 @@ namespace FurnitureStore
         {
             try
             {
-                using (MySqlConnection con = new MySqlConnection(connStr.ConnectionString))
+                using (MySqlConnection con = new MySqlConnection(connStr.GetConnectionString("db70")))
                 {
                     con.Open();
 
@@ -306,7 +312,8 @@ namespace FurnitureStore
                     COALESCE(op.OriginalPrice, p.ProductPrice) as ProductPrice
                 FROM OrderProduct op
                 JOIN Product p ON op.ProductID = p.ProductID
-                WHERE op.OrderID = @OrderID", con);
+                WHERE op.OrderID = @OrderID
+                ORDER BY op.OrderProductID ASC", con);
                     cmdProducts.Parameters.AddWithValue("@OrderID", OrderID);
 
                     MySqlDataAdapter da = new MySqlDataAdapter(cmdProducts);
@@ -435,7 +442,7 @@ namespace FurnitureStore
         {
             try
             {
-                using (MySqlConnection con = new MySqlConnection(connStr.ConnectionString))
+                using (MySqlConnection con = new MySqlConnection(connStr.GetConnectionString("db70")))
                 {
                     con.Open();
                     MySqlCommand cmd = new MySqlCommand("SELECT ProductPrice FROM Product WHERE ProductID = @ProductID", con);
@@ -462,7 +469,7 @@ namespace FurnitureStore
 
             try
             {
-                using (MySqlConnection con = new MySqlConnection(connStr.ConnectionString))
+                using (MySqlConnection con = new MySqlConnection(connStr.GetConnectionString("db70")))
                 {
                     con.Open();
 

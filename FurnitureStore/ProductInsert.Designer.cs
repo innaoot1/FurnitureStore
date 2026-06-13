@@ -275,7 +275,6 @@
             this.BackColor = System.Drawing.Color.Thistle;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1024, 594);
-            this.ControlBox = false;
             this.Controls.Add(this.pictureBoxImage);
             this.Controls.Add(this.buttonImage);
             this.Controls.Add(this.buttonWrite);
@@ -292,9 +291,11 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.comboBoxSupplier);
             this.Controls.Add(this.comboBoxCategory);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "ProductInsert";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Товар";

@@ -79,7 +79,12 @@ namespace FurnitureStore
 
             if (mode == "add")
             {
+                this.Text = "Добавление товара";
                 LoadDefaultImage();
+            }
+            else if (mode == "edit")
+            {
+                this.Text = "Редактирование товара";
             }
         }
 
@@ -87,7 +92,7 @@ namespace FurnitureStore
         {
             try
             {
-                using (MySqlConnection con = new MySqlConnection(connStr.ConnectionString))
+                using (MySqlConnection con = new MySqlConnection(connStr.GetConnectionString("db70")))
                 {
                     con.Open();
 
@@ -261,7 +266,7 @@ namespace FurnitureStore
 
             try
             {
-                using (MySqlConnection con = new MySqlConnection(connStr.ConnectionString))
+                using (MySqlConnection con = new MySqlConnection(connStr.GetConnectionString("db70")))
                 {
                     con.Open();
 
@@ -516,7 +521,7 @@ namespace FurnitureStore
                         string imageHash =
                             ProductImageManager.Instance.CalculateImageHash(imageData);
 
-                        using (var con = new MySqlConnection(connStr.ConnectionString))
+                        using (var con = new MySqlConnection(connStr.GetConnectionString("db70")))
                         {
                             con.Open();
                             using (var cmd = new MySqlCommand(

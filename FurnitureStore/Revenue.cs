@@ -27,7 +27,7 @@ namespace FurnitureStore
         {
             try
             {
-                using (MySqlConnection connection = new MySqlConnection(connStr.ConnectionString))
+                using (MySqlConnection connection = new MySqlConnection(connStr.GetConnectionString("db70")))
                 {
                     connection.Open();
 
@@ -263,7 +263,7 @@ namespace FurnitureStore
 
             try
             {
-                using (MySqlConnection connection = new MySqlConnection(connStr.ConnectionString))
+                using (MySqlConnection connection = new MySqlConnection(connStr.GetConnectionString("db70")))
                 {
                     connection.Open();
 
