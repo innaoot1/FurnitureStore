@@ -380,7 +380,7 @@ namespace FurnitureStore
             {
                 DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
 
-                SupplierInsert form = new SupplierInsert("view")
+                SupplierInsert form = new SupplierInsert("view", this)
                 {
                     SupplierName = row.Cells["Поставщик"].Value?.ToString() ?? "",
                     ContactPerson = row.Cells["Контактное лицо"].Value?.ToString() ?? "",

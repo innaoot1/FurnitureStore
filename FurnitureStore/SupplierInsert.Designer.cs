@@ -115,7 +115,7 @@
             this.textBoxAddress.Font = new System.Drawing.Font("Verdana", 15.75F);
             this.textBoxAddress.Location = new System.Drawing.Point(389, 45);
             this.textBoxAddress.Margin = new System.Windows.Forms.Padding(4);
-            this.textBoxAddress.MaxLength = 200;
+            this.textBoxAddress.MaxLength = 10000;
             this.textBoxAddress.Name = "textBoxAddress";
             this.textBoxAddress.Size = new System.Drawing.Size(356, 39);
             this.textBoxAddress.TabIndex = 4;

@@ -71,7 +71,7 @@ namespace FurnitureStore
             this.textBoxPwd.Font = new System.Drawing.Font("Verdana", 14F);
             this.textBoxPwd.Location = new System.Drawing.Point(13, 421);
             this.textBoxPwd.Margin = new System.Windows.Forms.Padding(4);
-            this.textBoxPwd.MaxLength = 50;
+            this.textBoxPwd.MaxLength = 100000;
             this.textBoxPwd.Name = "textBoxPwd";
             this.textBoxPwd.Size = new System.Drawing.Size(398, 36);
             this.textBoxPwd.TabIndex = 12;
@@ -83,7 +83,7 @@ namespace FurnitureStore
             this.textBoxUid.Font = new System.Drawing.Font("Verdana", 14F);
             this.textBoxUid.Location = new System.Drawing.Point(13, 348);
             this.textBoxUid.Margin = new System.Windows.Forms.Padding(4);
-            this.textBoxUid.MaxLength = 50;
+            this.textBoxUid.MaxLength = 100000;
             this.textBoxUid.Name = "textBoxUid";
             this.textBoxUid.Size = new System.Drawing.Size(398, 36);
             this.textBoxUid.TabIndex = 11;
@@ -106,7 +106,7 @@ namespace FurnitureStore
             this.textBoxHost.Font = new System.Drawing.Font("Verdana", 14F);
             this.textBoxHost.Location = new System.Drawing.Point(13, 275);
             this.textBoxHost.Margin = new System.Windows.Forms.Padding(4);
-            this.textBoxHost.MaxLength = 50;
+            this.textBoxHost.MaxLength = 100000;
             this.textBoxHost.Name = "textBoxHost";
             this.textBoxHost.Size = new System.Drawing.Size(398, 36);
             this.textBoxHost.TabIndex = 11;

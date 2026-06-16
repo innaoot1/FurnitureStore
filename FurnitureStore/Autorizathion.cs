@@ -26,7 +26,7 @@ namespace FurnitureStore
             blockTimer.Interval = 10000;
             blockTimer.Tick += BlockTimer_Tick;
 
-            KeyboardLayoutManager.AttachEnglishLayout(textBoxLogin, textBoxPasswd);
+            KeyboardLayoutManager.AttachEnglishLayout(textBoxLogin, textBoxPasswd, textBoxCaptcha);
         }
 
         private void button2_Click(object sender, EventArgs e)

@@ -247,9 +247,7 @@ namespace FurnitureStore
         {
             int currentSellerId = GetCurrentSellerId();
             OrdersInsert OrdersInsert = new OrdersInsert("add", 0, currentSellerId, this);
-            this.Visible = false;
             OrdersInsert.ShowDialog();
-            this.Visible = true;
             LoadOrders();
         }
 
@@ -283,9 +281,7 @@ namespace FurnitureStore
                 OrderDate = Convert.ToDateTime(row.Cells["Дата заказа"].Value),
                 OrderPrice = Convert.ToInt32(row.Cells["Сумма заказа"].Value)
             };
-            this.Visible = false;
             OrdersInsert.ShowDialog();
-            this.Visible = true;
             LoadOrders();
         }
 
@@ -977,8 +973,17 @@ namespace FurnitureStore
 
             int selectedOrderId = Convert.ToInt32(dataGridView1.CurrentRow.Cells["ID"].Value);
 
-            OrderItem orderItemForm = new OrderItem(selectedOrderId);
-            orderItemForm.ShowDialog();
+            BlurEffect.ShowDimmed(this);
+
+            try
+            {
+                OrderItem orderItemForm = new OrderItem(selectedOrderId);
+                orderItemForm.ShowDialog();
+            }
+            finally
+            {
+                BlurEffect.HideDimmed();
+            }
         }
 
         private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)

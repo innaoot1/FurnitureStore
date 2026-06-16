@@ -194,7 +194,8 @@ namespace FurnitureStore
             if (e.RowIndex >= 0)
             {
                 DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
-                ClientsInsert form = new ClientsInsert("view")
+
+                ClientsInsert form = new ClientsInsert("view", this)
                 {
                     ClientFIO = row.Cells["ФИО клиента"].Value.ToString(),
                     ClientPhone = row.Cells["Телефон"].Value.ToString()

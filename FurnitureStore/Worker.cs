@@ -259,7 +259,7 @@ namespace FurnitureStore
             {
                 DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
 
-                WorkerInsert form = new WorkerInsert("view")
+                WorkerInsert form = new WorkerInsert("view", this)
                 {
                     WorkerFIO = row.Cells["Сотрудник"].Value.ToString(),
                     WorkerLogin = row.Cells["Логин"].Value.ToString(),
